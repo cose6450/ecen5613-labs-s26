@@ -1,0 +1,28 @@
+Name     Lab1 ;
+PartNo   00 ;
+Date     1/13/2026 ;
+Revision 01 ;
+Designer Colin Sergi ;
+Company  University of Colorado ;
+Assembly None ;
+Location  ;
+Device   g16v8a ;
+
+/* *************** INPUT PINS *********************/
+PIN 1    = RD_n; /*Whether or not the 8051 is reading from data memory */ 
+PIN 2    = PSEN_n ; /* Program Strobe Enable - Whether or not the 8051 is reading from code memory*/ 
+PIN 3    = A15; /*15th bit of the address bus*/ 
+PIN 4    = A14; /*14th bit of the address bus*/ 
+PIN 5    = A13; /*13th bit of the address bus*/ 
+PIN 6    = A12; /*12th bit of the address bus*/ 
+
+/* *************** OUTPUT PINS *********************/
+PIN   17  =  NVSRAM_CE_n; /*Whether or not to enable the NVSRAM */
+PIN   18  =  READ_n; /*Read signal - whether or not enable the 373*/ 
+PIN   19  =  CSPERIPH_n; /*Do something with peripherals when the address is 0xFxxx */ 
+
+
+NVSRAM_CE_n = A15;                 /*Only active for the address space of 0b0xxxxxxxxxxxxxxx*/
+READ_n = (RD_n & PSEN_n) # A15 ;   /*Tie this to the output enable of the NVSRAM; equivalent to the !((!RD_n || !PSEN_n) && A15) */
+CSPERIPH_n = !(A15 & A14 & A13 & A12); 
+

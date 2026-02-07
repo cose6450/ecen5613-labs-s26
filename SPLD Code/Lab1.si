@@ -1,0 +1,21 @@
+Name     Lab1;
+PartNo   00;
+Date     1/13/2026;
+Revision 01;
+Designer Colin Sergi;
+Company  University of Colorado;
+Assembly None;
+Location ;
+Device   g16v8a;
+
+
+ORDER: A15, A14, A13, A12, PSEN_n, RD_n, CSPERIPH_n, READ_n; 
+
+
+VECTORS:
+000011X*
+000010X*
+000001X*
+000000X*
+111100*X
+111000*X

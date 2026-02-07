@@ -1,0 +1,33 @@
+#WAVEFORM
+#H Name     Lab1;
+#H PartNo   00;
+#H Date     1/13/2026;
+#H Revision 01;
+#H Designer Colin Sergi;
+#H Company  University of Colorado;
+#H Assembly None;
+#H Location ;
+#H Device   g16v8a;
+#H 
+#H 
+#H ORDER: A15, A14, A13, A12, PSEN_n, RD_n, CSPERIPH_n, READ_n; 
+#H 
+#H 
+#V 0001 000011HH
+#E 0019 X CSPERIPH_n
+
+#V 0002 000010HL
+#E 0019 X CSPERIPH_n
+
+#V 0003 000001HL
+#E 0019 X CSPERIPH_n
+
+#V 0004 000000HL
+#E 0019 X CSPERIPH_n
+
+#V 0005 111100LL
+#E 0019 X READ_n
+
+#V 0006 111000HL
+#E 0019 X READ_n
+
