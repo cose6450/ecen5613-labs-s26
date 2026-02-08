@@ -3365,6 +3365,16 @@
 		)
 		(uuid "4aa8d1ae-ff4f-45aa-8986-9de7210f0867")
 	)
+	(label "NVSRAM_RD_n"
+		(at 102.87 123.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4ef2b405-f780-4536-96a3-226e30bb6eab")
+	)
 	(label "373OUT3"
 		(at 171.45 52.07 0)
 		(effects

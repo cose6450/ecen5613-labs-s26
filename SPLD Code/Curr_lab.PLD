@@ -1,4 +1,4 @@
-Name     Lab1 ;
+Name     ESD Labs ;
 PartNo   00 ;
 Date     1/13/2026 ;
 Revision 01 ;
@@ -17,12 +17,14 @@ PIN 5    = A13; /*13th bit of the address bus*/
 PIN 6    = A12; /*12th bit of the address bus*/ 
 
 /* *************** OUTPUT PINS *********************/
+PIN   16  =  NVSRAM_RD_n;  /*Whether or not to read from the NVSRAM*/
 PIN   17  =  NVSRAM_CE_n; /*Whether or not to enable the NVSRAM */
 PIN   18  =  READ_n; /*Read signal - whether or not enable the 373*/ 
 PIN   19  =  CSPERIPH_n; /*Do something with peripherals when the address is 0xFxxx */ 
 
 
 NVSRAM_CE_n = A15;                 /*Only active for the address space of 0b0xxxxxxxxxxxxxxx*/
-READ_n = (RD_n & PSEN_n) # A15 ;   /*Tie this to the output enable of the NVSRAM; equivalent to the !((!RD_n || !PSEN_n) && A15) */
+NVSRAM_OE_n = PSEN_n # A15; /*Tie this to the output enable of the NVSRAM; equivalent to the !(!PSEN_n && !A15) */
+READ_n = (RD_n & PSEN_n);   
 CSPERIPH_n = !(A15 & A14 & A13 & A12); 
 
