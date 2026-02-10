@@ -5,7 +5,7 @@ PIN   4 =  A14
 PIN   3 =  A15 
 PIN  19 =  CSPERIPH_n 
 PIN  17 =  NVSRAM_CE_n 
-PIN  16 =  NVSRAM_RD_n 
+PIN  16 =  NVSRAM_OE_n 
 PIN   2 =  PSEN_n 
 PIN   1 =  RD_n 
 PIN  18 =  READ_n 
@@ -23,7 +23,6 @@ NVSRAM_CE_n =>
 
 NVSRAM_OE_n =>
     PSEN_n
-  # A15
 
 READ_n =>
     PSEN_n & RD_n

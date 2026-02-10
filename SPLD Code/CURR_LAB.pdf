@@ -5,7 +5,7 @@
   {Program "CUPL(WM) Version 5.0a"}
   {DBtype "Schematic"}
   {DBvrev 1.01}
-  {DBtime "Sun Feb 08 13:56:03 2026 "}
+  {DBtime "Sun Feb 08 15:33:25 2026 "}
   {DBunit "MIL"}
   {DBgrid 10}
   {Lyrstr "WIRES" 1 "BUS" 1 "GATE" 2 "IEEE" 2 "PINFUN" 3 "PINNUM" 1 
@@ -39,9 +39,10 @@
    {P A14 {Pt "INPUT"}{Lq 0}{Ploc 100 60}}
    {P A13 {Pt "INPUT"}{Lq 0}{Ploc 100 40}}
    {P A12 {Pt "INPUT"}{Lq 0}{Ploc 100 20}}
-   {P NVSRAM_C {Pt "I/O"}{Lq 0}{Ploc 340 20}}
-   {P READ_N {Pt "I/O"}{Lq 0}{Ploc 340 40}}
-   {P CSPERIPH {Pt "I/O"}{Lq 0}{Ploc 340 60}}
+   {P NVSRAM_O {Pt "I/O"}{Lq 0}{Ploc 340 20}}
+   {P NVSRAM_C {Pt "I/O"}{Lq 0}{Ploc 340 40}}
+   {P READ_N {Pt "I/O"}{Lq 0}{Ploc 340 60}}
+   {P CSPERIPH {Pt "I/O"}{Lq 0}{Ploc 340 80}}
   }
 
   {PKG
@@ -61,8 +62,9 @@
    {Pnl 320 30}
    {Pnl 320 50}
    {Pnl 320 70}
+   {Pnl 320 90}
 
-   {Sd A 1 2 3 4 5 6 17 18 19}
+   {Sd A 1 2 3 4 5 6 16 17 18 19}
   }
 
   {PIC
@@ -78,6 +80,7 @@
    {L 310 20 340 20}
    {L 310 40 340 40}
    {L 310 60 340 60}
+   {L 310 80 340 80}
    [Ly "PINNAM"]
    [Tj "LC"]
    {T "RD_N" 140 120}
@@ -87,9 +90,10 @@
    {T "A13" 140 40}
    {T "A12" 140 20}
    [Tj "RC"]
-   {T "NVSRAM_C" 300 20}
-   {T "READ_N" 300 40}
-   {T "CSPERIPH" 300 60}
+   {T "NVSRAM_O" 300 20}
+   {T "NVSRAM_C" 300 40}
+   {T "READ_N" 300 60}
+   {T "CSPERIPH" 300 80}
    [Ly "DEVICE"]
    [Tj "CT"]
    {T "G16V8AS" 220 -10}
@@ -124,6 +128,8 @@
    {N A13
    }
    {N A12
+   }
+   {N NVSRAM_O
    }
    {N NVSRAM_C
    }

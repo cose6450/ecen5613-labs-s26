@@ -1,0 +1,3 @@
+".\Objects\lab2timer.obj" 
+TO ".\Objects\lab2timer-v2" 
+PRINT(".\Listings\lab2timer-v2.m51") RAMSIZE(256) 

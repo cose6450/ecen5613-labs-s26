@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          g16v8as  Library DLIB-h-40-2
-Created         Sun Feb 08 13:56:03 2026
+Created         Sun Feb 08 15:33:25 2026
 Name            ESD Labs 
 Partno          00 
 Revision        01 
@@ -27,7 +27,6 @@ NVSRAM_CE_n =>
 
 NVSRAM_OE_n =>
     PSEN_n
-  # A15
 
 READ_n =>
     PSEN_n & RD_n
@@ -47,8 +46,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A15                         3        V        -       -       -     
     CSPERIPH_n                  19       V        1       8       1     
     NVSRAM_CE_n                 17       V        1       8       1     
-    NVSRAM_OE_n                 0        I        2       -       -     
-    NVSRAM_RD_n                 16       V        -       -       -     
+    NVSRAM_OE_n                 16       V        1       8       1     
     PSEN_n                      2        V        -       -       -     
     RD_n                        1        V        -       -       -     
     READ_n                      18       V        1       8       1     
@@ -93,8 +91,8 @@ Pin #17  02050  Pol -  02122  Ac1 x
  00672 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00704 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00736 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #16  02051  Pol x  02123  Ac1 - 
- 00768 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #16  02051  Pol -  02123  Ac1 x 
+ 00768 x------------------------------- 
  00800 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00832 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00864 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -153,7 +151,7 @@ LEGEND    X : fuse not blown
                    PSEN_n x---|2           19|---x CSPERIPH_n               
                       A15 x---|3           18|---x READ_n                   
                       A14 x---|4           17|---x NVSRAM_CE_n              
-                      A13 x---|5           16|---x NVSRAM_RD_n              
+                      A13 x---|5           16|---x NVSRAM_OE_n              
                       A12 x---|6           15|---x                          
                           x---|7           14|---x                          
                           x---|8           13|---x                          
