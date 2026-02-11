@@ -1,0 +1,6 @@
+
+Setup - Capture the rising edge of PSEN, so that the NVSRAM is still emitting the instruction. Trigger is getting the second byte of the first instruction
+
+The second instruction byte of the first instruction is shown because we are capturing rising edge of PSEN. PSEN goes low for the first time on the first byte. 
+
+We Capture 2D, (second byte of first instruction, or immediately after A), FF (what follows SJMP, immediately after B), C290 (the next instruction actually executed, immediately after C), so on and so forth

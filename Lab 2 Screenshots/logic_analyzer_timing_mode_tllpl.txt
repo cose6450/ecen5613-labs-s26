@@ -1,0 +1,6 @@
+So in this screenshot, A is when the latch enable/ALE signal goes low, and B is when the PSEN goes low. Difference of 90ns between the edges
+
+For the AT89c51rc2 8051, the Tllpl / Time From ALE low to PSEN Low minimum is calculated by T - x , where T is the oscillator clock period (90.422 ns) and x is 15 ns (given by datasheet).
+Calculated to be a minimum of 70.422ns. Measured value is 90ns. So the 8051 is obeying the datasheet
+
+So for the 373 latch, the hold time (time the signal must be stable after the falling edge) is 20ns. Which means the latch must be stable in 70 ns, which it is
