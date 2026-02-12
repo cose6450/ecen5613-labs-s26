@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    02/10/2026  13:32:03  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    02/12/2026  14:20:50  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -20,7 +20,7 @@ LINK MAP OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0049H     ABSOLUTE     
+            CODE    0000H     0084H     ABSOLUTE     
 
 
 
@@ -30,67 +30,75 @@ SYMBOL TABLE OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
   ----------------------------------
 
   -------         MODULE        LAB2TIMER
-  C:0018H         SYMBOL        DO_250_MS_COUNT
-  C:0043H         SYMBOL        DO_TIMER_RESET
-  C:001AH         SYMBOL        EXIT_TIMER_INTERRUPT_ROUTINE
+  N:0000H         SYMBOL        COUNTER_ZERO
+  C:0062H         SYMBOL        DO_250_MS_COUNT
+  C:0079H         SYMBOL        DO_TIMER_RESET
+  C:0046H         SYMBOL        EXIT_TIMER_INTERRUPT_ROUTINE
+  C:005BH         SYMBOL        GET_TIMER_COUNT
   D:00A8H         SYMBOL        IE
-  C:003EH         SYMBOL        INF_LOOP
+  C:0074H         SYMBOL        INF_LOOP
   N:0082H         SYMBOL        INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0
-  C:002FH         SYMBOL        MAIN
+  C:0065H         SYMBOL        MAIN
   D:0090H         SYMBOL        P1
-  C:0021H         SYMBOL        RESET_TIMER
+  C:007EH         SYMBOL        RESET_ISR
+  C:004DH         SYMBOL        RESET_TIMER
+  C:0064H         SYMBOL        RETURN_GET_TIMER_COUNT
   B:0088H.5       SYMBOL        TF0
   D:008CH         SYMBOL        TH0
   N:0019H         SYMBOL        TIMER_250_MS_COUNT
   N:004CH         SYMBOL        TIMER_760_MS_COUNT
-  N:0000H         SYMBOL        TIMER_COUNT_LOWER_BYTE
+  N:000FH         SYMBOL        TIMER_COUNT_LOWER_BYTE
   N:00DCH         SYMBOL        TIMER_COUNT_UPPER_BYTE
   N:0000H         SYMBOL        TIMER_EMPTY_FLAG
   N:0002H         SYMBOL        TIMER_HIT_FLAG
-  C:000BH         SYMBOL        TIMER_INTERRUPT_ROUTINE
+  C:0040H         SYMBOL        TIMER_INTERRUPT_ROUTINE
   D:008AH         SYMBOL        TL0
   D:0089H         SYMBOL        TMOD
   N:0001H         SYMBOL        TMOD_MOD_SET
   B:0088H.4       SYMBOL        TR0
-  C:0000H         LINE#         18
+  C:0000H         LINE#         19
   C:000BH         LINE#         21
-  C:000DH         LINE#         22
-  C:000FH         LINE#         24
-  C:0011H         LINE#         25
-  C:0014H         LINE#         26
-  C:0016H         LINE#         27
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/10/2026  13:32:03  PAGE 2
+  C:0040H         LINE#         28
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/12/2026  14:20:50  PAGE 2
 
 
-  C:0018H         LINE#         29
-  C:001AH         LINE#         31
-  C:001CH         LINE#         32
-  C:001EH         LINE#         33
-  C:0020H         LINE#         34
-  C:0021H         LINE#         43
-  C:0023H         LINE#         46
-  C:0026H         LINE#         49
-  C:0029H         LINE#         50
-  C:002CH         LINE#         55
-  C:002EH         LINE#         56
-  C:002FH         LINE#         60
-  C:0031H         LINE#         61
-  C:0032H         LINE#         62
-  C:0034H         LINE#         63
-  C:0035H         LINE#         67
-  C:0037H         LINE#         69
-  C:0039H         LINE#         71
-  C:003BH         LINE#         74
-  C:003EH         LINE#         79
-  C:0041H         LINE#         80
-  C:0043H         LINE#         82
-  C:0045H         LINE#         83
-  C:0047H         LINE#         84
+  C:0042H         LINE#         29
+  C:0044H         LINE#         31
+  C:0046H         LINE#         33
+  C:0048H         LINE#         34
+  C:004AH         LINE#         35
+  C:004CH         LINE#         36
+  C:004DH         LINE#         45
+  C:004FH         LINE#         50
+  C:0052H         LINE#         53
+  C:0055H         LINE#         54
+  C:0058H         LINE#         59
+  C:005AH         LINE#         60
+  C:005BH         LINE#         62
+  C:005EH         LINE#         63
+  C:0060H         LINE#         64
+  C:0062H         LINE#         66
+  C:0064H         LINE#         68
+  C:0065H         LINE#         72
+  C:0067H         LINE#         73
+  C:0068H         LINE#         74
+  C:006AH         LINE#         75
+  C:006BH         LINE#         79
+  C:006DH         LINE#         81
+  C:006FH         LINE#         83
+  C:0071H         LINE#         86
+  C:0074H         LINE#         91
+  C:0077H         LINE#         92
+  C:0079H         LINE#         94
+  C:007CH         LINE#         95
+  C:007EH         LINE#         97
+  C:0080H         LINE#         98
+  C:0082H         LINE#         99
   -------         ENDMOD        LAB2TIMER
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0040H BYTE ( 3%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0048H BYTE ( 3%) *
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=73
+Program Size: data=8.0 xdata=0 code=132
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

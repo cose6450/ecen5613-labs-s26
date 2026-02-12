@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/10/2026 13:32:03 PAGE     1
+A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 14:20:50 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -13,7 +13,8 @@ LOC  OBJ            LINE     SOURCE
                        3     
                        4     ; P1.0 - ISR running bit
                        5     ; P1.1 - LED 
-  0000                 6     TIMER_COUNT_LOWER_BYTE EQU 0x000
+  000F                 6     TIMER_COUNT_LOWER_BYTE EQU 0x00F ;do slightly faster than 1 ms calculated so we get the tim
+                             es we want
   00DC                 7     TIMER_COUNT_UPPER_BYTE EQU 0x0DC
   0001                 8     TMOD_MOD_SET EQU 0x01
   004C                 9     TIMER_760_MS_COUNT EQU 76
@@ -21,84 +22,101 @@ LOC  OBJ            LINE     SOURCE
                       11             
   0002                12     TIMER_HIT_FLAG EQU 2
   0000                13     TIMER_EMPTY_FLAG EQU 0
-                      14             
-  0082                15     INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 EQU 0x82
-                      16     
-0000                  17     ORG 0000h
-0000 802D             18             SJMP main
-000B                  19     ORG 0000Bh
-000B                  20             timer_interrupt_routine:
-000B D290             21             SETB P1.0
-000D D90B             22             DJNZ R1, exit_timer_interrupt_routine
-                      23             ;if we are here, toggle led
-000F B291             24             CPL P1.1
-0011 209304           25             JB P1.3, do_250_ms_count
-0014 794C             26             MOV R1, #TIMER_760_MS_COUNT
-0016 8002             27             SJMP exit_timer_interrupt_routine
-0018                  28             do_250_ms_count:
-0018 7919             29             MOV R1, #TIMER_250_MS_COUNT
-001A                  30             exit_timer_interrupt_routine:
-001A 7A02             31             MOV R2, #TIMER_HIT_FLAG
-001C C28D             32             CLR TF0
-001E C290             33             CLR P1.0
-0020 32               34             RETI
-                      35     
-0021                  36     reset_timer:
-                      37             ;setup the 8051 to count for 0.01 = 100Hz
-                      38             ;timer will increment once every 921.6 kHz
-                      39             ;so we need to go through  921.6 kHz/ 100Hz = 9216 cycles of the timer to get the p
+  0000                14     COUNTER_ZERO EQU 0
+                      15             
+  0082                16     INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 EQU 0x82
+                      17     
+0000                  18     ORG 0000h
+0000 8063             19             SJMP main
+000B                  20     ORG 0000Bh
+000B 8033             21             SJMP timer_interrupt_routine
+                      22             
+                      23             
+                      24             
+                      25             
+0040                  26     ORG 0040h
+0040                  27             timer_interrupt_routine:
+0040 D290             28             SETB P1.0
+0042 D902             29             DJNZ R1, exit_timer_interrupt_routine
+                      30             ;if we are here, toggle led
+0044 B291             31             CPL P1.1
+0046                  32             exit_timer_interrupt_routine:
+0046 7A02             33             MOV R2, #TIMER_HIT_FLAG
+0048 C28D             34             CLR TF0
+004A C290             35             CLR P1.0
+004C 32               36             RETI
+                      37     
+004D                  38     reset_timer:
+                      39             ;setup the 8051 to count for 0.01 = 100Hz
+                      40             ;timer will increment once every 921.6 kHz
+                      41             ;so we need to go through  921.6 kHz/ 100Hz = 9216 cycles of the timer to get the p
                              eriod
-                      40             ;when counting up, do (2^16 - 0xdc00)
-                      41             ;count that 76 times
-                      42             
-0021 C28C             43             CLR TR0
+                      42             ;when counting up, do (2^16 - 9216)
+                      43             ;count that 76 times
                       44             
-                      45             ;set the TMOD register
-0023 758901           46             MOV TMOD, #TMOD_MOD_SET ;set to 16 bit timer mod and used as a timer not a counter
+004D C28C             45             CLR TR0
+                      46             
                       47             
-                      48             ;set the time count
-0026 758CDC           49             MOV TH0, #TIMER_COUNT_UPPER_BYTE
-0029 758A00           50             MOV TL0, #TIMER_COUNT_LOWER_BYTE
+                      48             
+                      49             ;set the TMOD register
+004F 758901           50             MOV TMOD, #TMOD_MOD_SET ;set to 16 bit timer mod and used as a timer not a counter
                       51             
-                      52             
-                      53             
-                      54             ;start the timer
-002C D28C             55             SETB TR0
-002E 22               56             RET
-A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/10/2026 13:32:03 PAGE     2
+                      52             ;set the time count
+0052 758CDC           53             MOV TH0, #TIMER_COUNT_UPPER_BYTE
+0055 758A0F           54             MOV TL0, #TIMER_COUNT_LOWER_BYTE
+                      55             
+A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 14:20:50 PAGE     2
 
-                      57     
-002F                  58     main:
-                      59             ; turn off the two output pins
-002F C290             60             CLR P1.0 
-0031 00               61             NOP
-0032 C291             62             CLR P1.1 
-0034 00               63             NOP
-                      64             
-                      65             
-                      66             ;set counter to 40
-0035 794C             67             MOV R1, #TIMER_760_MS_COUNT
-                      68             ;set the reset flag to off
-0037 7A00             69             MOV R2, #TIMER_EMPTY_FLAG
-                      70             ;configure the first timer
-0039 1121             71             ACALL reset_timer
-                      72             
-                      73             ;enable interrupts
-003B 75A882           74             MOV IE, #INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 ; enable interrupts and time
-                             r 0 interrupt
-                      75             
+                      56             
+                      57             
+                      58             ;start the timer
+0058 D28C             59             SETB TR0
+005A 22               60             RET
+005B                  61     get_timer_count:
+005B 209304           62             JB P1.3, do_250_ms_count ;detect whether or not we are doing the fast blink or the 
+                             slow blink
+005E 794C             63             MOV R1, #TIMER_760_MS_COUNT ;if low, do 0.66Hz
+0060 8002             64             SJMP return_get_timer_count
+0062                  65             do_250_ms_count:
+0062 7919             66             MOV R1, #TIMER_250_MS_COUNT ;if high, do 2Hz
+0064                  67             return_get_timer_count:
+0064 22               68             RET
+                      69     
+0065                  70     main:
+                      71             ; turn off the two output pins
+0065 C290             72             CLR P1.0 
+0067 00               73             NOP
+0068 C291             74             CLR P1.1 
+006A 00               75             NOP
                       76             
-                      77             ;loop forever
-003E                  78     inf_loop:
-003E BA0002           79                     CJNE R2, #TIMER_EMPTY_FLAG, do_timer_reset
-0041 013E             80                     AJMP inf_loop
-0043                  81     do_timer_reset:
-0043 7A00             82                     MOV R2, #TIMER_EMPTY_FLAG
-0045 1121             83                     ACALL reset_timer
-0047 013E             84                     AJMP inf_loop
-                      85                     END
+                      77             
+                      78             ;count to the appropriate value
+006B 115B             79             ACALL get_timer_count
+                      80             ;set the reset flag to off
+006D 7A00             81             MOV R2, #TIMER_EMPTY_FLAG
+                      82             ;configure the first timer
+006F 114D             83             ACALL reset_timer
+                      84             
+                      85             ;enable interrupts
+0071 75A882           86             MOV IE, #INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 ; enable interrupts and time
+                             r 0 interrupt
+                      87             
+                      88             
+                      89             ;loop forever
+0074                  90     inf_loop:
+0074 BA0002           91             CJNE R2, #TIMER_EMPTY_FLAG, do_timer_reset
+0077 0174             92             AJMP inf_loop
+0079                  93     do_timer_reset:
+0079 B90002           94             CJNE R1, #COUNTER_ZERO, reset_isr ; determine whether or not we need to also reset 
+                             the counter
+007C 115B             95             ACALL get_timer_count
+007E                  96             reset_isr:
+007E 7A00             97             MOV R2, #TIMER_EMPTY_FLAG
+0080 114D             98             ACALL reset_timer
+0082 80F0             99             SJMP inf_loop
+                     100             END
                                      
-A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/10/2026 13:32:03 PAGE     3
+A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 14:20:50 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -106,24 +124,28 @@ SYMBOL TABLE LISTING
 
 N A M E                                    T Y P E  V A L U E   ATTRIBUTES
 
-DO_250_MS_COUNT . . . . . . . . . . . .    C ADDR   0018H   A   
-DO_TIMER_RESET. . . . . . . . . . . . .    C ADDR   0043H   A   
-EXIT_TIMER_INTERRUPT_ROUTINE. . . . . .    C ADDR   001AH   A   
+COUNTER_ZERO. . . . . . . . . . . . . .    N NUMB   0000H   A   
+DO_250_MS_COUNT . . . . . . . . . . . .    C ADDR   0062H   A   
+DO_TIMER_RESET. . . . . . . . . . . . .    C ADDR   0079H   A   
+EXIT_TIMER_INTERRUPT_ROUTINE. . . . . .    C ADDR   0046H   A   
+GET_TIMER_COUNT . . . . . . . . . . . .    C ADDR   005BH   A   
 IE. . . . . . . . . . . . . . . . . . .    D ADDR   00A8H   A   
-INF_LOOP. . . . . . . . . . . . . . . .    C ADDR   003EH   A   
+INF_LOOP. . . . . . . . . . . . . . . .    C ADDR   0074H   A   
 INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMEN NUMB   0082H   A   
-MAIN. . . . . . . . . . . . . . . . . .    C ADDR   002FH   A   
+MAIN. . . . . . . . . . . . . . . . . .    C ADDR   0065H   A   
 P1. . . . . . . . . . . . . . . . . . .    D ADDR   0090H   A   
-RESET_TIMER . . . . . . . . . . . . . .    C ADDR   0021H   A   
+RESET_ISR . . . . . . . . . . . . . . .    C ADDR   007EH   A   
+RESET_TIMER . . . . . . . . . . . . . .    C ADDR   004DH   A   
+RETURN_GET_TIMER_COUNT. . . . . . . . .    C ADDR   0064H   A   
 TF0 . . . . . . . . . . . . . . . . . .    B ADDR   0088H.5 A   
 TH0 . . . . . . . . . . . . . . . . . .    D ADDR   008CH   A   
 TIMER_250_MS_COUNT. . . . . . . . . . .    N NUMB   0019H   A   
 TIMER_760_MS_COUNT. . . . . . . . . . .    N NUMB   004CH   A   
-TIMER_COUNT_LOWER_BYTE. . . . . . . . .    N NUMB   0000H   A   
+TIMER_COUNT_LOWER_BYTE. . . . . . . . .    N NUMB   000FH   A   
 TIMER_COUNT_UPPER_BYTE. . . . . . . . .    N NUMB   00DCH   A   
 TIMER_EMPTY_FLAG. . . . . . . . . . . .    N NUMB   0000H   A   
 TIMER_HIT_FLAG. . . . . . . . . . . . .    N NUMB   0002H   A   
-TIMER_INTERRUPT_ROUTINE . . . . . . . .    C ADDR   000BH   A   
+TIMER_INTERRUPT_ROUTINE . . . . . . . .    C ADDR   0040H   A   
 TL0 . . . . . . . . . . . . . . . . . .    D ADDR   008AH   A   
 TMOD. . . . . . . . . . . . . . . . . .    D ADDR   0089H   A   
 TMOD_MOD_SET. . . . . . . . . . . . . .    N NUMB   0001H   A   

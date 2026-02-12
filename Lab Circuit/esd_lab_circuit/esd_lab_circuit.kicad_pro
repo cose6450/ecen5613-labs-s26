@@ -624,11 +624,15 @@
     ],
     [
       "31d7adbf-904c-42fa-91b4-03fc269c1533",
-      "Decoupling Caps"
+      "Decoupling Caps/LEDS/Jumpers"
     ],
     [
       "9ba8609f-a784-4119-81af-aa2d19a83800",
       "Oscillator Circuit"
+    ],
+    [
+      "8702a0d8-b2bf-4523-b629-ab6ae5152baf",
+      "RS232"
     ]
   ],
   "text_variables": {}
