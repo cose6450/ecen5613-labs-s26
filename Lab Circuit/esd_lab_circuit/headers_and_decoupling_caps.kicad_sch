@@ -1283,16 +1283,6 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 39.37) (xy 106.68 39.37)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a45e9445-6814-4d26-a947-5c227e7fb019")
-	)
-	(wire
-		(pts
 			(xy 106.68 68.58) (xy 111.76 68.58)
 		)
 		(stroke
@@ -1321,36 +1311,27 @@
 		)
 		(uuid "f2428689-0ac6-4de8-957e-76bc8d477b32")
 	)
-	(label "P1.1"
+	(hierarchical_label "P1.1"
+		(shape input)
 		(at 49.53 115.57 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify right)
 		)
-		(uuid "0039e351-abf3-4fcf-8150-9baae927ccc5")
+		(uuid "7cc08e96-90f7-4f04-a18c-9b87ba4ee3d9")
 	)
-	(label "{slash}EA"
-		(at 125.73 115.57 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7518d1d6-d626-41ea-ab34-5fc6e3edd9fc")
-	)
-	(hierarchical_label "Vcc"
+	(hierarchical_label "{slash}EA"
 		(shape input)
-		(at 81.28 39.37 90)
+		(at 125.73 115.57 270)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "90d937de-37c7-4ede-947d-78fe9f6069e8")
+		(uuid "871945eb-8b12-460f-b643-8a1681fcac4b")
 	)
 	(symbol
 		(lib_id "power:VCC")
@@ -2098,6 +2079,72 @@
 			(project "esd_lab_circuit"
 				(path "/e737370b-dddd-4d85-b455-d3366cc4c4a7/31d7adbf-904c-42fa-91b4-03fc269c1533"
 					(reference "C23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 106.68 39.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9fb92736-8a64-4986-b54d-b2ac43151cef")
+		(property "Reference" "#PWR028"
+			(at 106.68 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 106.68 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 106.68 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 106.68 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 106.68 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "017a1513-0e2f-4632-8dad-8f4c48409529")
+		)
+		(instances
+			(project "esd_lab_circuit"
+				(path "/e737370b-dddd-4d85-b455-d3366cc4c4a7/31d7adbf-904c-42fa-91b4-03fc269c1533"
+					(reference "#PWR028")
 					(unit 1)
 				)
 			)
