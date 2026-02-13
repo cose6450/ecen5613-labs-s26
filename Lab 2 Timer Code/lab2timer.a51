@@ -74,6 +74,11 @@ main:
 	CLR P1.1 
 	NOP
 	
+	;test debug latch
+	MOV DPTR, #0666h
+	MOV A, #0D0h
+	MOVX A, @DPTR
+	
 	
 	;count to the appropriate value
 	ACALL get_timer_count

@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    02/12/2026  14:20:50  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    02/12/2026  22:54:59  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -20,7 +20,7 @@ LINK MAP OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0084H     ABSOLUTE     
+            CODE    0000H     008AH     ABSOLUTE     
 
 
 
@@ -32,15 +32,15 @@ SYMBOL TABLE OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
   -------         MODULE        LAB2TIMER
   N:0000H         SYMBOL        COUNTER_ZERO
   C:0062H         SYMBOL        DO_250_MS_COUNT
-  C:0079H         SYMBOL        DO_TIMER_RESET
+  C:007FH         SYMBOL        DO_TIMER_RESET
   C:0046H         SYMBOL        EXIT_TIMER_INTERRUPT_ROUTINE
   C:005BH         SYMBOL        GET_TIMER_COUNT
   D:00A8H         SYMBOL        IE
-  C:0074H         SYMBOL        INF_LOOP
+  C:007AH         SYMBOL        INF_LOOP
   N:0082H         SYMBOL        INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0
   C:0065H         SYMBOL        MAIN
   D:0090H         SYMBOL        P1
-  C:007EH         SYMBOL        RESET_ISR
+  C:0084H         SYMBOL        RESET_ISR
   C:004DH         SYMBOL        RESET_TIMER
   C:0064H         SYMBOL        RETURN_GET_TIMER_COUNT
   B:0088H.5       SYMBOL        TF0
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
   C:0000H         LINE#         19
   C:000BH         LINE#         21
   C:0040H         LINE#         28
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/12/2026  14:20:50  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/12/2026  22:54:59  PAGE 2
 
 
   C:0042H         LINE#         29
@@ -83,22 +83,25 @@ SYMBOL TABLE OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
   C:0067H         LINE#         73
   C:0068H         LINE#         74
   C:006AH         LINE#         75
-  C:006BH         LINE#         79
-  C:006DH         LINE#         81
-  C:006FH         LINE#         83
-  C:0071H         LINE#         86
-  C:0074H         LINE#         91
-  C:0077H         LINE#         92
-  C:0079H         LINE#         94
-  C:007CH         LINE#         95
-  C:007EH         LINE#         97
-  C:0080H         LINE#         98
-  C:0082H         LINE#         99
+  C:006BH         LINE#         78
+  C:006EH         LINE#         79
+  C:0070H         LINE#         80
+  C:0071H         LINE#         84
+  C:0073H         LINE#         86
+  C:0075H         LINE#         88
+  C:0077H         LINE#         91
+  C:007AH         LINE#         96
+  C:007DH         LINE#         97
+  C:007FH         LINE#         99
+  C:0082H         LINE#         100
+  C:0084H         LINE#         102
+  C:0086H         LINE#         103
+  C:0088H         LINE#         104
   -------         ENDMOD        LAB2TIMER
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0048H BYTE ( 3%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 004EH BYTE ( 3%) *
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=132
+Program Size: data=8.0 xdata=0 code=138
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

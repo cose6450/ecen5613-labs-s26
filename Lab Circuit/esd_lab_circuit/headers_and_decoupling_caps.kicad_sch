@@ -1156,6 +1156,18 @@
 		(uuid "684cc970-7495-40d2-9a59-0d7e312aee6b")
 	)
 	(junction
+		(at 88.9 73.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "38ed9810-04e3-4002-b8ad-52c23e22e495")
+	)
+	(junction
+		(at 88.9 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "438b55fe-f192-4ad3-8e75-978fa49457f5")
+	)
+	(junction
 		(at 106.68 68.58)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1200,16 +1212,6 @@
 			(type default)
 		)
 		(uuid "0794b309-7b9d-4a00-becf-0a04cc550947")
-	)
-	(wire
-		(pts
-			(xy 88.9 68.58) (xy 101.6 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1198a03f-b89a-4df8-ac27-5431e5dac0cf")
 	)
 	(wire
 		(pts
@@ -1263,6 +1265,16 @@
 	)
 	(wire
 		(pts
+			(xy 77.47 73.66) (xy 88.9 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e61ca83-a056-4f27-8fcf-574409dc23c0")
+	)
+	(wire
+		(pts
 			(xy 101.6 68.58) (xy 106.68 68.58)
 		)
 		(stroke
@@ -1270,6 +1282,16 @@
 			(type default)
 		)
 		(uuid "7c32664e-339d-4f9e-8b09-9175dcbd09b1")
+	)
+	(wire
+		(pts
+			(xy 77.47 68.58) (xy 88.9 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ed61f3c-ce3f-4d96-b9bb-94441cc8b1ca")
 	)
 	(wire
 		(pts
@@ -1290,6 +1312,16 @@
 			(type default)
 		)
 		(uuid "a7c527b7-ba81-47ce-b704-4667b0aa703d")
+	)
+	(wire
+		(pts
+			(xy 88.9 68.58) (xy 101.6 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1d6c0f1-9c6f-4643-a20d-1f0ca03f5edc")
 	)
 	(wire
 		(pts
@@ -1332,6 +1364,76 @@
 			(justify right)
 		)
 		(uuid "871945eb-8b12-460f-b643-8a1681fcac4b")
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 77.47 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "03780aad-06bb-472d-a1fe-d955298e42c7")
+		(property "Reference" "C12"
+			(at 80.01 69.8562 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1uF"
+			(at 80.01 72.3962 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 77.47 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 77.47 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 77.47 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "81cbb2be-b03f-4ab6-abdb-66b0a5789f56")
+		)
+		(pin "1"
+			(uuid "c922319c-bdf0-48bb-ad5e-fee58fcdb8da")
+		)
+		(instances
+			(project "esd_lab_circuit"
+				(path "/e737370b-dddd-4d85-b455-d3366cc4c4a7/31d7adbf-904c-42fa-91b4-03fc269c1533"
+					(reference "C12")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "power:VCC")

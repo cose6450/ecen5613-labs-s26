@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 14:20:50 PAGE     1
+A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 22:54:59 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 0052 758CDC           53             MOV TH0, #TIMER_COUNT_UPPER_BYTE
 0055 758A0F           54             MOV TL0, #TIMER_COUNT_LOWER_BYTE
                       55             
-A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 14:20:50 PAGE     2
+A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 22:54:59 PAGE     2
 
                       56             
                       57             
@@ -89,34 +89,39 @@ LOC  OBJ            LINE     SOURCE
 0068 C291             74             CLR P1.1 
 006A 00               75             NOP
                       76             
-                      77             
-                      78             ;count to the appropriate value
-006B 115B             79             ACALL get_timer_count
-                      80             ;set the reset flag to off
-006D 7A00             81             MOV R2, #TIMER_EMPTY_FLAG
-                      82             ;configure the first timer
-006F 114D             83             ACALL reset_timer
-                      84             
-                      85             ;enable interrupts
-0071 75A882           86             MOV IE, #INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 ; enable interrupts and time
+                      77             ;test debug latch
+006B 900666           78             MOV DPTR, #0666h
+006E 74D0             79             MOV A, #0D0h
+0070 E0               80             MOVX A, @DPTR
+                      81             
+                      82             
+                      83             ;count to the appropriate value
+0071 115B             84             ACALL get_timer_count
+                      85             ;set the reset flag to off
+0073 7A00             86             MOV R2, #TIMER_EMPTY_FLAG
+                      87             ;configure the first timer
+0075 114D             88             ACALL reset_timer
+                      89             
+                      90             ;enable interrupts
+0077 75A882           91             MOV IE, #INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 ; enable interrupts and time
                              r 0 interrupt
-                      87             
-                      88             
-                      89             ;loop forever
-0074                  90     inf_loop:
-0074 BA0002           91             CJNE R2, #TIMER_EMPTY_FLAG, do_timer_reset
-0077 0174             92             AJMP inf_loop
-0079                  93     do_timer_reset:
-0079 B90002           94             CJNE R1, #COUNTER_ZERO, reset_isr ; determine whether or not we need to also reset 
+                      92             
+                      93             
+                      94             ;loop forever
+007A                  95     inf_loop:
+007A BA0002           96             CJNE R2, #TIMER_EMPTY_FLAG, do_timer_reset
+007D 017A             97             AJMP inf_loop
+007F                  98     do_timer_reset:
+007F B90002           99             CJNE R1, #COUNTER_ZERO, reset_isr ; determine whether or not we need to also reset 
                              the counter
-007C 115B             95             ACALL get_timer_count
-007E                  96             reset_isr:
-007E 7A00             97             MOV R2, #TIMER_EMPTY_FLAG
-0080 114D             98             ACALL reset_timer
-0082 80F0             99             SJMP inf_loop
-                     100             END
+0082 115B            100             ACALL get_timer_count
+0084                 101             reset_isr:
+0084 7A00            102             MOV R2, #TIMER_EMPTY_FLAG
+0086 114D            103             ACALL reset_timer
+0088 80F0            104             SJMP inf_loop
+                     105             END
                                      
-A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 14:20:50 PAGE     3
+A51 MACRO ASSEMBLER  LAB2TIMER                                                            02/12/2026 22:54:59 PAGE     3
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -126,15 +131,15 @@ N A M E                                    T Y P E  V A L U E   ATTRIBUTES
 
 COUNTER_ZERO. . . . . . . . . . . . . .    N NUMB   0000H   A   
 DO_250_MS_COUNT . . . . . . . . . . . .    C ADDR   0062H   A   
-DO_TIMER_RESET. . . . . . . . . . . . .    C ADDR   0079H   A   
+DO_TIMER_RESET. . . . . . . . . . . . .    C ADDR   007FH   A   
 EXIT_TIMER_INTERRUPT_ROUTINE. . . . . .    C ADDR   0046H   A   
 GET_TIMER_COUNT . . . . . . . . . . . .    C ADDR   005BH   A   
 IE. . . . . . . . . . . . . . . . . . .    D ADDR   00A8H   A   
-INF_LOOP. . . . . . . . . . . . . . . .    C ADDR   0074H   A   
+INF_LOOP. . . . . . . . . . . . . . . .    C ADDR   007AH   A   
 INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMEN NUMB   0082H   A   
 MAIN. . . . . . . . . . . . . . . . . .    C ADDR   0065H   A   
 P1. . . . . . . . . . . . . . . . . . .    D ADDR   0090H   A   
-RESET_ISR . . . . . . . . . . . . . . .    C ADDR   007EH   A   
+RESET_ISR . . . . . . . . . . . . . . .    C ADDR   0084H   A   
 RESET_TIMER . . . . . . . . . . . . . .    C ADDR   004DH   A   
 RETURN_GET_TIMER_COUNT. . . . . . . . .    C ADDR   0064H   A   
 TF0 . . . . . . . . . . . . . . . . . .    B ADDR   0088H.5 A   
