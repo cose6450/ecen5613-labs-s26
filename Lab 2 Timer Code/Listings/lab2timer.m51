@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    02/12/2026  22:54:59  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    02/13/2026  12:20:44  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -20,7 +20,7 @@ LINK MAP OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     008AH     ABSOLUTE     
+            CODE    0000H     009EH     ABSOLUTE     
 
 
 
@@ -31,77 +31,98 @@ SYMBOL TABLE OF MODULE:  .\Objects\lab2timer (LAB2TIMER)
 
   -------         MODULE        LAB2TIMER
   N:0000H         SYMBOL        COUNTER_ZERO
-  C:0062H         SYMBOL        DO_250_MS_COUNT
-  C:007FH         SYMBOL        DO_TIMER_RESET
-  C:0046H         SYMBOL        EXIT_TIMER_INTERRUPT_ROUTINE
-  C:005BH         SYMBOL        GET_TIMER_COUNT
+  N:0666H         SYMBOL        DEBUG_DPTR_VALUE
+  N:00B4H         SYMBOL        DEBUG_INITIAL_VALUE
+  N:0080H         SYMBOL        DEBUG_ISR_MIN_VALUE
+  N:007FH         SYMBOL        DEBUG_MAIN_LOOP_MAX_VALUE
+  C:006BH         SYMBOL        DO_250_MS_COUNT
+  C:0093H         SYMBOL        DO_TIMER_RESET
+  C:004FH         SYMBOL        EXIT_TIMER_INTERRUPT_ROUTINE
+  C:0064H         SYMBOL        GET_TIMER_COUNT
   D:00A8H         SYMBOL        IE
-  C:007AH         SYMBOL        INF_LOOP
+  C:0087H         SYMBOL        INF_LOOP
   N:0082H         SYMBOL        INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0
-  C:0065H         SYMBOL        MAIN
+  C:006EH         SYMBOL        MAIN
+  C:0049H         SYMBOL        NO_OVERFLOW
+  C:0090H         SYMBOL        NO_OVERFLOW_MAIN
   D:0090H         SYMBOL        P1
-  C:0084H         SYMBOL        RESET_ISR
-  C:004DH         SYMBOL        RESET_TIMER
-  C:0064H         SYMBOL        RETURN_GET_TIMER_COUNT
+  C:0098H         SYMBOL        RESET_ISR
+  C:0056H         SYMBOL        RESET_TIMER
+  C:006DH         SYMBOL        RETURN_GET_TIMER_COUNT
   B:0088H.5       SYMBOL        TF0
   D:008CH         SYMBOL        TH0
   N:0019H         SYMBOL        TIMER_250_MS_COUNT
   N:004CH         SYMBOL        TIMER_760_MS_COUNT
-  N:000FH         SYMBOL        TIMER_COUNT_LOWER_BYTE
+  N:001FH         SYMBOL        TIMER_COUNT_LOWER_BYTE
   N:00DCH         SYMBOL        TIMER_COUNT_UPPER_BYTE
   N:0000H         SYMBOL        TIMER_EMPTY_FLAG
   N:0002H         SYMBOL        TIMER_HIT_FLAG
   C:0040H         SYMBOL        TIMER_INTERRUPT_ROUTINE
   D:008AH         SYMBOL        TL0
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/13/2026  12:20:44  PAGE 2
+
+
   D:0089H         SYMBOL        TMOD
   N:0001H         SYMBOL        TMOD_MOD_SET
   B:0088H.4       SYMBOL        TR0
-  C:0000H         LINE#         19
-  C:000BH         LINE#         21
-  C:0040H         LINE#         28
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/12/2026  22:54:59  PAGE 2
-
-
-  C:0042H         LINE#         29
-  C:0044H         LINE#         31
-  C:0046H         LINE#         33
-  C:0048H         LINE#         34
-  C:004AH         LINE#         35
-  C:004CH         LINE#         36
-  C:004DH         LINE#         45
-  C:004FH         LINE#         50
-  C:0052H         LINE#         53
+  C:0000H         LINE#         29
+  C:000BH         LINE#         31
+  C:0040H         LINE#         38
+  C:0042H         LINE#         40
+  C:0043H         LINE#         41
+  C:0045H         LINE#         42
+  C:0047H         LINE#         43
+  C:0049H         LINE#         45
+  C:004AH         LINE#         46
+  C:004BH         LINE#         47
+  C:004DH         LINE#         49
+  C:004FH         LINE#         51
+  C:0051H         LINE#         52
+  C:0053H         LINE#         53
   C:0055H         LINE#         54
-  C:0058H         LINE#         59
-  C:005AH         LINE#         60
-  C:005BH         LINE#         62
-  C:005EH         LINE#         63
-  C:0060H         LINE#         64
-  C:0062H         LINE#         66
-  C:0064H         LINE#         68
-  C:0065H         LINE#         72
-  C:0067H         LINE#         73
-  C:0068H         LINE#         74
-  C:006AH         LINE#         75
-  C:006BH         LINE#         78
-  C:006EH         LINE#         79
-  C:0070H         LINE#         80
-  C:0071H         LINE#         84
-  C:0073H         LINE#         86
-  C:0075H         LINE#         88
-  C:0077H         LINE#         91
-  C:007AH         LINE#         96
-  C:007DH         LINE#         97
-  C:007FH         LINE#         99
-  C:0082H         LINE#         100
-  C:0084H         LINE#         102
-  C:0086H         LINE#         103
-  C:0088H         LINE#         104
+  C:0056H         LINE#         63
+  C:0058H         LINE#         68
+  C:005BH         LINE#         71
+  C:005EH         LINE#         72
+  C:0061H         LINE#         77
+  C:0063H         LINE#         78
+  C:0064H         LINE#         80
+  C:0067H         LINE#         81
+  C:0069H         LINE#         82
+  C:006BH         LINE#         84
+  C:006DH         LINE#         86
+  C:006EH         LINE#         90
+  C:0070H         LINE#         91
+  C:0071H         LINE#         92
+  C:0073H         LINE#         93
+  C:0074H         LINE#         96
+  C:0077H         LINE#         97
+  C:0079H         LINE#         98
+  C:007AH         LINE#         101
+  C:007CH         LINE#         102
+  C:007EH         LINE#         106
+  C:0080H         LINE#         108
+  C:0082H         LINE#         110
+  C:0084H         LINE#         113
+  C:0087H         LINE#         118
+  C:008AH         LINE#         119
+  C:008BH         LINE#         120
+  C:008EH         LINE#         121
+  C:0090H         LINE#         123
+  C:0091H         LINE#         124
+  C:0093H         LINE#         126
+  C:0096H         LINE#         127
+  C:0098H         LINE#         129
+  C:009AH         LINE#         130
+  C:009CH         LINE#         131
   -------         ENDMOD        LAB2TIMER
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 004EH BYTE ( 3%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0062H BYTE ( 4%) *
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  02/13/2026  12:20:44  PAGE 3
+
+
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=138
+Program Size: data=8.0 xdata=0 code=158
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

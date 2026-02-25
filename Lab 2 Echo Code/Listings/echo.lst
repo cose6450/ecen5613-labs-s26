@@ -1,0 +1,110 @@
+A51 MACRO ASSEMBLER  ECHO                                                                 02/13/2026 10:52:16 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\echo.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE echo.a51 SET(SMALL) DEBUG PRINT(.\Listings\echo.lst) OBJECT(.\Objects\e
+                      cho.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+                      14     
+                      15     
+                      16     
+                      17     
+                      18     
+                      19     
+                      20     
+  00FD                21     BAUD_9600   EQU 0FDH ;setting baud rate as 9600
+  0096                22     P1_INIT_VAL EQU 96H ; initial value for port P1
+  0020                23     TIM1_MODE2      EQU 20H ; 
+  0050                24     UART_MODE   EQU 50H ; Enable TX/RX 
+  0000                25     NULL            EQU 00H
+0000                  26     ORG 0000H
+0000 020026           27             LJMP START
+                      28     
+0023                  29     ORG 0023H ; address from vector table Src- Table 50 - https://ww1.microchip.com/downloads/e
+                             n/DeviceDoc/doc4180.pdf 
+0023 02003E           30             LJMP UART_ISR
+                      31             
+                      32     
+0026                  33     START:
+0026 759096           34             MOV P1, #P1_INIT_VAL ;assign initial value to Port 1 (1001 0110->0x96)
+0029 758920           35             MOV TMOD, #TIM1_MODE2   ; Timer 1 in mode 2- auto reload mode
+002C 758DFD           36             MOV TH1,#BAUD_9600      ;       setting baud rate as 9600
+002F 759850           37             MOV SCON, #UART_MODE  ; UART mode, enable TX/RX 
+0032 D2AF             38             SETB EA ;enable all interrupts
+0034 D2AC             39             SETB ES ; enable serial port interrupt
+0036 D28E             40             SETB TR1  
+0038 7400             41             MOV A, #NULL
+003A C290             42             CLR P1.0 ;set the P1.0 to a default state
+                      43     
+                      44     ; The cpu just spins continuously 
+003C                  45     MAIN_MCU_LOOP:
+003C 80FE             46             SJMP MAIN_MCU_LOOP;
+                      47             
+                      48             
+                      49     
+                      50     ;UART ISR
+003E                  51     UART_ISR:
+003E 30980A           52             JNB RI, attempt_transmit
+0041 B291             53             CPL P1.1 ; toggle led everytime we receive a character
+0043 E599             54             MOV A, SBUF ; store the received character
+0045 C298             55             CLR RI
+0047 F599             56             MOV SBUF, A  ;start a transmit of the received character
+A51 MACRO ASSEMBLER  ECHO                                                                 02/13/2026 10:52:16 PAGE     2
+
+0049 7400             57             MOV A, #NULL ;clear the stored character
+004B                  58             attempt_transmit:
+004B 309902           59             JNB TI,ISR_EXIT         ; if TI not set return
+004E C299             60         CLR TI              ; Clear TI
+0050                  61     ISR_EXIT:
+0050 32               62         RETI
+                      63     END
+A51 MACRO ASSEMBLER  ECHO                                                                 02/13/2026 10:52:16 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ATTEMPT_TRANSMIT .  C ADDR   004BH   A   
+BAUD_9600. . . . .  N NUMB   00FDH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ES . . . . . . . .  B ADDR   00A8H.4 A   
+ISR_EXIT . . . . .  C ADDR   0050H   A   
+MAIN_MCU_LOOP. . .  C ADDR   003CH   A   
+NULL . . . . . . .  N NUMB   0000H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P1_INIT_VAL. . . .  N NUMB   0096H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+START. . . . . . .  C ADDR   0026H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TIM1_MODE2 . . . .  N NUMB   0020H   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+UART_ISR . . . . .  C ADDR   003EH   A   
+UART_MODE. . . . .  N NUMB   0050H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

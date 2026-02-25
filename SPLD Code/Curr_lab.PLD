@@ -18,16 +18,17 @@ PIN 6    = A12; /*12th bit of the address bus*/
 PIN 7    = WR_n; /*whether or not the processor is currently in a write cycle*/
 
 /* *************** OUTPUT PINS *********************/
-PIN   15  =  DEBUG_LATCH_CLK; /*Whether or to latch the current value in the bus; on positive transition of the clock
+PIN   14  =  NVSRAM_WR_n; /*Whether or not to write to the NVSRAM*/
+PIN   15  =  DEBUG_LATCH_CLK; /*Whether or to latch the current value in the bus; on positive transition of the clock*/
 PIN   16  =  NVSRAM_OE_n;  /*Whether or not to read from the NVSRAM*/
 PIN   17  =  NVSRAM_CE_n; /*Whether or not to enable the NVSRAM */
 PIN   18  =  READ_n; /*Read signal - whether or not enable the 373*/ 
 PIN   19  =  CSPERIPH_n; /*Do something with peripherals when the address is 0xFxxx */ 
 
-
+READ_n = (RD_n & PSEN_n);
 NVSRAM_CE_n = A15;                 /*Only active for the address space of 0b0xxxxxxxxxxxxxxx*/
-NVSRAM_OE_n = PSEN_n; /*Tie this to the output enable of the NVSRAM; w/ CE set to A15 equivalent to !(!PSEN_n && !A15) */
-READ_n = (RD_n & PSEN_n);   
+NVSRAM_OE_n = READ_n; /*Tie this to the output enable of the NVSRAM*/   
 CSPERIPH_n = !(A15 & A14 & A13 & A12); 
 DEBUG_LATCH_CLK = (!A15 & !WR_n); 
+NVSRAM_WR_n = WR_n; 
 

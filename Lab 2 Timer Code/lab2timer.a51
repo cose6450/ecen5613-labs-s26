@@ -1,9 +1,11 @@
 ; Sets a timer to blink an LED every 0.76 seconds
+; Also has code to check a pin and change toggle rate
+; as well as write a sequence of values to the debug latch
 ; Written by Colin Sergi
 
 ; P1.0 - ISR running bit
 ; P1.1 - LED 
-TIMER_COUNT_LOWER_BYTE EQU 0x00F ;do slightly faster than 1 ms calculated so we get the times we want
+TIMER_COUNT_LOWER_BYTE EQU 0x01F ;do slightly faster than 1 ms calculated so we get the times we want
 TIMER_COUNT_UPPER_BYTE EQU 0x0DC
 TMOD_MOD_SET EQU 0x01
 TIMER_760_MS_COUNT EQU 76
@@ -14,6 +16,14 @@ TIMER_EMPTY_FLAG EQU 0
 COUNTER_ZERO EQU 0
 	
 INTERRUPT_ENABLE_ENABLE_INTERRUPTS_AND_TIMER0 EQU 0x82
+	
+	
+;debug latch values
+DEBUG_INITIAL_VALUE EQU 0B4h ; before what??
+DEBUG_DPTR_VALUE EQU 0666h ; el diablo
+DEBUG_ISR_MIN_VALUE EQU 80h ;given in assignment
+DEBUG_MAIN_LOOP_MAX_VALUE EQU 7Fh ; given in assignment
+
 
 ORG 0000h
 	SJMP main
@@ -26,6 +36,14 @@ ORG 0000Bh
 ORG 0040h
 	timer_interrupt_routine:
 	SETB P1.0
+	;debug latch
+	MOV A, R3
+	ADDC A, #1
+	JNC no_overflow
+	MOV A, #DEBUG_ISR_MIN_VALUE
+	no_overflow:
+	MOV R3, A
+	MOVX @DPTR, A ; write value to debug latch
 	DJNZ R1, exit_timer_interrupt_routine
 	;if we are here, toggle led
 	CPL P1.1
@@ -74,10 +92,14 @@ main:
 	CLR P1.1 
 	NOP
 	
-	;test debug latch
-	MOV DPTR, #0666h
-	MOV A, #0D0h
-	MOVX A, @DPTR
+	;set debug latch to known initial value
+	MOV DPTR, #DEBUG_DPTR_VALUE
+	MOV A, #DEBUG_INITIAL_VALUE
+	MOVX @DPTR, A
+	
+	;set debug latch register to initial values
+	MOV R3, #DEBUG_ISR_MIN_VALUE
+	MOV R4, #0
 	
 	
 	;count to the appropriate value
@@ -94,6 +116,11 @@ main:
 	;loop forever
 inf_loop:
 	CJNE R2, #TIMER_EMPTY_FLAG, do_timer_reset
+	INC R3
+	CJNE R3, #DEBUG_ISR_MIN_VALUE, no_overflow_main
+	MOV R3, #0
+	no_overflow_main:
+	MOVX @DPTR, A
 	AJMP inf_loop
 do_timer_reset:
 	CJNE R1, #COUNTER_ZERO, reset_isr ; determine whether or not we need to also reset the counter

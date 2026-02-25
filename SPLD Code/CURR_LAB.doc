@@ -4,8 +4,8 @@
 *******************************************************************************
 
 CUPL(WM)        5.0a Serial# 60008009
-Device          g16v8as  Library DLIB-h-40-2
-Created         Sun Feb 08 15:33:25 2026
+Device          g16v8ma  Library DLIB-h-40-8
+Created         Tue Feb 24 19:22:33 2026
 Name            ESD Labs 
 Partno          00 
 Revision        01 
@@ -22,14 +22,38 @@ Location
 CSPERIPH_n =>
     A12 & A13 & A14 & A15
 
+DEBUG_LATCH_CLK =>
+    !A15 & !WR_n
+
 NVSRAM_CE_n =>
     A15
 
 NVSRAM_OE_n =>
-    PSEN_n
+    READ_n
+
+NVSRAM_WR_n =>
+    WR_n
 
 READ_n =>
     PSEN_n & RD_n
+
+CSPERIPH_n.oe  =>
+    1 
+
+DEBUG_LATCH_CLK.oe  =>
+    1 
+
+NVSRAM_CE_n.oe  =>
+    1 
+
+NVSRAM_OE_n.oe  =>
+    1 
+
+NVSRAM_WR_n.oe  =>
+    1 
+
+READ_n.oe  =>
+    1 
 
 
 ===============================================================================
@@ -44,12 +68,21 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A13                         5        V        -       -       -     
     A14                         4        V        -       -       -     
     A15                         3        V        -       -       -     
-    CSPERIPH_n                  19       V        1       8       1     
-    NVSRAM_CE_n                 17       V        1       8       1     
-    NVSRAM_OE_n                 16       V        1       8       1     
+    CSPERIPH_n                  19       V        1       7       1     
+    DEBUG_LATCH_CLK             15       V        1       7       1     
+    NVSRAM_CE_n                 17       V        1       7       1     
+    NVSRAM_OE_n                 16       V        1       7       1     
+    NVSRAM_WR_n                 14       V        1       7       1     
     PSEN_n                      2        V        -       -       -     
     RD_n                        1        V        -       -       -     
-    READ_n                      18       V        1       8       1     
+    READ_n                      18       V        1       7       1     
+    WR_n                        7        V        -       -       -     
+    CSPERIPH_n          oe      19       D        1       1       0     
+    DEBUG_LATCH_CLK     oe      15       D        1       1       0     
+    NVSRAM_CE_n         oe      17       D        1       1       0     
+    NVSRAM_OE_n         oe      16       D        1       1       0     
+    NVSRAM_WR_n         oe      14       D        1       1       0     
+    READ_n              oe      18       D        1       1       0     
 
 
 LEGEND    D : default variable         F : field      G : group
@@ -62,56 +95,56 @@ LEGEND    D : default variable         F : field      G : group
                                    Fuse Plot
 ===============================================================================
 
-Syn   02192 - Ac0   02193 x 
+Syn   02192 - Ac0   02193 - 
 
-Pin #19  02048  Pol x  02120  Ac1 x 
- 00000 ----x---x---x---x--------------- 
- 00032 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #19  02048  Pol x  02120  Ac1 - 
+ 00000 -------------------------------- 
+ 00032 ----x---x---x---x--------------- 
  00064 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00096 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00128 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00160 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00192 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00224 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #18  02049  Pol -  02121  Ac1 x 
- 00256 x-x----------------------------- 
- 00288 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #18  02049  Pol -  02121  Ac1 - 
+ 00256 -------------------------------- 
+ 00288 x-x----------------------------- 
  00320 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00352 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00384 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00416 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00448 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00480 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #17  02050  Pol -  02122  Ac1 x 
- 00512 ----x--------------------------- 
- 00544 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #17  02050  Pol -  02122  Ac1 - 
+ 00512 -------------------------------- 
+ 00544 ----x--------------------------- 
  00576 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00608 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00640 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00672 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00704 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00736 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #16  02051  Pol -  02123  Ac1 x 
- 00768 x------------------------------- 
- 00800 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #16  02051  Pol -  02123  Ac1 - 
+ 00768 -------------------------------- 
+ 00800 ------x------------------------- 
  00832 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00864 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00896 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00928 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00960 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00992 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #15  02052  Pol x  02124  Ac1 - 
- 01024 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01056 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #15  02052  Pol -  02124  Ac1 - 
+ 01024 -------------------------------- 
+ 01056 -----x---------------x---------- 
  01088 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01120 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01152 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01184 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01216 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01248 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #14  02053  Pol x  02125  Ac1 - 
- 01280 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01312 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #14  02053  Pol -  02125  Ac1 - 
+ 01280 -------------------------------- 
+ 01312 --------------------x----------- 
  01344 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01376 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01408 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -152,8 +185,8 @@ LEGEND    X : fuse not blown
                       A15 x---|3           18|---x READ_n                   
                       A14 x---|4           17|---x NVSRAM_CE_n              
                       A13 x---|5           16|---x NVSRAM_OE_n              
-                      A12 x---|6           15|---x                          
-                          x---|7           14|---x                          
+                      A12 x---|6           15|---x DEBUG_LATCH_CLK          
+                     WR_n x---|7           14|---x NVSRAM_WR_n              
                           x---|8           13|---x                          
                           x---|9           12|---x                          
                       GND x---|10          11|---x                          

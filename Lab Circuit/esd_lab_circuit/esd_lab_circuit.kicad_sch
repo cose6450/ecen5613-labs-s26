@@ -3242,6 +3242,16 @@
 		)
 		(uuid "030b0d0a-97de-42e4-8b48-f471f791e173")
 	)
+	(label "NVSRAM_WR_n"
+		(at 102.87 118.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "070b15c8-70c5-4ad7-996d-3a1cdc913d1b")
+	)
 	(label "373OUT5"
 		(at 171.45 57.15 0)
 		(effects
@@ -3831,6 +3841,16 @@
 			(justify left bottom)
 		)
 		(uuid "baf912fa-54e7-4e4e-977b-b9be3fd0740b")
+	)
+	(label "NVSRAM_WR_n"
+		(at 223.52 43.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "bfee7055-22e4-4121-9d91-059841b11ea9")
 	)
 	(label "AD7"
 		(at 146.05 62.23 180)
@@ -5578,73 +5598,6 @@
 			(project ""
 				(path "/e737370b-dddd-4d85-b455-d3366cc4c4a7"
 					(reference "#PWR017")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 223.52 43.18 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f5032727-d9ce-4751-b860-7d4023d97b41")
-		(property "Reference" "#PWR019"
-			(at 229.87 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GNDREF"
-			(at 227.33 43.1799 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 223.52 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 223.52 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 223.52 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "32d885b9-feb3-484b-80e4-b9d716401b19")
-		)
-		(instances
-			(project ""
-				(path "/e737370b-dddd-4d85-b455-d3366cc4c4a7"
-					(reference "#PWR019")
 					(unit 1)
 				)
 			)
