@@ -40,6 +40,9 @@
 #include <at89c51ed2.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "input.h"
+#include "string.h"
+#include "heap.h"
 /*
 [Important Note] if you have made this change via paulmon2 you can comment this section
 
@@ -50,58 +53,138 @@ int _sdcc_external_startup()
     // AUXR |= 0X0C;
     return 0;
 }
-#define BUFFER_SZ 10
-#define COUNT_ELEMENTS_MALLOC 10 // number of elements we wish to allocate via malloc
-#define TMOD_MODE1_POS  0        // bit position for timer0 mode 1
-#define REQ_OVERFLOWS 10         // The base period of ISR is 50000us and hence to get to 500ms we need 10 overflows
 
-/*
-variables modified inside ISR must be declared as volatile
-*/
-volatile int current_overflow_count;
-volatile int reload_counter;
+extern __xdata char __sdcc_heap[HEAP_SIZE];
 
-void init_timer_registers()
-{
-    TMOD |= 1 << TMOD_MODE1_POS;
-    // to generate an overflow every 500us
-    TH0 = 0x4C;
-    TL0 = 0x0D;
-    ET0 = 1; // enable timer0 interrupt
-    EA = 1;  // enable global interrupt
-}
-/*
-refer to section 3.8 Interrupt Service Routines in SDCC user manual
-All isr number/address can be found in this file-
-C:\Program Files\SDCC\include\mcs51\8051.h
-*/
-void timer0_ISR(void) __interrupt(TF0_VECTOR)
-{
-    current_overflow_count++; // increment the overflow count
-    reload_counter = true;    // since interrupt has elapsed we need to reload our counter
+#define USER_BUFFER_MIN (64)
+#define USER_BUFFER_MAX (1024)
+#define USER_BUFFER_ALIGNMENT (32)
+#define BUFFER_COUNT (6)
+#define MODULE_32(x) ((x) & (31))
+#define MAX_STUDENT_NUMBER (99)
+#define BUFFER_SZ_TOO_BIG ("\r\nBuffer Size too big, please pick a smaller buffer size")
+
+typedef struct{
+    __xdata char *buffer;
+    size_t size;
+} buffer_t; 
+
+buffer_t buffers[BUFFER_COUNT];
+
+#define NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ (4)
+void free_all_buffers();
+size_t get_user_buffer_sz(size_t max_sz);
+
+void call_paulmon() {
+   ((void (*)(void))0x0000)();
 }
 
-char input_buffer[BUFFER_SZ];
 
-void get_string(void)
-{
-    char received_char = '\0'; //RAII
-    unsigned int remaining_characters_allowed_to_read = BUFFER_SZ;
-    do {
-        received_char = getchar(); 
-        remaining_characters_allowed_to_read--; 
-    } while(received_char != '\n' 
-        && received_char != '\0'
-        && remaining_characters_allowed_to_read > 0);
-
-    input_buffer[BUFFER_SZ-1] = '\0'; //ensure good formatting
-}
 
 void main()
 {
-    printf_tiny("Please enter the last two digits of your ID:");
-    get_string();
-    int student_number = atoi(input_buffer);
-    printf_tiny("Please enter a valid buffer size ()")
+    int student_number = 0;
+    while (true) 
+    {
+        printf("\r\nPlease enter the last two digits of your ID:");
+        get_string();
+        student_number = atoi(get_input_buffer());
+        if (!(student_number < 0 || student_number > MAX_STUDENT_NUMBER))
+        {
+            break;
+        }
+    }
 
+    size_t max_user_input = USER_BUFFER_MAX;
+
+    size_t user_buffer_size = 0;
+
+    memset(buffers, 0, BUFFER_COUNT * sizeof(char *));
+    get_the_buffer_sz: 
+    while(true)
+    {
+        user_buffer_size = get_user_buffer_sz(max_user_input);
+        for(int i = 0; i < NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ; i++)
+        {
+
+            buffers[i].buffer = malloc(user_buffer_size);
+            if(buffers[i].buffer == NULL)
+            {
+                free_all_buffers();
+                printf(BUFFER_SZ_TOO_BIG);
+                max_user_input = user_buffer_size-1;
+                goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
+            } else{
+                buffers[i].size = (size_t) user_buffer_size;
+            }
+        }
+
+        free(buffers[2].buffer);
+        buffers[2].buffer = NULL; //make sure we don't accidentally double free
+        buffers[2].size = 0; 
+
+
+        buffers[4].size = (size_t) 10 * (student_number + 2);
+        buffers[4].buffer = malloc(buffers[4].size);
+
+        if (buffers[4].buffer == NULL)
+        {
+            free_all_buffers();
+            printf(BUFFER_SZ_TOO_BIG);
+            max_user_input = user_buffer_size-1;
+            continue;
+        }
+
+        buffers[5].size = (size_t) 2 * user_buffer_size; 
+        buffers[5].buffer = malloc(buffers[5].size);
+        if (buffers[5].buffer == NULL)
+        {
+            free_all_buffers();
+            printf(BUFFER_SZ_TOO_BIG);
+            max_user_input = user_buffer_size-1;
+            continue;
+        }
+        break;
+    }
+    
+    printf("\r\nstudent_number: %d", student_number);
+    printf("\r\nuser_buffer_size: %zu", user_buffer_size);
+
+    size_t total_heap_sz = 0;
+    for(int i = 0; i < BUFFER_COUNT; i++)
+    {
+        if(buffers[i].buffer != NULL) {
+            printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, buffers[i].buffer, buffers[i].buffer + buffers[i].size, buffers[i].size);
+            total_heap_sz += buffers[i].size; 
+        }
+    }
+    printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
+
+    for(;;); //spin forever
+}
+
+size_t get_user_buffer_sz(size_t maximum_sz)
+{
+    size_t user_buffer_size = 0;
+    do {
+        printf("\r\nPlease enter a valid buffer size that is divisible by 32 [64,%zu]: ", maximum_sz);
+        get_string();
+        user_buffer_size = (size_t) atoi(get_input_buffer()); //TODO: replace with own implementation of atoi that respects the size_t
+    } while ((user_buffer_size > maximum_sz)
+            || (user_buffer_size < USER_BUFFER_MIN)
+            || (MODULE_32(user_buffer_size) != 0));
+    return user_buffer_size;
+}
+
+
+void free_all_buffers()
+{
+    for(int i = 0; i < BUFFER_COUNT; i++)
+    {
+        if (buffers[i].buffer != NULL)
+        {
+            free(buffers[i].buffer);
+        }
+        buffers[i].size = 0; 
+    }
 }

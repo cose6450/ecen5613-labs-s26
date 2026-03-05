@@ -17,5 +17,6 @@
 bin/main.rel
 bin/my_serial.rel
 bin/_heap.rel
+bin/input.rel
 
 -e

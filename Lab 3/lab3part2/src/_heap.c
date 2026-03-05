@@ -31,10 +31,8 @@
    recompile it with -D HEAP_SIZE=<size> where <size> is whatever you need.
    Link the resulting object explicitly with your project.
 */
+#include "heap.h"
 
-#ifndef HEAP_SIZE
-#define HEAP_SIZE 1024
-#endif
 
 __xdata char __sdcc_heap[HEAP_SIZE];
 const unsigned int __sdcc_heap_size = HEAP_SIZE;

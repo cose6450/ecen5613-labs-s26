@@ -17,7 +17,7 @@ putty:
 flash: user_program paulmon paulmon_extra
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation erase f memory flash blankcheck loadbuffer lib/paulmon21.hex program verify 
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer lib/extra.hex program verify
-	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer bin/output.hex program verify start reset 0
+	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer bin/output.hex program verify
 	putty.exe -serial $(COM_PORT) 57600
 
 
@@ -37,8 +37,8 @@ user_program: bin/output.hex
 # --model-large : Generate code for Large model programs
 # --out-fmt-ihx : Generate Intel HEX output format
 
-bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel
-	$(CC) bin/main.rel bin/my_serial.rel bin/_heap.rel \
+bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel
+	$(CC) bin/main.rel bin/my_serial.rel bin/_heap.rel bin/input.rel\
 	--code-loc 0x2000 --code-size 0x6000 \
 	--xram-loc 0x0001 --xram-size 0x7FFF \
 	--model-large --out-fmt-ihx -o bin/output.hex
@@ -49,14 +49,17 @@ bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel
 # --model-large :  Generate code for Large model programs
 # -I headers : Add headers directory to include path
 
-bin/main.rel: src/main.c headers/my_serial.h
+bin/main.rel: src/main.c headers/my_serial.h headers/input.h headers/heap.h
 	$(CC) -c -mmcs51 --model-large -I headers src/main.c -o bin/main.rel
 
-bin/_heap.rel: src/_heap.c
-	$(CC) -c -mmcs51 --model-large -D HEAP_SIZE=1024 src/_heap.c -o bin/_heap.rel
+bin/_heap.rel: src/_heap.c headers/heap.h
+	$(CC) -c -mmcs51 --model-large -I headers src/_heap.c -o bin/_heap.rel
 
 bin/my_serial.rel: src/my_serial.c headers/my_serial.h
 	$(CC) -c -mmcs51 --model-large -I headers src/my_serial.c -o  bin/my_serial.rel
+
+bin/input.rel: src/input.c headers/input.h headers/my_serial.h
+	$(CC) -c -mmcs51 --model-large -I headers src/input.c -o bin/input.rel	
 
 # Delete all generated files from bin directory
 clean:
