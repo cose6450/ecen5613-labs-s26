@@ -63,10 +63,13 @@ extern __xdata char __sdcc_heap[HEAP_SIZE];
 #define MODULE_32(x) ((x) & (31))
 #define MAX_STUDENT_NUMBER (99)
 #define BUFFER_SZ_TOO_BIG ("\r\nBuffer Size too big, please pick a smaller buffer size")
+#define LOWER_CASE_MASK (0x20)
 
 typedef struct{
     __xdata char *buffer;
+    size_t alphabet_chars; 
     size_t size;
+    size_t curr_available_char; 
 } buffer_t; 
 
 buffer_t buffers[BUFFER_COUNT];
@@ -75,13 +78,13 @@ buffer_t buffers[BUFFER_COUNT];
 void free_all_buffers();
 size_t get_user_buffer_sz(size_t max_sz);
 
-void call_paulmon() {
-   ((void (*)(void))0x0000)();
+bool is_alphabet_char(char c)
+{
+    return (c <= 'Z' && c >= 'A')
+            || (c <= 'z' && c >= 'a');
 }
 
-
-
-void main()
+void initialize_buffers()
 {
     int student_number = 0;
     while (true) 
@@ -108,6 +111,7 @@ void main()
         {
 
             buffers[i].buffer = malloc(user_buffer_size);
+            
             if(buffers[i].buffer == NULL)
             {
                 free_all_buffers();
@@ -116,6 +120,7 @@ void main()
                 goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
             } else{
                 buffers[i].size = (size_t) user_buffer_size;
+                buffers[i].alphabet_chars = 0; 
             }
         }
 
@@ -159,9 +164,51 @@ void main()
         }
     }
     printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
-
-    for(;;); //spin forever
 }
+
+void store_in_buffer(buffer_t *buffer, char c)
+{
+    if (buffer->curr_available_char < buffer->size)
+    {
+        buffer->buffer[buffer->curr_available_char] = c;
+        buffer->curr_available_char++;
+        if (is_alphabet_char(c))
+        {
+            buffer->alphabet_chars++;
+        }
+    }
+}
+
+void command_header(char *command_string)
+{
+    printf("\r\n        %s", command_string);
+    printf("\r\n------------------------------");   
+}
+
+
+
+void heap_report()
+{
+    command_header("HEAP REPORT");
+    size_t total_heap_sz = 0;
+    for(int i = 0; i < BUFFER_COUNT; i++)
+    {
+        if(buffers[i].buffer != NULL) {
+            printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu, contains %zu alphabet chars, has %zu chars remaining", 
+                    i, 
+                    buffers[i].buffer, 
+                    buffers[i].buffer + buffers[i].size, 
+                    buffers[i].size,
+                    buffers[i].alphabet_chars,
+                    buffers[i].size - buffers[i].curr_available_char);
+            total_heap_sz += buffers[i].size; 
+        }
+    }
+    printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
+    printf("\r\n");
+}
+
+
 
 size_t get_user_buffer_sz(size_t maximum_sz)
 {
@@ -185,6 +232,134 @@ void free_all_buffers()
         {
             free(buffers[i].buffer);
         }
+        buffers[i].buffer = NULL;
         buffers[i].size = 0; 
+    }
+}
+
+
+
+void qmark_command_handler()
+{
+    heap_report();
+    size_t chars_received_since_last_qmark = get_char_count();
+    reset_char_count();
+    printf("\r\n Received %zu chars since last invocation of ?", chars_received_since_last_qmark);
+    size_t curr_output_char = 0;
+    
+    for(int i = 0; i < 2; i++)
+    {
+        size_t curr_buffer_char = 0;
+        char curr_char = buffers[i].buffer[0];
+        while(curr_char != '\0')
+        {
+            if (MODULE_32(curr_output_char) == 0)
+            {
+                printf("\r\n");
+            }
+            printf("%c", curr_char);
+            curr_output_char++;
+            curr_buffer_char++;
+            curr_char = buffers[i].buffer[curr_buffer_char];
+        }
+
+        memset(buffers[i].buffer, '\0', buffers[i].size);
+        buffers[i].alphabet_chars = 0;
+        buffers[i].curr_available_char = 0;
+    }
+
+    printf("\r\n");
+    printf("\r\n");
+}
+
+void enter_command_handler()
+{
+    command_header("Dump Buffer");
+    for(int i = 0; i < 2; i++)
+    {
+        printf("\r\n Buffer %d ", i);
+        printf("\r\n----------");
+        for(char *address = buffers[i].buffer; address < (buffers[i].buffer + buffers[i].size); address += 16)
+        {
+            printf("\r\n%04X:", (unsigned int) address);
+            for(int j = 0; j < 16; j++)
+            {
+                printf(" %02hhX", (unsigned char) *(address+j));
+            }
+        }
+        printf("\r\n");
+    }
+}
+
+void percent_command_handler()
+{
+    command_header("Clear Buffers");
+    for(int i = 0; i < BUFFER_COUNT; i++)
+    {
+        memset(buffers[i].buffer, 0x00, buffers[i].size);
+        buffers[i].curr_available_char = 0;
+        buffers[i].alphabet_chars = 0; 
+    }
+}
+
+void dollar_sign_command_handler()
+{
+    P1_0 = true;
+    memcpy(buffers[3].buffer, buffers[0].buffer, buffers[0].size);
+    buffers[3].alphabet_chars = buffers[0].alphabet_chars;
+    buffers[3].curr_available_char = buffers[0].curr_available_char;
+    P1_0 = false; 
+}
+
+void hashtag_command_handler()
+{
+    P1_0 = true;
+    for(size_t i = 0; i < buffers[3].curr_available_char; i++)
+    {
+        buffers[3].buffer[i] |= LOWER_CASE_MASK;
+    }
+    P1_0 = false;
+}
+
+
+void main()
+{
+    initialize_buffers();
+    
+    for(;;)
+    {
+        printf("\r\nEnter a char: ");
+        char received_char = get_next_input_char();
+        if (is_alphabet_char(received_char))
+        {
+            store_in_buffer(&buffers[0], received_char);
+        }
+        else
+        {
+            store_in_buffer(&buffers[1], received_char);
+        }
+
+        switch(received_char)
+        {
+            case '?':
+                qmark_command_handler();
+                break;
+            case '=':
+                enter_command_handler();
+                break;
+            case '%':
+                percent_command_handler();
+                break;
+            case '@':
+                free_all_buffers();
+                initialize_buffers();
+                break;
+            case '$':
+                dollar_sign_command_handler();
+                break;
+            case '#':
+                hashtag_command_handler();
+                break;
+        }
     }
 }
