@@ -465,12 +465,12 @@ Symbol Table
   7 __start__stack                                                 000000 GR
  1A __xinit__dynamic_buffers_list                                  000000 R
  18 _alloc_new_buffer                                              0000D9 GR
-  C _alloc_new_buffer_size_65536_83                                00001A R
+  C _alloc_new_buffer_size_65536_84                                00001A R
     _append_to_buffer_list                                         ****** GX
     _append_to_buffer_list_PARM_2                                  ****** GX
     _atoi                                                          ****** GX
  18 _command_header                                                000874 GR
-  C _command_header_command_string_65536_116                       000027 R
+  C _command_header_command_string_65536_117                       000027 R
  18 _dollar_sign_command_handler                                   0010FE GR
   5 _dollar_sign_command_handler_sloc0_1_0                         000031 R
   E _dynamic_buffers_list                                          000000 GR
@@ -492,9 +492,9 @@ Symbol Table
     _get_next_input_char                                           ****** GX
     _get_string                                                    ****** GX
  18 _get_user_buffer_sz                                            000B1C GR
-  C _get_user_buffer_sz_maximum_sz_65536_126                       00002C R
+  C _get_user_buffer_sz_maximum_sz_65536_127                       00002C R
  18 _hashtag_command_handler                                       0011C5 GR
-  6 _hashtag_command_handler_c_196609_160                          000000 R
+  6 _hashtag_command_handler_c_196609_161                          000000 R
  18 _heap_report                                                   0008BD GR
   5 _heap_report_sloc0_1_0                                         000014 R
   5 _heap_report_sloc1_1_0                                         000016 R
@@ -502,35 +502,35 @@ Symbol Table
   5 _heap_report_sloc3_1_0                                         00001A R
   5 _heap_report_sloc4_1_0                                         00001C R
   5 _heap_report_sloc5_1_0                                         00001F R
-  C _heap_report_total_heap_sz_65537_119                           00002A R
+  C _heap_report_total_heap_sz_65537_120                           00002A R
  18 _initialize_buffers                                            000176 GR
-  C _initialize_buffers_curr_65540_109                             000020 R
-  C _initialize_buffers_max_user_input_65538_91                    00001C R
+  C _initialize_buffers_curr_65540_110                             000020 R
+  C _initialize_buffers_max_user_input_65538_92                    00001C R
   5 _initialize_buffers_sloc0_1_0                                  000000 R
   5 _initialize_buffers_sloc1_1_0                                  000002 R
   5 _initialize_buffers_sloc2_1_0                                  000004 R
   5 _initialize_buffers_sloc3_1_0                                  000006 R
   5 _initialize_buffers_sloc4_1_0                                  000009 R
   5 _initialize_buffers_sloc5_1_0                                  00000C R
-  C _initialize_buffers_total_heap_sz_65539_105                    00001E R
+  C _initialize_buffers_total_heap_sz_65539_106                    00001E R
  18 _initialize_default_elements                                   000038 GR
-  C _initialize_default_elements_buffer_65536_81                   000017 R
+  C _initialize_default_elements_buffer_65536_82                   000017 R
  18 _is_alphabet_char                                              000004 GR
-  C _is_alphabet_char_c_65536_79                                   000016 R
+  C _is_alphabet_char_c_65536_80                                   000016 R
   A _is_alphabet_char_sloc0_1_0                                    000000 R
- 18 _main                                                          0013E7 GR
+ 18 _main                                                          0013E6 GR
     _malloc                                                        ****** GX
     _memset                                                        ****** GX
     _memset_PARM_2                                                 ****** GX
     _memset_PARM_3                                                 ****** GX
- 18 _minus_command_handler                                         00133D GR
+ 18 _minus_command_handler                                         00133C GR
  18 _percent_command_handler                                       000FC3 GR
   5 _percent_command_handler_sloc0_1_0                             00002E R
  18 _plus_command_handler                                          001299 GR
     _printf                                                        ****** GX
  18 _qmark_command_handler                                         000C29 GR
-  C _qmark_command_handler_curr_char_196610_137                    000030 R
-  C _qmark_command_handler_curr_output_char_65538_135              00002E R
+  C _qmark_command_handler_curr_char_196610_138                    000030 R
+  C _qmark_command_handler_curr_output_char_65538_136              00002E R
   5 _qmark_command_handler_sloc0_1_0                               000022 R
     _remove_from_buffer_list                                       ****** GX
     _remove_from_buffer_list_PARM_2                                ****** GX
@@ -543,7 +543,7 @@ Hexadecimal [24-Bits]
 
 Symbol Table
 
-  C _store_in_buffer_buffer_65536_112                              000024 R
+  C _store_in_buffer_buffer_65536_113                              000024 R
   5 _store_in_buffer_sloc0_1_0                                     00000F R
   5 _store_in_buffer_sloc1_1_0                                     000011 R
     a                                                           =  0000E0 L
@@ -776,7 +776,7 @@ Area Table
   15 GSINIT5                                    size      0   flags   20
   16 GSINIT                                     size      0   flags   20
   17 GSFINAL                                    size      3   flags   20
-  18 CSEG                                       size   1490   flags   20
+  18 CSEG                                       size   148F   flags   20
   19 CONST                                      size    44B   flags   20
   1A XINIT                                      size      3   flags   20
   1B CABS                                       size      0   flags   28

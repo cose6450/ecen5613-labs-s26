@@ -410,27 +410,144 @@ Symbol Table
     _WDTRST                                                     =  0000A6 G
     _WR                                                         =  0000B6 G
     ___gptr_cmp                                                    ****** GX
-    __gptrput                                                      ****** GX
- 18 __xinit__character_count                                       000000 R
-  C _character_count                                               000000 GR
- 16 _get_char_count                                                000138 GR
- 16 _get_input_buffer                                              000000 GR
- 16 _get_next_input_char                                           000115 GR
- 16 _get_string                                                    000007 GR
-  A _get_string_current_buffer_loc_65537_48                        00000A R
+    ___memcpy                                                      ****** GX
+    ___memcpy_PARM_2                                               ****** GX
+    ___memcpy_PARM_3                                               ****** GX
+    ___sdcc_heap                                                   ****** GX
+ 19 ___str_0                                                       000000 R
+ 19 ___str_1                                                       00002F R
+ 19 ___str_10                                                      000144 R
+ 19 ___str_11                                                      0001A6 R
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 8.
 Hexadecimal [24-Bits]
 
 Symbol Table
 
-  8 _get_string_sloc0_1_0                                          000000 R
-    _getchar                                                       ****** GX
+ 19 ___str_12                                                      0001A9 R
+ 19 ___str_13                                                      0001EF R
+ 19 ___str_14                                                      000206 R
+ 19 ___str_15                                                      000237 R
+ 19 ___str_16                                                      00023A R
+ 19 ___str_17                                                      00024D R
+ 19 ___str_18                                                      00025B R
+ 19 ___str_19                                                      000268 R
+ 19 ___str_2                                                       00004F R
+ 19 ___str_20                                                      000270 R
+ 19 ___str_21                                                      000278 R
+ 19 ___str_22                                                      000286 R
+ 19 ___str_23                                                      0002BC R
+ 19 ___str_24                                                      0002E5 R
+ 19 ___str_25                                                      000322 R
+ 19 ___str_26                                                      00034E R
+ 19 ___str_27                                                      00038F R
+ 19 ___str_28                                                      0003BD R
+ 19 ___str_29                                                      0003F3 R
+ 19 ___str_3                                                       000088 R
+ 19 ___str_30                                                      000412 R
+ 19 ___str_31                                                      00043A R
+ 19 ___str_4                                                       00009D R
+ 19 ___str_5                                                       0000B5 R
+ 19 ___str_6                                                       0000E1 R
+ 19 ___str_7                                                       00010A R
+ 19 ___str_8                                                       000117 R
+ 19 ___str_9                                                       000138 R
+    __gptrget                                                      ****** GX
+    __gptrput                                                      ****** GX
+  F __interrupt_vect                                               000000 R
+    __mcs51_genRAMCLEAR                                            ****** GX
+    __mcs51_genXINIT                                               ****** GX
+    __mcs51_genXRAMCLEAR                                           ****** GX
+    __mulint                                                       ****** GX
+    __mulint_PARM_2                                                ****** GX
+ 18 __sdcc_external_startup                                        000000 GR
+    __sdcc_gsinit_startup                                          ****** GX
+  F __sdcc_program_startup                                         000003 GR
+  7 __start__stack                                                 000000 GR
+ 1A __xinit__dynamic_buffers_list                                  000000 R
+ 18 _alloc_new_buffer                                              0000D9 GR
+  C _alloc_new_buffer_size_65536_84                                00001A R
+    _append_to_buffer_list                                         ****** GX
+    _append_to_buffer_list_PARM_2                                  ****** GX
+    _atoi                                                          ****** GX
+ 18 _command_header                                                000874 GR
+  C _command_header_command_string_65536_117                       000027 R
+    _dataout                                                       ****** GX
+    _dataout_PARM_2                                                ****** GX
+ 18 _dollar_sign_command_handler                                   0010FE GR
+  5 _dollar_sign_command_handler_sloc0_1_0                         000031 R
+  E _dynamic_buffers_list                                          000000 GR
+ 18 _enter_command_handler                                         000E16 GR
+  5 _enter_command_handler_sloc0_1_0                               000025 R
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 9.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+  5 _enter_command_handler_sloc1_1_0                               000028 R
+  5 _enter_command_handler_sloc2_1_0                               00002A R
+  5 _enter_command_handler_sloc3_1_0                               00002C R
+    _free                                                          ****** GX
+ 18 _free_all_buffers                                              000B76 GR
+    _free_all_elems_from_list                                      ****** GX
+    _get_char_count                                                ****** GX
+    _get_input_buffer                                              ****** GX
+    _get_next_input_char                                           ****** GX
+    _get_string                                                    ****** GX
+ 18 _get_user_buffer_sz                                            000B1C GR
+  C _get_user_buffer_sz_maximum_sz_65536_127                       00002C R
+ 18 _hashtag_command_handler                                       0011C5 GR
+  6 _hashtag_command_handler_c_196609_161                          000000 R
+ 18 _heap_report                                                   0008BD GR
+  5 _heap_report_sloc0_1_0                                         000014 R
+  5 _heap_report_sloc1_1_0                                         000016 R
+  5 _heap_report_sloc2_1_0                                         000018 R
+  5 _heap_report_sloc3_1_0                                         00001A R
+  5 _heap_report_sloc4_1_0                                         00001C R
+  5 _heap_report_sloc5_1_0                                         00001F R
+  C _heap_report_total_heap_sz_65537_120                           00002A R
+ 18 _initialize_buffers                                            000176 GR
+  C _initialize_buffers_curr_65540_110                             000020 R
+  C _initialize_buffers_max_user_input_65538_92                    00001C R
+  5 _initialize_buffers_sloc0_1_0                                  000000 R
+  5 _initialize_buffers_sloc1_1_0                                  000002 R
+  5 _initialize_buffers_sloc2_1_0                                  000004 R
+  5 _initialize_buffers_sloc3_1_0                                  000006 R
+  5 _initialize_buffers_sloc4_1_0                                  000009 R
+  5 _initialize_buffers_sloc5_1_0                                  00000C R
+  C _initialize_buffers_total_heap_sz_65539_106                    00001E R
+ 18 _initialize_default_elements                                   000038 GR
+  C _initialize_default_elements_buffer_65536_82                   000017 R
+ 18 _is_alphabet_char                                              000004 GR
+  C _is_alphabet_char_c_65536_80                                   000016 R
+  A _is_alphabet_char_sloc0_1_0                                    000000 R
+ 18 _main                                                          0013E6 GR
+    _malloc                                                        ****** GX
     _memset                                                        ****** GX
     _memset_PARM_2                                                 ****** GX
     _memset_PARM_3                                                 ****** GX
-    _putchar                                                       ****** GX
- 16 _reset_char_count                                              000144 GR
-  A _string_input_buffer                                           000000 GR
+ 18 _minus_command_handler                                         00133C GR
+ 18 _percent_command_handler                                       000FC3 GR
+  5 _percent_command_handler_sloc0_1_0                             00002E R
+ 18 _plus_command_handler                                          001299 GR
+    _printf                                                        ****** GX
+ 18 _qmark_command_handler                                         000C29 GR
+  C _qmark_command_handler_curr_char_196610_138                    000030 R
+  C _qmark_command_handler_curr_output_char_65538_136              00002E R
+  5 _qmark_command_handler_sloc0_1_0                               000022 R
+    _remove_from_buffer_list                                       ****** GX
+    _remove_from_buffer_list_PARM_2                                ****** GX
+    _reset_char_count                                              ****** GX
+  C _static_buffers                                                000000 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 10.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+ 18 _store_in_buffer                                               00078E GR
+  C _store_in_buffer_PARM_2                                        000023 GR
+  C _store_in_buffer_buffer_65536_113                              000024 R
+  5 _store_in_buffer_sloc0_1_0                                     00000F R
+  5 _store_in_buffer_sloc1_1_0                                     000011 R
     a                                                           =  0000E0 L
     a.0                                                         =  0000E0 L
     a.1                                                         =  0000E1 L
@@ -478,14 +595,14 @@ Symbol Table
     et1                                                         =  0000AB L
     et2                                                         =  0000AD L
     ex0                                                         =  0000A8 L
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 9.
+    ex1                                                         =  0000AA L
+    exen2                                                       =  0000CB L
+    exf2                                                        =  0000CE L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 11.
 Hexadecimal [24-Bits]
 
 Symbol Table
 
-    ex1                                                         =  0000AA L
-    exen2                                                       =  0000CB L
-    exf2                                                        =  0000CE L
     f0                                                          =  0000D5 L
     ie                                                          =  0000A8 L
     ie.0                                                        =  0000A8 L
@@ -538,14 +655,14 @@ Symbol Table
     p2.6                                                        =  0000A6 L
     p2.7                                                        =  0000A7 L
     p3                                                          =  0000B0 L
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 10.
+    p3.0                                                        =  0000B0 L
+    p3.1                                                        =  0000B1 L
+    p3.2                                                        =  0000B2 L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 12.
 Hexadecimal [24-Bits]
 
 Symbol Table
 
-    p3.0                                                        =  0000B0 L
-    p3.1                                                        =  0000B1 L
-    p3.2                                                        =  0000B2 L
     p3.3                                                        =  0000B3 L
     p3.4                                                        =  0000B4 L
     p3.5                                                        =  0000B5 L
@@ -598,14 +715,14 @@ Symbol Table
     t2con.4                                                     =  0000CC L
     t2con.5                                                     =  0000CD L
     t2con.6                                                     =  0000CE L
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 11.
+    t2con.7                                                     =  0000CF L
+    tb8                                                         =  00009B L
+    tclk                                                        =  0000CC L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 13.
 Hexadecimal [24-Bits]
 
 Symbol Table
 
-    t2con.7                                                     =  0000CF L
-    tb8                                                         =  00009B L
-    tclk                                                        =  0000CC L
     tcon                                                        =  000088 L
     tcon.0                                                      =  000088 L
     tcon.1                                                      =  000089 L
@@ -631,8 +748,7 @@ Symbol Table
     tr2                                                         =  0000CA L
     txd                                                         =  0000B1 L
 
-
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 12.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 14.
 Hexadecimal [24-Bits]
 
 Area Table
@@ -642,25 +758,27 @@ Area Table
    2 RSEG0                                      size      0   flags    8
    3 RSEG1                                      size      0   flags    8
    4 REG_BANK_0                                 size      8   flags    4
-   5 DSEG                                       size      0   flags    0
-   6 ISEG                                       size      0   flags    0
-   7 IABS                                       size      0   flags    8
-   8 BSEG                                       size      1   flags   80
-   9 PSEG                                       size      0   flags   50
-   A XSEG                                       size      D   flags   40
-   B XABS                                       size      0   flags   48
-   C XISEG                                      size      2   flags   40
-   D HOME                                       size      0   flags   20
-   E GSINIT0                                    size      0   flags   20
-   F GSINIT1                                    size      0   flags   20
-  10 GSINIT2                                    size      0   flags   20
-  11 GSINIT3                                    size      0   flags   20
-  12 GSINIT4                                    size      0   flags   20
-  13 GSINIT5                                    size      0   flags   20
-  14 GSINIT                                     size      0   flags   20
-  15 GSFINAL                                    size      0   flags   20
-  16 CSEG                                       size    14C   flags   20
-  17 CONST                                      size      0   flags   20
-  18 XINIT                                      size      2   flags   20
-  19 CABS                                       size      0   flags   28
+   5 DSEG                                       size     34   flags    0
+   6 OSEG                                       size      1   flags    4
+   7 SSEG                                       size      1   flags    0
+   8 ISEG                                       size      0   flags    0
+   9 IABS                                       size      0   flags    8
+   A BSEG                                       size      1   flags   80
+   B PSEG                                       size      0   flags   50
+   C XSEG                                       size     31   flags   40
+   D XABS                                       size      0   flags   48
+   E XISEG                                      size      3   flags   40
+   F HOME                                       size      6   flags   20
+  10 GSINIT0                                    size      0   flags   20
+  11 GSINIT1                                    size      0   flags   20
+  12 GSINIT2                                    size      0   flags   20
+  13 GSINIT3                                    size      0   flags   20
+  14 GSINIT4                                    size      0   flags   20
+  15 GSINIT5                                    size      0   flags   20
+  16 GSINIT                                     size      0   flags   20
+  17 GSFINAL                                    size      3   flags   20
+  18 CSEG                                       size   14CC   flags   20
+  19 CONST                                      size    44B   flags   20
+  1A XINIT                                      size      3   flags   20
+  1B CABS                                       size      0   flags   28
 

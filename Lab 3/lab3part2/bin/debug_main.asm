@@ -24,6 +24,7 @@
 	.globl _initialize_default_elements
 	.globl _is_alphabet_char
 	.globl __sdcc_external_startup
+	.globl _dataout
 	.globl _free_all_elems_from_list
 	.globl _remove_from_buffer_list
 	.globl _append_to_buffer_list
@@ -4063,7 +4064,16 @@ _main:
 ;	src/main.c:492: initialize_buffers();
 	lcall	_initialize_buffers
 ;	src/main.c:493: unsigned char c = 0;
+	mov	r7,#0x00
 00114$:
+;	src/main.c:497: DEBUG_PORT(MAIN_COUNTER_ADDRESS, c++);
+	mov	dptr,#_dataout_PARM_2
+	mov	a,r7
+	movx	@dptr,a
+	inc	r7
+	mov	dptr,#0xffff
+	push	ar7
+	lcall	_dataout
 ;	src/main.c:498: printf("\r\nEnter a char: ");
 	mov	a,#___str_31
 	push	acc
@@ -4078,105 +4088,128 @@ _main:
 ;	src/main.c:499: char received_char = get_next_input_char();
 	lcall	_get_next_input_char
 ;	src/main.c:500: if (is_alphabet_char(received_char))
-	mov  r7,dpl
-	push	ar7
+	mov  r6,dpl
+	push	ar6
 	lcall	_is_alphabet_char
 	mov	a,dpl
+	pop	ar6
 	pop	ar7
 	jz	00102$
 ;	src/main.c:502: store_in_buffer(&static_buffers[0], received_char);
 	mov	dptr,#_store_in_buffer_PARM_2
-	mov	a,r7
+	mov	a,r6
 	movx	@dptr,a
 	mov	dptr,#_static_buffers
 	mov	b,#0x00
 	push	ar7
+	push	ar6
 	lcall	_store_in_buffer
+	pop	ar6
 	pop	ar7
 	sjmp	00103$
 00102$:
 ;	src/main.c:506: store_in_buffer(&static_buffers[1], received_char);
 	mov	dptr,#_store_in_buffer_PARM_2
-	mov	a,r7
+	mov	a,r6
 	movx	@dptr,a
 	mov	dptr,#(_static_buffers + 0x000b)
 	mov	b,#0x00
 	push	ar7
+	push	ar6
 	lcall	_store_in_buffer
+	pop	ar6
 	pop	ar7
 00103$:
 ;	src/main.c:509: switch(received_char)
-	cjne	r7,#0x23,00159$
+	cjne	r6,#0x23,00159$
 	sjmp	00109$
 00159$:
-	cjne	r7,#0x24,00160$
+	cjne	r6,#0x24,00160$
 	sjmp	00108$
 00160$:
-	cjne	r7,#0x25,00161$
+	cjne	r6,#0x25,00161$
 	sjmp	00106$
 00161$:
-	cjne	r7,#0x2b,00162$
+	cjne	r6,#0x2b,00162$
 	sjmp	00110$
 00162$:
-	cjne	r7,#0x2d,00163$
+	cjne	r6,#0x2d,00163$
 	sjmp	00111$
 00163$:
-	cjne	r7,#0x3d,00164$
+	cjne	r6,#0x3d,00164$
 	sjmp	00105$
 00164$:
-	cjne	r7,#0x3f,00165$
+	cjne	r6,#0x3f,00165$
 	sjmp	00104$
 00165$:
-;	src/main.c:511: case '?':
-	cjne	r7,#0x40,00114$
+	cjne	r6,#0x40,00166$
 	sjmp	00107$
+00166$:
+	ljmp	00114$
+;	src/main.c:511: case '?':
 00104$:
 ;	src/main.c:512: qmark_command_handler();
+	push	ar7
 	lcall	_qmark_command_handler
+	pop	ar7
 ;	src/main.c:513: break;
 	ljmp	00114$
 ;	src/main.c:514: case '=':
 00105$:
 ;	src/main.c:515: enter_command_handler();
+	push	ar7
 	lcall	_enter_command_handler
+	pop	ar7
 ;	src/main.c:516: break;
 	ljmp	00114$
 ;	src/main.c:517: case '%':
 00106$:
 ;	src/main.c:518: percent_command_handler();
+	push	ar7
 	lcall	_percent_command_handler
+	pop	ar7
 ;	src/main.c:519: break;
 	ljmp	00114$
 ;	src/main.c:520: case '@':
 00107$:
 ;	src/main.c:521: free_all_buffers();
+	push	ar7
 	lcall	_free_all_buffers
 ;	src/main.c:522: initialize_buffers();
 	lcall	_initialize_buffers
+	pop	ar7
 ;	src/main.c:523: break;
 	ljmp	00114$
 ;	src/main.c:524: case '$':
 00108$:
 ;	src/main.c:525: dollar_sign_command_handler();
+	push	ar7
 	lcall	_dollar_sign_command_handler
+	pop	ar7
 ;	src/main.c:526: break;
 	ljmp	00114$
 ;	src/main.c:527: case '#':
 00109$:
 ;	src/main.c:528: hashtag_command_handler();
+	push	ar7
 	lcall	_hashtag_command_handler
+	pop	ar7
 ;	src/main.c:529: break;
 	ljmp	00114$
 ;	src/main.c:530: case '+':
 00110$:
 ;	src/main.c:531: plus_command_handler();
+	push	ar7
 	lcall	_plus_command_handler
+	pop	ar7
 ;	src/main.c:532: break;
 	ljmp	00114$
 ;	src/main.c:533: case '-':
 00111$:
 ;	src/main.c:534: minus_command_handler();
+	push	ar7
 	lcall	_minus_command_handler
+	pop	ar7
 ;	src/main.c:536: }
 ;	src/main.c:538: }
 	ljmp	00114$

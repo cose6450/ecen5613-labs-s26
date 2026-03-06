@@ -80,9 +80,9 @@ C:   0000208D  s_GSINIT5
 C:   00002090  s_CSEG                          
 C:   000020B9  l_XSEG                          
 C:   000020BA  s_XISEG                         
-C:   0000296B  l_CSEG                          
-C:   000049FB  s_CONST                         
-C:   00004E53  s_XINIT                         
+C:   000029A8  l_CSEG                          
+C:   00004A38  s_CONST                         
+C:   00004E90  s_XINIT                         
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -478,7 +478,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                00002090    0000296B =       10603. bytes (REL,CON,CODE)
+CSEG                                00002090    000029A8 =       10664. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -500,47 +500,47 @@ C:   00003255  _hashtag_command_handler           main
 C:   00003329  _plus_command_handler              main
 C:   000033CC  _minus_command_handler             main
 C:   00003476  _main                              main
-C:   0000351F  _putchar                           my_serial
-C:   0000353E  _getchar                           my_serial
-C:   0000354C  _get_input_buffer                  input
-C:   00003553  _get_string                        input
-C:   00003661  _get_next_input_char               input
-C:   00003684  _get_char_count                    input
-C:   00003690  _reset_char_count                  input
-C:   00003698  _append_to_buffer_list             linked_list
-C:   0000377E  _remove_from_buffer_list           linked_list
-C:   00003930  _free_all_elems_from_list          linked_list
-C:   00003A51  _dataout                           debug
-C:   00003A6E  _free                              free
-C:   00003BC5  ___memcpy                          __memcpy
-C:   00003C39  _memset                            _memset
-C:   00003C61  _atoi                              atoi
-C:   00003D85  __gptrput                          _gptrput
-C:   00003DA0  ___sdcc_heap_init                  malloc
-C:   00003DDC  _malloc                            malloc
-C:   00003F45  __mulint                           _mulint
-C:   00003F74  _vprintf                           vprintf
-C:   00003FB3  _printf                            vprintf
-C:   000040B9  __print_format                     printf_large
-C:   000049C7  _strlen                            _strlen
-C:   000049DF  __gptrget                          _gptrget
+C:   0000355C  _putchar                           my_serial
+C:   0000357B  _getchar                           my_serial
+C:   00003589  _get_input_buffer                  input
+C:   00003590  _get_string                        input
+C:   0000369E  _get_next_input_char               input
+C:   000036C1  _get_char_count                    input
+C:   000036CD  _reset_char_count                  input
+C:   000036D5  _append_to_buffer_list             linked_list
+C:   000037BB  _remove_from_buffer_list           linked_list
+C:   0000396D  _free_all_elems_from_list          linked_list
+C:   00003A8E  _dataout                           debug
+C:   00003AAB  _free                              free
+C:   00003C02  ___memcpy                          __memcpy
+C:   00003C76  _memset                            _memset
+C:   00003C9E  _atoi                              atoi
+C:   00003DC2  __gptrput                          _gptrput
+C:   00003DDD  ___sdcc_heap_init                  malloc
+C:   00003E19  _malloc                            malloc
+C:   00003F82  __mulint                           _mulint
+C:   00003FB1  _vprintf                           vprintf
+C:   00003FF0  _printf                            vprintf
+C:   000040F6  __print_format                     printf_large
+C:   00004A04  _strlen                            _strlen
+C:   00004A1C  __gptrget                          _gptrget
 ASxxxx Linker V03.00 + NoICE + sdld,  page 21.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               000049FB    00000458 =        1112. bytes (REL,CON,CODE)
+CONST                               00004A38    00000458 =        1112. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   00004E46  ___sdcc_heap_size                  _heap
+C:   00004E83  ___sdcc_heap_size                  _heap
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-XINIT                               00004E53    00000005 =           5. bytes (REL,CON,CODE)
+XINIT                               00004E90    00000005 =           5. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -548,12 +548,12 @@ XINIT                               00004E53    00000005 =           5. bytes (R
 
 Files Linked                              [ module(s) ]
 
-bin/main.rel                              [  ]
-bin/my_serial.rel                         [  ]
-bin/_heap.rel                             [  ]
-bin/input.rel                             [  ]
-bin/linked_list.rel                       [  ]
-bin/debug.rel                             [  ]
+bin/debug_main.rel                        [  ]
+bin/debug_my_serial.rel                   [  ]
+bin/debug__heap.rel                       [  ]
+bin/debug_input.rel                       [  ]
+bin/debug_linked_list.rel                 [  ]
+bin/debug_debug.rel                       [  ]
 
 
 Libraries Linked                          [ object file ]

@@ -45,6 +45,7 @@
 #include "heap.h"
 #include "linked_list.h"
 #include "allocation.h"
+#include "debug.h"
 /*
 [Important Note] if you have made this change via paulmon2 you can comment this section
 
@@ -402,7 +403,8 @@ void dollar_sign_command_handler()
         return; 
     }
     buffer_t* buffer_3 = dynamic_buffers_list.head->next;
-    memcpy(buffer_3->buffer, static_buffers[0].buffer, static_buffers[0].size);
+    size_t size = (buffer_3->size > static_buffers[0].size) ? static_buffers[0].size : buffer_3->size; 
+    memcpy(buffer_3->buffer, static_buffers[0].buffer, size);
     buffer_3->alphabet_chars = static_buffers[0].alphabet_chars;
     buffer_3->curr_available_char = static_buffers[0].curr_available_char;
     P1_0 = OFF; 
@@ -489,9 +491,11 @@ void minus_command_handler()
 void main()
 {
     initialize_buffers();
+    unsigned char c = 0;
     
     for(;;)
     {
+        DEBUG_PORT(MAIN_COUNTER_ADDRESS, c++);
         printf("\r\nEnter a char: ");
         char received_char = get_next_input_char();
         if (is_alphabet_char(received_char))

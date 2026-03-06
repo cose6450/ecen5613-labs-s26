@@ -2,14 +2,14 @@
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 4.2.0 #13081 (MINGW64)
 ;--------------------------------------------------------
-	.module _heap
+	.module debug
 	.optsdcc -mmcs51 --model-large
 	
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
-	.globl ___sdcc_heap_size
-	.globl ___sdcc_heap
+	.globl _dataout_PARM_2
+	.globl _dataout
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -53,8 +53,10 @@
 ; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
-___sdcc_heap::
-	.ds 8192
+_dataout_PARM_2:
+	.ds 1
+_dataout_address_65536_2:
+	.ds 2
 ;--------------------------------------------------------
 ; absolute external ram data
 ;--------------------------------------------------------
@@ -89,9 +91,47 @@ ___sdcc_heap::
 ; code
 ;--------------------------------------------------------
 	.area CSEG    (CODE)
+;------------------------------------------------------------
+;Allocation info for local variables in function 'dataout'
+;------------------------------------------------------------
+;out                       Allocated with name '_dataout_PARM_2'
+;address                   Allocated with name '_dataout_address_65536_2'
+;------------------------------------------------------------
+;	src/debug.c:3: void dataout(__xdata volatile char *address, unsigned char out)
+;	-----------------------------------------
+;	 function dataout
+;	-----------------------------------------
+_dataout:
+	ar7 = 0x07
+	ar6 = 0x06
+	ar5 = 0x05
+	ar4 = 0x04
+	ar3 = 0x03
+	ar2 = 0x02
+	ar1 = 0x01
+	ar0 = 0x00
+	mov	r7,dph
+	mov	a,dpl
+	mov	dptr,#_dataout_address_65536_2
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/debug.c:5: *address = out; 
+	mov	dptr,#_dataout_address_65536_2
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	dptr,#_dataout_PARM_2
+	movx	a,@dptr
+	mov	dpl,r6
+	mov	dph,r7
+	movx	@dptr,a
+;	src/debug.c:6: }
+	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___sdcc_heap_size:
-	.byte #0x00, #0x20	; 8192
 	.area XINIT   (CODE)
 	.area CABS    (ABS,CODE)

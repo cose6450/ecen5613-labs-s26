@@ -1,5 +1,5 @@
 -muwx
--i bin/output.hex
+-i bin/debug_output.hex
 -M
 -X 0x7fff
 -C 0x6000
@@ -14,11 +14,11 @@
 -l libint
 -l liblong
 -l libfloat
-bin/main.rel
-bin/my_serial.rel
-bin/_heap.rel
-bin/input.rel
-bin/linked_list.rel
-bin/debug.rel
+bin/debug_main.rel
+bin/debug_my_serial.rel
+bin/debug__heap.rel
+bin/debug_input.rel
+bin/debug_linked_list.rel
+bin/debug_debug.rel
 
 -e
