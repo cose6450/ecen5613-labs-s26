@@ -9,6 +9,8 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
+	.globl _minus_command_handler
+	.globl _plus_command_handler
 	.globl _hashtag_command_handler
 	.globl _dollar_sign_command_handler
 	.globl _percent_command_handler
@@ -18,8 +20,13 @@
 	.globl _command_header
 	.globl _store_in_buffer
 	.globl _initialize_buffers
+	.globl _alloc_new_buffer
+	.globl _initialize_default_elements
 	.globl _is_alphabet_char
 	.globl __sdcc_external_startup
+	.globl _free_all_elems_from_list
+	.globl _remove_from_buffer_list
+	.globl _append_to_buffer_list
 	.globl ___memcpy
 	.globl _memset
 	.globl _reset_char_count
@@ -227,8 +234,9 @@
 	.globl _RCAP2H
 	.globl _RCAP2L
 	.globl _T2CON
+	.globl _dynamic_buffers_list
 	.globl _store_in_buffer_PARM_2
-	.globl _buffers
+	.globl _static_buffers
 	.globl _get_user_buffer_sz
 	.globl _free_all_buffers
 ;--------------------------------------------------------
@@ -451,6 +459,12 @@ _initialize_buffers_sloc0_1_0:
 _initialize_buffers_sloc1_1_0:
 	.ds 2
 _initialize_buffers_sloc2_1_0:
+	.ds 2
+_initialize_buffers_sloc3_1_0:
+	.ds 3
+_initialize_buffers_sloc4_1_0:
+	.ds 3
+_initialize_buffers_sloc5_1_0:
 	.ds 3
 _store_in_buffer_sloc0_1_0:
 	.ds 2
@@ -466,6 +480,8 @@ _heap_report_sloc3_1_0:
 	.ds 2
 _heap_report_sloc4_1_0:
 	.ds 3
+_heap_report_sloc5_1_0:
+	.ds 3
 _qmark_command_handler_sloc0_1_0:
 	.ds 3
 _enter_command_handler_sloc0_1_0:
@@ -478,9 +494,14 @@ _enter_command_handler_sloc3_1_0:
 	.ds 2
 _percent_command_handler_sloc0_1_0:
 	.ds 3
+_dollar_sign_command_handler_sloc0_1_0:
+	.ds 3
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
+	.area	OSEG    (OVR,DATA)
+_hashtag_command_handler_c_196609_160:
+	.ds 1
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
@@ -511,27 +532,33 @@ _is_alphabet_char_sloc0_1_0:
 ; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
-_buffers::
-	.ds 48
-_is_alphabet_char_c_65536_76:
+_static_buffers::
+	.ds 22
+_is_alphabet_char_c_65536_79:
 	.ds 1
-_initialize_buffers_max_user_input_65537_81:
+_initialize_default_elements_buffer_65536_81:
+	.ds 3
+_alloc_new_buffer_size_65536_83:
 	.ds 2
-_initialize_buffers_total_heap_sz_65538_89:
+_initialize_buffers_max_user_input_65538_91:
 	.ds 2
+_initialize_buffers_total_heap_sz_65539_105:
+	.ds 2
+_initialize_buffers_curr_65540_109:
+	.ds 3
 _store_in_buffer_PARM_2:
 	.ds 1
-_store_in_buffer_buffer_65536_93:
+_store_in_buffer_buffer_65536_112:
 	.ds 3
-_command_header_command_string_65536_97:
+_command_header_command_string_65536_116:
 	.ds 3
-_heap_report_total_heap_sz_65537_100:
+_heap_report_total_heap_sz_65537_119:
 	.ds 2
-_get_user_buffer_sz_maximum_sz_65536_104:
+_get_user_buffer_sz_maximum_sz_65536_126:
 	.ds 2
-_qmark_command_handler_curr_output_char_65538_113:
+_qmark_command_handler_curr_output_char_65538_135:
 	.ds 2
-_qmark_command_handler_curr_char_196610_115:
+_qmark_command_handler_curr_char_196610_137:
 	.ds 1
 ;--------------------------------------------------------
 ; absolute external ram data
@@ -541,6 +568,8 @@ _qmark_command_handler_curr_char_196610_115:
 ; external initialized ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
+_dynamic_buffers_list::
+	.ds 3
 	.area HOME    (CODE)
 	.area GSINIT0 (CODE)
 	.area GSINIT1 (CODE)
@@ -587,7 +616,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function '_sdcc_external_startup'
 ;------------------------------------------------------------
-;	src/main.c:51: int _sdcc_external_startup()
+;	src/main.c:53: int _sdcc_external_startup()
 ;	-----------------------------------------
 ;	 function _sdcc_external_startup
 ;	-----------------------------------------
@@ -600,24 +629,24 @@ __sdcc_external_startup:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	src/main.c:54: return 0;
+;	src/main.c:56: return 0;
 	mov	dptr,#0x0000
-;	src/main.c:55: }
+;	src/main.c:57: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'is_alphabet_char'
 ;------------------------------------------------------------
-;c                         Allocated with name '_is_alphabet_char_c_65536_76'
+;c                         Allocated with name '_is_alphabet_char_c_65536_79'
 ;------------------------------------------------------------
-;	src/main.c:81: bool is_alphabet_char(char c)
+;	src/main.c:87: bool is_alphabet_char(char c)
 ;	-----------------------------------------
 ;	 function is_alphabet_char
 ;	-----------------------------------------
 _is_alphabet_char:
 	mov	a,dpl
-	mov	dptr,#_is_alphabet_char_c_65536_76
+	mov	dptr,#_is_alphabet_char_c_65536_79
 	movx	@dptr,a
-;	src/main.c:83: return (c <= 'Z' && c >= 'A')
+;	src/main.c:89: return (c <= 'Z' && c >= 'A')
 	movx	a,@dptr
 	mov  r7,a
 	add	a,#0xff - 0x5a
@@ -628,8 +657,8 @@ _is_alphabet_char:
 	mov	_is_alphabet_char_sloc0_1_0,c
 	jnc	00104$
 00108$:
-;	src/main.c:84: || (c <= 'z' && c >= 'a');
-	mov	dptr,#_is_alphabet_char_c_65536_76
+;	src/main.c:90: || (c <= 'z' && c >= 'a');
+	mov	dptr,#_is_alphabet_char_c_65536_79
 	movx	a,@dptr
 	mov  r7,a
 	add	a,#0xff - 0x7a
@@ -651,7 +680,231 @@ _is_alphabet_char:
 	clr	a
 	rlc	a
 	mov	dpl,a
-;	src/main.c:85: }
+;	src/main.c:91: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'initialize_default_elements'
+;------------------------------------------------------------
+;buffer                    Allocated with name '_initialize_default_elements_buffer_65536_81'
+;------------------------------------------------------------
+;	src/main.c:93: void initialize_default_elements(buffer_t *buffer)
+;	-----------------------------------------
+;	 function initialize_default_elements
+;	-----------------------------------------
+_initialize_default_elements:
+	mov	r7,b
+	mov	r6,dph
+	mov	a,dpl
+	mov	dptr,#_initialize_default_elements_buffer_65536_81
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:95: buffer->alphabet_chars = 0;
+	mov	dptr,#_initialize_default_elements_buffer_65536_81
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	a,#0x02
+	add	a,r5
+	mov	r2,a
+	clr	a
+	addc	a,r6
+	mov	r3,a
+	mov	ar4,r7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	clr	a
+	lcall	__gptrput
+	inc	dptr
+	lcall	__gptrput
+;	src/main.c:96: buffer->curr_available_char = 0;
+	mov	a,#0x06
+	add	a,r5
+	mov	r2,a
+	clr	a
+	addc	a,r6
+	mov	r3,a
+	mov	ar4,r7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	clr	a
+	lcall	__gptrput
+	inc	dptr
+	lcall	__gptrput
+;	src/main.c:97: buffer->next = NULL;
+	mov	a,#0x08
+	add	a,r5
+	mov	r2,a
+	clr	a
+	addc	a,r6
+	mov	r3,a
+	mov	ar4,r7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	clr	a
+	lcall	__gptrput
+	inc	dptr
+	lcall	__gptrput
+	inc	dptr
+	lcall	__gptrput
+;	src/main.c:99: memset(buffer->buffer, 0x00, buffer->size);
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r3,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r4,a
+	mov	r2,#0x00
+	mov	a,#0x04
+	add	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r5,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r6,a
+	mov	dptr,#_memset_PARM_2
+	clr	a
+	movx	@dptr,a
+	mov	dptr,#_memset_PARM_3
+	mov	a,r5
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r2
+;	src/main.c:100: }
+	ljmp	_memset
+;------------------------------------------------------------
+;Allocation info for local variables in function 'alloc_new_buffer'
+;------------------------------------------------------------
+;size                      Allocated with name '_alloc_new_buffer_size_65536_83'
+;header                    Allocated with name '_alloc_new_buffer_header_65536_84'
+;------------------------------------------------------------
+;	src/main.c:102: buffer_t *alloc_new_buffer(size_t size)
+;	-----------------------------------------
+;	 function alloc_new_buffer
+;	-----------------------------------------
+_alloc_new_buffer:
+	mov	r7,dph
+	mov	a,dpl
+	mov	dptr,#_alloc_new_buffer_size_65536_83
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:104: buffer_t *header = malloc(sizeof(buffer_t));
+	mov	dptr,#0x000b
+	lcall	_malloc
+	mov	r6,dpl
+	mov	r5,dph
+	mov	r7,#0x00
+;	src/main.c:105: if (header == NULL)
+	mov	a,r6
+	orl	a,r5
+;	src/main.c:107: return NULL;
+	jnz	00102$
+	mov	dptr,#0x0000
+	mov	b,a
+	ret
+00102$:
+;	src/main.c:109: header->size = size;
+	mov	a,#0x04
+	add	a,r6
+	mov	r2,a
+	clr	a
+	addc	a,r5
+	mov	r3,a
+	mov	ar4,r7
+	mov	dptr,#_alloc_new_buffer_size_65536_83
+	movx	a,@dptr
+	mov	r0,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r1,a
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r0
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r1
+	lcall	__gptrput
+;	src/main.c:110: header->buffer = malloc(size);
+	mov	dpl,r0
+	mov	dph,r1
+	push	ar7
+	push	ar6
+	push	ar5
+	lcall	_malloc
+	mov	r3,dpl
+	mov	r4,dph
+	pop	ar5
+	pop	ar6
+	pop	ar7
+	mov	dpl,r6
+	mov	dph,r5
+	mov	b,r7
+	mov	a,r3
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	src/main.c:111: if (header->buffer == NULL)
+	mov	a,r3
+	orl	a,r4
+	jnz	00104$
+;	src/main.c:113: free(header);
+	mov	ar2,r6
+	mov	ar3,r5
+	mov	ar4,r7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	lcall	_free
+;	src/main.c:114: return NULL;
+	mov	dptr,#0x0000
+	mov	b,#0x00
+	ret
+00104$:
+;	src/main.c:116: initialize_default_elements(header);
+	mov	dpl,r6
+	mov	dph,r5
+	mov	b,r7
+	push	ar7
+	push	ar6
+	push	ar5
+	lcall	_initialize_default_elements
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	src/main.c:117: return header; 
+	mov	dpl,r6
+	mov	dph,r5
+	mov	b,r7
+;	src/main.c:118: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'initialize_buffers'
@@ -659,21 +912,37 @@ _is_alphabet_char:
 ;sloc0                     Allocated with name '_initialize_buffers_sloc0_1_0'
 ;sloc1                     Allocated with name '_initialize_buffers_sloc1_1_0'
 ;sloc2                     Allocated with name '_initialize_buffers_sloc2_1_0'
-;student_number            Allocated with name '_initialize_buffers_student_number_65536_78'
-;max_user_input            Allocated with name '_initialize_buffers_max_user_input_65537_81'
-;user_buffer_size          Allocated with name '_initialize_buffers_user_buffer_size_65537_81'
-;i                         Allocated with name '_initialize_buffers_i_196609_83'
-;total_heap_sz             Allocated with name '_initialize_buffers_total_heap_sz_65538_89'
-;i                         Allocated with name '_initialize_buffers_i_131074_90'
+;sloc3                     Allocated with name '_initialize_buffers_sloc3_1_0'
+;sloc4                     Allocated with name '_initialize_buffers_sloc4_1_0'
+;sloc5                     Allocated with name '_initialize_buffers_sloc5_1_0'
+;student_number            Allocated with name '_initialize_buffers_student_number_65537_88'
+;max_user_input            Allocated with name '_initialize_buffers_max_user_input_65538_91'
+;user_buffer_size          Allocated with name '_initialize_buffers_user_buffer_size_65538_91'
+;i                         Allocated with name '_initialize_buffers_i_196610_93'
+;i                         Allocated with name '_initialize_buffers_i_196610_97'
+;new_buffer                Allocated with name '_initialize_buffers_new_buffer_262146_98'
+;buffer_4                  Allocated with name '_initialize_buffers_buffer_4_131075_101'
+;buffer_5                  Allocated with name '_initialize_buffers_buffer_5_131076_103'
+;total_heap_sz             Allocated with name '_initialize_buffers_total_heap_sz_65539_105'
+;i                         Allocated with name '_initialize_buffers_i_65539_105'
+;curr                      Allocated with name '_initialize_buffers_curr_65540_109'
 ;------------------------------------------------------------
-;	src/main.c:87: void initialize_buffers()
+;	src/main.c:121: void initialize_buffers()
 ;	-----------------------------------------
 ;	 function initialize_buffers
 ;	-----------------------------------------
 _initialize_buffers:
-;	src/main.c:90: while (true) 
+;	src/main.c:123: dynamic_buffers_list.head = NULL;
+	mov	dptr,#_dynamic_buffers_list
+	clr	a
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:125: while (true) 
 00105$:
-;	src/main.c:92: printf("\r\nPlease enter the last two digits of your ID:");
+;	src/main.c:127: printf("\r\nPlease enter the last two digits of your ID:");
 	mov	a,#___str_0
 	push	acc
 	mov	a,#(___str_0 >> 8)
@@ -684,58 +953,54 @@ _initialize_buffers:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:93: get_string();
+;	src/main.c:128: get_string();
 	lcall	_get_string
-;	src/main.c:94: student_number = atoi(get_input_buffer());
+;	src/main.c:129: student_number = atoi(get_input_buffer());
 	lcall	_get_input_buffer
 	lcall	_atoi
-	mov	r6,dpl
-;	src/main.c:95: if (!(student_number < 0 || student_number > MAX_STUDENT_NUMBER))
+	mov	_initialize_buffers_sloc2_1_0,dpl
+;	src/main.c:130: if (!(student_number < 0 || student_number > MAX_STUDENT_NUMBER))
 	mov	a,dph
-	mov	r7,a
+	mov	(_initialize_buffers_sloc2_1_0 + 1),a
 	jb	acc.7,00105$
 	clr	c
 	mov	a,#0x63
-	subb	a,r6
+	subb	a,_initialize_buffers_sloc2_1_0
 	mov	a,#(0x00 ^ 0x80)
-	mov	b,r7
+	mov	b,(_initialize_buffers_sloc2_1_0 + 1)
 	xrl	b,#0x80
 	subb	a,b
 	jc	00105$
-;	src/main.c:101: size_t max_user_input = USER_BUFFER_MAX;
-	mov	dptr,#_initialize_buffers_max_user_input_65537_81
+;	src/main.c:136: size_t max_user_input = USER_BUFFER_MAX;
+	mov	dptr,#_initialize_buffers_max_user_input_65538_91
 	clr	a
 	movx	@dptr,a
 	mov	a,#0x04
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:105: memset(buffers, 0, BUFFER_COUNT * sizeof(char *));
+;	src/main.c:140: memset(static_buffers, 0, BUFFER_ALWAYS_HELD_COUNT * sizeof(buffer_t));
 	mov	dptr,#_memset_PARM_2
 	clr	a
 	movx	@dptr,a
 	mov	dptr,#_memset_PARM_3
-	mov	a,#0x12
+	mov	a,#0x16
 	movx	@dptr,a
 	clr	a
 	inc	dptr
 	movx	@dptr,a
-	mov	dptr,#_buffers
+	mov	dptr,#_static_buffers
 	mov	b,#0x00
-	push	ar7
-	push	ar6
 	lcall	_memset
-	pop	ar6
-	pop	ar7
-;	src/main.c:107: while(true)
+;	src/main.c:141: while(true)
 	mov	a,#0x02
-	add	a,r6
+	add	a,_initialize_buffers_sloc2_1_0
 	mov	r4,a
 	clr	a
-	addc	a,r7
+	addc	a,(_initialize_buffers_sloc2_1_0 + 1)
 	mov	r5,a
-00117$:
-;	src/main.c:109: user_buffer_size = get_user_buffer_sz(max_user_input);
-	mov	dptr,#_initialize_buffers_max_user_input_65537_81
+00121$:
+;	src/main.c:143: user_buffer_size = get_user_buffer_sz(max_user_input);
+	mov	dptr,#_initialize_buffers_max_user_input_65538_91
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
@@ -743,8 +1008,6 @@ _initialize_buffers:
 	mov	r3,a
 	mov	dpl,r2
 	mov	dph,r3
-	push	ar7
-	push	ar6
 	push	ar5
 	push	ar4
 	lcall	_get_user_buffer_sz
@@ -752,49 +1015,52 @@ _initialize_buffers:
 	mov	r3,dph
 	pop	ar4
 	pop	ar5
-	pop	ar6
-	pop	ar7
-;	src/main.c:110: for(int i = 0; i < NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ; i++)
+;	src/main.c:144: for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	mov	r0,#0x00
 	mov	r1,#0x00
-00123$:
+00132$:
 	clr	c
 	mov	a,r0
-	subb	a,#0x04
+	subb	a,#0x02
 	mov	a,r1
 	xrl	a,#0x80
 	subb	a,#0x80
-	jc	00181$
-	ljmp	00111$
-00181$:
-;	src/main.c:113: buffers[i].buffer = malloc(user_buffer_size);
+	jc	00217$
+	ljmp	00150$
+00217$:
+;	src/main.c:147: static_buffers[i].buffer = malloc(user_buffer_size);
 	push	ar4
 	push	ar5
-	mov	_initialize_buffers_sloc0_1_0,r0
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r0
+	movx	@dptr,a
 	mov	a,r1
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,_initialize_buffers_sloc0_1_0
-	swap	a
-	rr	a
-	xch	a,_initialize_buffers_sloc0_1_0
-	xrl	a,_initialize_buffers_sloc0_1_0
-	xch	a,_initialize_buffers_sloc0_1_0
-	anl	a,#0xf8
-	xch	a,_initialize_buffers_sloc0_1_0
-	xrl	a,_initialize_buffers_sloc0_1_0
-	mov	(_initialize_buffers_sloc0_1_0 + 1),a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	push	ar1
+	push	ar0
+	lcall	__mulint
+	mov	_initialize_buffers_sloc0_1_0,dpl
+	mov	(_initialize_buffers_sloc0_1_0 + 1),dph
+	pop	ar0
+	pop	ar1
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
 	mov	a,_initialize_buffers_sloc0_1_0
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	_initialize_buffers_sloc1_1_0,a
 	mov	a,(_initialize_buffers_sloc0_1_0 + 1)
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	(_initialize_buffers_sloc1_1_0 + 1),a
 	mov	dpl,r2
 	mov	dph,r3
-	push	ar7
-	push	ar6
 	push	ar3
 	push	ar2
 	push	ar1
@@ -806,8 +1072,6 @@ _initialize_buffers:
 	pop	ar1
 	pop	ar2
 	pop	ar3
-	pop	ar6
-	pop	ar7
 	mov	dpl,_initialize_buffers_sloc1_1_0
 	mov	dph,(_initialize_buffers_sloc1_1_0 + 1)
 	mov	a,r4
@@ -815,26 +1079,58 @@ _initialize_buffers:
 	mov	a,r5
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:115: if(buffers[i].buffer == NULL)
-	mov	a,r4
-	orl	a,r5
-	pop	ar5
-	pop	ar4
-	jnz	00109$
-;	src/main.c:117: free_all_buffers();
+;	src/main.c:149: printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
+	mov	r7,#0x00
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	push	ar1
+	push	ar0
 	push	ar4
 	push	ar5
 	push	ar7
-	push	ar6
+	push	ar0
+	push	ar1
+	mov	a,#___str_1
+	push	acc
+	mov	a,#(___str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xf8
+	mov	sp,a
+	pop	ar0
+	pop	ar1
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:150: if(static_buffers[i].buffer == NULL)
+	mov	dpl,_initialize_buffers_sloc1_1_0
+	mov	dph,(_initialize_buffers_sloc1_1_0 + 1)
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	pop	ar5
+	pop	ar4
+	mov	a,r6
+	orl	a,r7
+	jnz	00108$
+;	src/main.c:152: free_all_buffers();
 	push	ar5
 	push	ar4
 	push	ar3
 	push	ar2
 	lcall	_free_all_buffers
-;	src/main.c:118: printf(BUFFER_SZ_TOO_BIG);
-	mov	a,#___str_1
+;	src/main.c:153: printf(BUFFER_SZ_TOO_BIG);
+	mov	a,#___str_2
 	push	acc
-	mov	a,#(___str_1 >> 8)
+	mov	a,#(___str_2 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -846,37 +1142,33 @@ _initialize_buffers:
 	pop	ar3
 	pop	ar4
 	pop	ar5
-	pop	ar6
-	pop	ar7
-;	src/main.c:119: max_user_input = user_buffer_size-1;
+;	src/main.c:154: max_user_input = user_buffer_size-1;
 	mov	a,r2
 	add	a,#0xff
-	mov	r4,a
+	mov	r6,a
 	mov	a,r3
 	addc	a,#0xff
-	mov	r5,a
-	mov	dptr,#_initialize_buffers_max_user_input_65537_81
-	mov	a,r4
+	mov	r7,a
+	mov	dptr,#_initialize_buffers_max_user_input_65538_91
+	mov	a,r6
 	movx	@dptr,a
-	mov	a,r5
+	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:120: goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
-	pop	ar5
-	pop	ar4
-	ljmp	00117$
-00109$:
-;	src/main.c:122: buffers[i].size = (size_t) user_buffer_size;
+;	src/main.c:155: goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
+	ljmp	00121$
+00108$:
+;	src/main.c:157: static_buffers[i].size = (size_t) user_buffer_size;
 	push	ar4
 	push	ar5
 	mov	a,_initialize_buffers_sloc0_1_0
-	add	a,#_buffers
-	mov	r4,a
+	add	a,#_static_buffers
+	mov	_initialize_buffers_sloc1_1_0,a
 	mov	a,(_initialize_buffers_sloc0_1_0 + 1)
-	addc	a,#(_buffers >> 8)
-	mov	r5,a
-	mov	dpl,r4
-	mov	dph,r5
+	addc	a,#(_static_buffers >> 8)
+	mov	(_initialize_buffers_sloc1_1_0 + 1),a
+	mov	dpl,_initialize_buffers_sloc1_1_0
+	mov	dph,(_initialize_buffers_sloc1_1_0 + 1)
 	inc	dptr
 	inc	dptr
 	inc	dptr
@@ -886,62 +1178,177 @@ _initialize_buffers:
 	mov	a,r3
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:123: buffers[i].alphabet_chars = 0; 
+;	src/main.c:158: initialize_default_elements(&static_buffers[i]);
+	mov	r4,_initialize_buffers_sloc1_1_0
+	mov	r5,(_initialize_buffers_sloc1_1_0 + 1)
+	mov	r7,#0x00
 	mov	dpl,r4
 	mov	dph,r5
-	inc	dptr
-	inc	dptr
-	clr	a
-	movx	@dptr,a
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:110: for(int i = 0; i < NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ; i++)
-	inc	r0
-	cjne	r0,#0x00,00183$
-	inc	r1
-00183$:
-	pop	ar5
+	mov	b,r7
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	push	ar1
+	push	ar0
+	lcall	_initialize_default_elements
+	pop	ar0
+	pop	ar1
+	pop	ar2
+	pop	ar3
 	pop	ar4
-	ljmp	00123$
-00111$:
-;	src/main.c:127: free(buffers[2].buffer);
+	pop	ar5
+;	src/main.c:159: printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
+	mov	dpl,_initialize_buffers_sloc1_1_0
+	mov	dph,(_initialize_buffers_sloc1_1_0 + 1)
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	r5,#0x00
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	push	ar1
+	push	ar0
 	push	ar6
 	push	ar7
-	mov	dptr,#(_buffers + 0x0010)
-	movx	a,@dptr
-	mov	r0,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r1,a
+	push	ar5
+	push	ar0
+	push	ar1
+	mov	a,#___str_1
+	push	acc
+	mov	a,#(___str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xf8
+	mov	sp,a
+	pop	ar0
+	pop	ar1
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:144: for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
+	inc	r0
+	cjne	r0,#0x00,00219$
+	inc	r1
+00219$:
+	pop	ar5
+	pop	ar4
+	ljmp	00132$
+;	src/main.c:164: for(int i = 0; i < INTIAL_DYNAMIC_BUFFER_COUNT; i++) 
+00150$:
+	mov	r6,#0x00
 	mov	r7,#0x00
-	mov	dpl,r0
-	mov	dph,r1
-	mov	b,r7
+00135$:
+	clr	c
+	mov	a,r6
+	subb	a,#0x04
+	mov	a,r7
+	xrl	a,#0x80
+	subb	a,#0x80
+	jc	00220$
+	ljmp	00114$
+00220$:
+;	src/main.c:166: buffer_t *new_buffer = alloc_new_buffer(user_buffer_size);
+	mov	dpl,r2
+	mov	dph,r3
 	push	ar7
 	push	ar6
 	push	ar5
 	push	ar4
 	push	ar3
 	push	ar2
-	lcall	_free
+	lcall	_alloc_new_buffer
+	mov	_initialize_buffers_sloc3_1_0,dpl
+	mov	(_initialize_buffers_sloc3_1_0 + 1),dph
+	mov	(_initialize_buffers_sloc3_1_0 + 2),b
 	pop	ar2
 	pop	ar3
 	pop	ar4
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	src/main.c:128: buffers[2].buffer = NULL; //make sure we don't accidentally double free
-	mov	dptr,#(_buffers + 0x0010)
-	clr	a
+;	src/main.c:167: if (new_buffer == NULL)
+	mov	a,_initialize_buffers_sloc3_1_0
+	orl	a,(_initialize_buffers_sloc3_1_0 + 1)
+	jnz	00112$
+;	src/main.c:169: free_all_buffers();
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	lcall	_free_all_buffers
+;	src/main.c:170: printf(BUFFER_SZ_TOO_BIG);
+	mov	a,#___str_2
+	push	acc
+	mov	a,#(___str_2 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:171: max_user_input = user_buffer_size-1;
+	mov	a,r2
+	add	a,#0xff
+	mov	r0,a
+	mov	a,r3
+	addc	a,#0xff
+	mov	r1,a
+	mov	dptr,#_initialize_buffers_max_user_input_65538_91
+	mov	a,r0
 	movx	@dptr,a
+	mov	a,r1
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:129: buffers[2].size = 0; 
-	mov	dptr,#(_buffers + 0x0014)
+;	src/main.c:172: goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
+	ljmp	00121$
+00112$:
+;	src/main.c:176: append_to_buffer_list(&dynamic_buffers_list, new_buffer);
+	mov	dptr,#_append_to_buffer_list_PARM_2
+	mov	a,_initialize_buffers_sloc3_1_0
 	movx	@dptr,a
+	mov	a,(_initialize_buffers_sloc3_1_0 + 1)
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:132: buffers[4].size = (size_t) 10 * (student_number + 2);
+	mov	a,(_initialize_buffers_sloc3_1_0 + 2)
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#_dynamic_buffers_list
+	mov	b,#0x00
+	push	ar7
+	push	ar6
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	lcall	_append_to_buffer_list
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	src/main.c:164: for(int i = 0; i < INTIAL_DYNAMIC_BUFFER_COUNT; i++) 
+	inc	r6
+	cjne	r6,#0x00,00222$
+	inc	r7
+00222$:
+	ljmp	00135$
+00114$:
+;	src/main.c:180: buffer_t *buffer_4 = alloc_new_buffer((size_t) 10 * (student_number + 2));
 	mov	dptr,#__mulint_PARM_2
 	mov	a,r4
 	movx	@dptr,a
@@ -954,165 +1361,24 @@ _initialize_buffers:
 	push	ar3
 	push	ar2
 	lcall	__mulint
-	mov	r6,dpl
-	mov	r7,dph
-	mov	dptr,#(_buffers + 0x0024)
-	mov	a,r6
-	movx	@dptr,a
-	mov	a,r7
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:133: buffers[4].buffer = malloc(buffers[4].size);
-	mov	dpl,r6
-	mov	dph,r7
-	lcall	_malloc
-	mov	r6,dpl
-	mov	r7,dph
+	lcall	_alloc_new_buffer
+	mov	r1,dpl
+	mov	r6,dph
 	pop	ar2
 	pop	ar3
 	pop	ar4
 	pop	ar5
-	mov	dptr,#(_buffers + 0x0020)
-	mov	a,r6
-	movx	@dptr,a
-	mov	a,r7
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:135: if (buffers[4].buffer == NULL)
-	mov	a,r6
-	orl	a,r7
-	pop	ar7
-	pop	ar6
-	jnz	00113$
-;	src/main.c:137: free_all_buffers();
-	push	ar7
-	push	ar6
+;	src/main.c:182: if (buffer_4 == NULL)
+	mov	a,r1
+	orl	a,r6
+	jnz	00116$
+;	src/main.c:184: free_all_buffers();
 	push	ar5
 	push	ar4
 	push	ar3
 	push	ar2
 	lcall	_free_all_buffers
-;	src/main.c:138: printf(BUFFER_SZ_TOO_BIG);
-	mov	a,#___str_1
-	push	acc
-	mov	a,#(___str_1 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-	pop	ar2
-	pop	ar3
-	pop	ar4
-	pop	ar5
-	pop	ar6
-	pop	ar7
-;	src/main.c:139: max_user_input = user_buffer_size-1;
-	mov	a,r2
-	add	a,#0xff
-	mov	r0,a
-	mov	a,r3
-	addc	a,#0xff
-	mov	r1,a
-	mov	dptr,#_initialize_buffers_max_user_input_65537_81
-	mov	a,r0
-	movx	@dptr,a
-	mov	a,r1
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:140: continue;
-	ljmp	00117$
-00113$:
-;	src/main.c:143: buffers[5].size = (size_t) 2 * user_buffer_size; 
-	mov	a,r2
-	add	a,r2
-	mov	r0,a
-	mov	a,r3
-	rlc	a
-	mov	r1,a
-	mov	dptr,#(_buffers + 0x002c)
-	mov	a,r0
-	movx	@dptr,a
-	mov	a,r1
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:144: buffers[5].buffer = malloc(buffers[5].size);
-	mov	dpl,r0
-	mov	dph,r1
-	push	ar7
-	push	ar6
-	push	ar5
-	push	ar4
-	push	ar3
-	push	ar2
-	lcall	_malloc
-	mov	r0,dpl
-	mov	r1,dph
-	pop	ar2
-	pop	ar3
-	pop	ar4
-	pop	ar5
-	pop	ar6
-	pop	ar7
-	mov	dptr,#(_buffers + 0x0028)
-	mov	a,r0
-	movx	@dptr,a
-	mov	a,r1
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:145: if (buffers[5].buffer == NULL)
-	mov	a,r0
-	orl	a,r1
-	jnz	00118$
-;	src/main.c:147: free_all_buffers();
-	push	ar7
-	push	ar6
-	push	ar5
-	push	ar4
-	push	ar3
-	push	ar2
-	lcall	_free_all_buffers
-;	src/main.c:148: printf(BUFFER_SZ_TOO_BIG);
-	mov	a,#___str_1
-	push	acc
-	mov	a,#(___str_1 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-	pop	ar2
-	pop	ar3
-	pop	ar4
-	pop	ar5
-	pop	ar6
-	pop	ar7
-;	src/main.c:149: max_user_input = user_buffer_size-1;
-	mov	a,r2
-	add	a,#0xff
-	mov	r0,a
-	mov	a,r3
-	addc	a,#0xff
-	mov	r1,a
-	mov	dptr,#_initialize_buffers_max_user_input_65537_81
-	mov	a,r0
-	movx	@dptr,a
-	mov	a,r1
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:150: continue;
-	ljmp	00117$
-;	src/main.c:152: break;
-00118$:
-;	src/main.c:155: printf("\r\nstudent_number: %d", student_number);
-	push	ar3
-	push	ar2
-	push	ar6
-	push	ar7
+;	src/main.c:185: printf(BUFFER_SZ_TOO_BIG);
 	mov	a,#___str_2
 	push	acc
 	mov	a,#(___str_2 >> 8)
@@ -1120,14 +1386,96 @@ _initialize_buffers:
 	mov	a,#0x80
 	push	acc
 	lcall	_printf
-	mov	a,sp
-	add	a,#0xfb
-	mov	sp,a
+	dec	sp
+	dec	sp
+	dec	sp
 	pop	ar2
 	pop	ar3
-;	src/main.c:156: printf("\r\nuser_buffer_size: %zu", user_buffer_size);
-	push	ar2
+	pop	ar4
+	pop	ar5
+;	src/main.c:186: max_user_input = user_buffer_size-1;
+	mov	a,r2
+	add	a,#0xff
+	mov	r6,a
+	mov	a,r3
+	addc	a,#0xff
+	mov	r7,a
+	mov	dptr,#_initialize_buffers_max_user_input_65538_91
+	mov	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:187: continue;
+	ljmp	00121$
+00116$:
+;	src/main.c:190: buffer_t *buffer_5 = alloc_new_buffer((size_t) 2 * user_buffer_size);
+	mov	a,r2
+	add	a,r2
+	mov	r6,a
+	mov	a,r3
+	rlc	a
+	mov	r7,a
+	mov	dpl,r6
+	mov	dph,r7
+	push	ar5
+	push	ar4
 	push	ar3
+	push	ar2
+	lcall	_alloc_new_buffer
+	mov	r1,dpl
+	mov	r6,dph
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:191: if (buffer_5 == NULL)
+	mov	a,r1
+	orl	a,r6
+	jnz	00122$
+;	src/main.c:193: free_all_buffers();
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	lcall	_free_all_buffers
+;	src/main.c:194: printf(BUFFER_SZ_TOO_BIG);
+	mov	a,#___str_2
+	push	acc
+	mov	a,#(___str_2 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:195: max_user_input = user_buffer_size-1;
+	mov	a,r2
+	add	a,#0xff
+	mov	r6,a
+	mov	a,r3
+	addc	a,#0xff
+	mov	r7,a
+	mov	dptr,#_initialize_buffers_max_user_input_65538_91
+	mov	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:196: continue;
+	ljmp	00121$
+;	src/main.c:199: get_the_buffer_sz:;
+00122$:
+;	src/main.c:202: printf("\r\nstudent_number: %d", student_number);
+	push	ar3
+	push	ar2
+	push	_initialize_buffers_sloc2_1_0
+	push	(_initialize_buffers_sloc2_1_0 + 1)
 	mov	a,#___str_3
 	push	acc
 	mov	a,#(___str_3 >> 8)
@@ -1138,62 +1486,101 @@ _initialize_buffers:
 	mov	a,sp
 	add	a,#0xfb
 	mov	sp,a
-;	src/main.c:158: size_t total_heap_sz = 0;
-	mov	dptr,#_initialize_buffers_total_heap_sz_65538_89
+	pop	ar2
+	pop	ar3
+;	src/main.c:203: printf("\r\nuser_buffer_size: %zu", user_buffer_size);
+	push	ar2
+	push	ar3
+	mov	a,#___str_4
+	push	acc
+	mov	a,#(___str_4 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xfb
+	mov	sp,a
+;	src/main.c:205: size_t total_heap_sz = 0;
+	mov	dptr,#_initialize_buffers_total_heap_sz_65539_105
 	clr	a
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:159: for(int i = 0; i < BUFFER_COUNT; i++)
+;	src/main.c:207: for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	mov	r6,#0x00
 	mov	r7,#0x00
-00126$:
-	clr	c
+00137$:
+;	src/main.c:209: printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
+	mov	dptr,#__mulint_PARM_2
 	mov	a,r6
-	subb	a,#0x06
+	movx	@dptr,a
 	mov	a,r7
-	xrl	a,#0x80
-	subb	a,#0x80
-	jc	00186$
-	ljmp	00121$
-00186$:
-;	src/main.c:161: if(buffers[i].buffer != NULL) {
-	mov	ar4,r6
-	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
 	mov	a,r4
-	add	a,#_buffers
-	mov	dpl,a
+	add	a,#_static_buffers
+	mov	_initialize_buffers_sloc3_1_0,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
-	mov	dph,a
+	addc	a,#(_static_buffers >> 8)
+	mov	(_initialize_buffers_sloc3_1_0 + 1),a
+	mov	dpl,_initialize_buffers_sloc3_1_0
+	mov	dph,(_initialize_buffers_sloc3_1_0 + 1)
+	movx	a,@dptr
+	mov	r0,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r1,a
+	mov	r3,#0x00
+	push	ar7
+	push	ar6
+	push	ar5
+	push	ar4
+	push	ar0
+	push	ar1
+	push	ar3
+	push	ar6
+	push	ar7
+	mov	a,#___str_1
+	push	acc
+	mov	a,#(___str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xf8
+	mov	sp,a
+	pop	ar4
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	src/main.c:210: if(static_buffers[i].buffer != NULL) {
+	mov	dpl,_initialize_buffers_sloc3_1_0
+	mov	dph,(_initialize_buffers_sloc3_1_0 + 1)
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r3,a
 	orl	a,r2
-	jnz	00187$
-	ljmp	00127$
-00187$:
-;	src/main.c:162: printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, buffers[i].buffer, buffers[i].buffer + buffers[i].size, buffers[i].size);
+	jnz	00225$
+	ljmp	00138$
+00225$:
+;	src/main.c:211: printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, static_buffers[i].buffer, static_buffers[i].buffer + static_buffers[i].size, static_buffers[i].size);
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r4,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r5,a
 	mov	a,#0x04
 	add	a,r4
@@ -1204,46 +1591,46 @@ _initialize_buffers:
 	mov	dpl,r2
 	mov	dph,r3
 	movx	a,@dptr
-	mov	_initialize_buffers_sloc0_1_0,a
+	mov	_initialize_buffers_sloc2_1_0,a
 	inc	dptr
 	movx	a,@dptr
-	mov	(_initialize_buffers_sloc0_1_0 + 1),a
+	mov	(_initialize_buffers_sloc2_1_0 + 1),a
 	mov	dpl,r4
 	mov	dph,r5
 	movx	a,@dptr
-	mov	_initialize_buffers_sloc1_1_0,a
+	mov	_initialize_buffers_sloc3_1_0,a
 	inc	dptr
 	movx	a,@dptr
-	mov	(_initialize_buffers_sloc1_1_0 + 1),a
-	mov	a,_initialize_buffers_sloc0_1_0
-	add	a,_initialize_buffers_sloc1_1_0
+	mov	(_initialize_buffers_sloc3_1_0 + 1),a
+	mov	a,_initialize_buffers_sloc2_1_0
+	add	a,_initialize_buffers_sloc3_1_0
 	mov	r4,a
-	mov	a,(_initialize_buffers_sloc0_1_0 + 1)
-	addc	a,(_initialize_buffers_sloc1_1_0 + 1)
+	mov	a,(_initialize_buffers_sloc2_1_0 + 1)
+	addc	a,(_initialize_buffers_sloc3_1_0 + 1)
 	mov	r5,a
-	mov	_initialize_buffers_sloc2_1_0,r4
-	mov	(_initialize_buffers_sloc2_1_0 + 1),r5
-	mov	(_initialize_buffers_sloc2_1_0 + 2),#0x00
-	mov	r0,_initialize_buffers_sloc1_1_0
-	mov	r5,(_initialize_buffers_sloc1_1_0 + 1)
+	mov	_initialize_buffers_sloc4_1_0,r4
+	mov	(_initialize_buffers_sloc4_1_0 + 1),r5
+	mov	(_initialize_buffers_sloc4_1_0 + 2),#0x00
+	mov	r0,_initialize_buffers_sloc3_1_0
+	mov	r5,(_initialize_buffers_sloc3_1_0 + 1)
 	mov	r4,#0x00
 	push	ar7
 	push	ar6
 	push	ar3
 	push	ar2
-	push	_initialize_buffers_sloc0_1_0
-	push	(_initialize_buffers_sloc0_1_0 + 1)
 	push	_initialize_buffers_sloc2_1_0
 	push	(_initialize_buffers_sloc2_1_0 + 1)
-	push	(_initialize_buffers_sloc2_1_0 + 2)
+	push	_initialize_buffers_sloc4_1_0
+	push	(_initialize_buffers_sloc4_1_0 + 1)
+	push	(_initialize_buffers_sloc4_1_0 + 2)
 	push	ar0
 	push	ar5
 	push	ar4
 	push	ar6
 	push	ar7
-	mov	a,#___str_4
+	mov	a,#___str_5
 	push	acc
-	mov	a,#(___str_4 >> 8)
+	mov	a,#(___str_5 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1255,7 +1642,7 @@ _initialize_buffers:
 	pop	ar3
 	pop	ar6
 	pop	ar7
-;	src/main.c:163: total_heap_sz += buffers[i].size; 
+;	src/main.c:212: total_heap_sz += static_buffers[i].size; 
 	mov	dpl,r2
 	mov	dph,r3
 	movx	a,@dptr
@@ -1263,13 +1650,13 @@ _initialize_buffers:
 	inc	dptr
 	movx	a,@dptr
 	mov	r3,a
-	mov	dptr,#_initialize_buffers_total_heap_sz_65538_89
+	mov	dptr,#_initialize_buffers_total_heap_sz_65539_105
 	movx	a,@dptr
 	mov	r4,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r5,a
-	mov	dptr,#_initialize_buffers_total_heap_sz_65538_89
+	mov	dptr,#_initialize_buffers_total_heap_sz_65539_105
 	mov	a,r2
 	add	a,r4
 	movx	@dptr,a
@@ -1277,24 +1664,200 @@ _initialize_buffers:
 	addc	a,r5
 	inc	dptr
 	movx	@dptr,a
-00127$:
-;	src/main.c:159: for(int i = 0; i < BUFFER_COUNT; i++)
+00138$:
+;	src/main.c:207: for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	inc	r6
-	cjne	r6,#0x00,00188$
+	cjne	r6,#0x00,00226$
 	inc	r7
-00188$:
-	ljmp	00126$
-00121$:
-;	src/main.c:166: printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
-	mov	dptr,#_initialize_buffers_total_heap_sz_65538_89
+00226$:
+	clr	c
+	mov	a,r6
+	subb	a,#0x02
+	mov	a,r7
+	xrl	a,#0x80
+	subb	a,#0x80
+	jnc	00227$
+	ljmp	00137$
+00227$:
+;	src/main.c:216: buffer_t *curr = dynamic_buffers_list.head;
+	mov	dptr,#_dynamic_buffers_list
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	mov	dptr,#_initialize_buffers_curr_65540_109
+	mov	a,r3
+	movx	@dptr,a
+	mov	a,r4
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r5
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:218: while(curr != NULL) {
+	mov	_initialize_buffers_sloc4_1_0,r6
+	mov	(_initialize_buffers_sloc4_1_0 + 1),r7
+00128$:
+	mov	dptr,#_initialize_buffers_curr_65540_109
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	mov	a,r3
+	orl	a,r4
+	jnz	00228$
+	ljmp	00130$
+00228$:
+;	src/main.c:219: if(curr->buffer != NULL) {
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
+	lcall	__gptrget
+	mov	r1,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r2,a
+	orl	a,r1
+	jnz	00229$
+	ljmp	00127$
+00229$:
+;	src/main.c:220: printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, curr->buffer, curr->buffer + curr->size, curr->size);
+	mov	a,#0x04
+	add	a,r3
+	mov	r3,a
+	clr	a
+	addc	a,r4
+	mov	r4,a
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
+	lcall	__gptrget
+	mov	_initialize_buffers_sloc3_1_0,a
+	inc	dptr
+	lcall	__gptrget
+	mov	(_initialize_buffers_sloc3_1_0 + 1),a
+	mov	a,_initialize_buffers_sloc3_1_0
+	add	a,r1
+	mov	r6,a
+	mov	a,(_initialize_buffers_sloc3_1_0 + 1)
+	addc	a,r2
+	mov	r7,a
+	mov	_initialize_buffers_sloc5_1_0,r6
+	mov	(_initialize_buffers_sloc5_1_0 + 1),r7
+	mov	(_initialize_buffers_sloc5_1_0 + 2),#0x00
+	mov	r7,#0x00
+	push	ar5
+	push	ar4
+	push	ar3
+	push	_initialize_buffers_sloc3_1_0
+	push	(_initialize_buffers_sloc3_1_0 + 1)
+	push	_initialize_buffers_sloc5_1_0
+	push	(_initialize_buffers_sloc5_1_0 + 1)
+	push	(_initialize_buffers_sloc5_1_0 + 2)
+	push	ar1
+	push	ar2
+	push	ar7
+	push	_initialize_buffers_sloc4_1_0
+	push	(_initialize_buffers_sloc4_1_0 + 1)
+	mov	a,#___str_5
+	push	acc
+	mov	a,#(___str_5 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xf3
+	mov	sp,a
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:221: total_heap_sz += curr->size; 
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
+	lcall	__gptrget
+	mov	r3,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r4,a
+	mov	dptr,#_initialize_buffers_total_heap_sz_65539_105
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	dptr,#_initialize_buffers_total_heap_sz_65539_105
+	mov	a,r3
+	add	a,r6
+	movx	@dptr,a
+	mov	a,r4
+	addc	a,r7
+	inc	dptr
+	movx	@dptr,a
+00127$:
+;	src/main.c:223: i++; 
+	inc	_initialize_buffers_sloc4_1_0
+	clr	a
+	cjne	a,_initialize_buffers_sloc4_1_0,00230$
+	inc	(_initialize_buffers_sloc4_1_0 + 1)
+00230$:
+;	src/main.c:224: curr = curr->next;
+	mov	dptr,#_initialize_buffers_curr_65540_109
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	a,#0x08
+	add	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r5,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	dptr,#_initialize_buffers_curr_65540_109
+	mov	a,r5
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+	ljmp	00128$
+00130$:
+;	src/main.c:226: printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
+	mov	dptr,#_initialize_buffers_total_heap_sz_65539_105
 	movx	a,@dptr
 	push	acc
 	inc	dptr
 	movx	a,@dptr
 	push	acc
-	mov	a,#(___sdcc_heap + 0x0400)
+	mov	a,#(___sdcc_heap + 0x1000)
 	push	acc
-	mov	a,#((___sdcc_heap + 0x0400) >> 8)
+	mov	a,#((___sdcc_heap + 0x1000) >> 8)
 	push	acc
 	clr	a
 	push	acc
@@ -1304,9 +1867,9 @@ _initialize_buffers:
 	push	acc
 	clr	a
 	push	acc
-	mov	a,#___str_5
+	mov	a,#___str_6
 	push	acc
-	mov	a,#(___str_5 >> 8)
+	mov	a,#(___str_6 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1314,7 +1877,7 @@ _initialize_buffers:
 	mov	a,sp
 	add	a,#0xf5
 	mov	sp,a
-;	src/main.c:167: }
+;	src/main.c:227: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'store_in_buffer'
@@ -1322,9 +1885,9 @@ _initialize_buffers:
 ;sloc0                     Allocated with name '_store_in_buffer_sloc0_1_0'
 ;sloc1                     Allocated with name '_store_in_buffer_sloc1_1_0'
 ;c                         Allocated with name '_store_in_buffer_PARM_2'
-;buffer                    Allocated with name '_store_in_buffer_buffer_65536_93'
+;buffer                    Allocated with name '_store_in_buffer_buffer_65536_112'
 ;------------------------------------------------------------
-;	src/main.c:169: void store_in_buffer(buffer_t *buffer, char c)
+;	src/main.c:229: void store_in_buffer(buffer_t *buffer, char c)
 ;	-----------------------------------------
 ;	 function store_in_buffer
 ;	-----------------------------------------
@@ -1332,7 +1895,7 @@ _store_in_buffer:
 	mov	r7,b
 	mov	r6,dph
 	mov	a,dpl
-	mov	dptr,#_store_in_buffer_buffer_65536_93
+	mov	dptr,#_store_in_buffer_buffer_65536_112
 	movx	@dptr,a
 	mov	a,r6
 	inc	dptr
@@ -1340,8 +1903,8 @@ _store_in_buffer:
 	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:171: if (buffer->curr_available_char < buffer->size)
-	mov	dptr,#_store_in_buffer_buffer_65536_93
+;	src/main.c:231: if (buffer->curr_available_char < buffer->size)
+	mov	dptr,#_store_in_buffer_buffer_65536_112
 	movx	a,@dptr
 	mov	r5,a
 	inc	dptr
@@ -1388,7 +1951,7 @@ _store_in_buffer:
 	jc	00115$
 	ret
 00115$:
-;	src/main.c:173: buffer->buffer[buffer->curr_available_char] = c;
+;	src/main.c:233: buffer->buffer[buffer->curr_available_char] = c;
 	mov	dpl,r5
 	mov	dph,r6
 	mov	b,r7
@@ -1409,7 +1972,7 @@ _store_in_buffer:
 	mov	dpl,r3
 	mov	dph,r4
 	movx	@dptr,a
-;	src/main.c:174: buffer->curr_available_char++;
+;	src/main.c:234: buffer->curr_available_char++;
 	mov	dpl,_store_in_buffer_sloc1_1_0
 	mov	dph,(_store_in_buffer_sloc1_1_0 + 1)
 	mov	b,(_store_in_buffer_sloc1_1_0 + 2)
@@ -1430,7 +1993,7 @@ _store_in_buffer:
 	inc	dptr
 	mov	a,r3
 	lcall	__gptrput
-;	src/main.c:175: if (is_alphabet_char(c))
+;	src/main.c:235: if (is_alphabet_char(c))
 	mov	dpl,r2
 	push	ar7
 	push	ar6
@@ -1441,7 +2004,7 @@ _store_in_buffer:
 	pop	ar6
 	pop	ar7
 	jz	00105$
-;	src/main.c:177: buffer->alphabet_chars++;
+;	src/main.c:237: buffer->alphabet_chars++;
 	mov	a,#0x02
 	add	a,r5
 	mov	r5,a
@@ -1467,16 +2030,16 @@ _store_in_buffer:
 	lcall	__gptrput
 	inc	dptr
 	mov	a,r4
-;	src/main.c:180: }
+;	src/main.c:240: }
 	ljmp	__gptrput
 00105$:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'command_header'
 ;------------------------------------------------------------
-;command_string            Allocated with name '_command_header_command_string_65536_97'
+;command_string            Allocated with name '_command_header_command_string_65536_116'
 ;------------------------------------------------------------
-;	src/main.c:182: void command_header(char *command_string)
+;	src/main.c:242: void command_header(char *command_string)
 ;	-----------------------------------------
 ;	 function command_header
 ;	-----------------------------------------
@@ -1484,7 +2047,7 @@ _command_header:
 	mov	r7,b
 	mov	r6,dph
 	mov	a,dpl
-	mov	dptr,#_command_header_command_string_65536_97
+	mov	dptr,#_command_header_command_string_65536_116
 	movx	@dptr,a
 	mov	a,r6
 	inc	dptr
@@ -1492,8 +2055,8 @@ _command_header:
 	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:184: printf("\r\n        %s", command_string);
-	mov	dptr,#_command_header_command_string_65536_97
+;	src/main.c:244: printf("\r\n        %s", command_string);
+	mov	dptr,#_command_header_command_string_65536_116
 	movx	a,@dptr
 	push	acc
 	inc	dptr
@@ -1502,17 +2065,6 @@ _command_header:
 	inc	dptr
 	movx	a,@dptr
 	push	acc
-	mov	a,#___str_6
-	push	acc
-	mov	a,#(___str_6 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	mov	a,sp
-	add	a,#0xfa
-	mov	sp,a
-;	src/main.c:185: printf("\r\n------------------------------");   
 	mov	a,#___str_7
 	push	acc
 	mov	a,#(___str_7 >> 8)
@@ -1520,10 +2072,21 @@ _command_header:
 	mov	a,#0x80
 	push	acc
 	lcall	_printf
+	mov	a,sp
+	add	a,#0xfa
+	mov	sp,a
+;	src/main.c:245: printf("\r\n------------------------------");   
+	mov	a,#___str_8
+	push	acc
+	mov	a,#(___str_8 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:186: }
+;	src/main.c:246: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'heap_report'
@@ -1533,58 +2096,50 @@ _command_header:
 ;sloc2                     Allocated with name '_heap_report_sloc2_1_0'
 ;sloc3                     Allocated with name '_heap_report_sloc3_1_0'
 ;sloc4                     Allocated with name '_heap_report_sloc4_1_0'
-;total_heap_sz             Allocated with name '_heap_report_total_heap_sz_65537_100'
-;i                         Allocated with name '_heap_report_i_131073_101'
+;sloc5                     Allocated with name '_heap_report_sloc5_1_0'
+;total_heap_sz             Allocated with name '_heap_report_total_heap_sz_65537_119'
+;i                         Allocated with name '_heap_report_i_65537_119'
+;curr                      Allocated with name '_heap_report_curr_65538_123'
 ;------------------------------------------------------------
-;	src/main.c:190: void heap_report()
+;	src/main.c:250: void heap_report()
 ;	-----------------------------------------
 ;	 function heap_report
 ;	-----------------------------------------
 _heap_report:
-;	src/main.c:192: command_header("HEAP REPORT");
-	mov	dptr,#___str_8
+;	src/main.c:252: command_header("HEAP REPORT");
+	mov	dptr,#___str_9
 	mov	b,#0x80
 	lcall	_command_header
-;	src/main.c:193: size_t total_heap_sz = 0;
-	mov	dptr,#_heap_report_total_heap_sz_65537_100
+;	src/main.c:253: size_t total_heap_sz = 0;
+	mov	dptr,#_heap_report_total_heap_sz_65537_119
 	clr	a
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:194: for(int i = 0; i < BUFFER_COUNT; i++)
+;	src/main.c:255: for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	mov	r6,#0x00
 	mov	r7,#0x00
-00105$:
-	clr	c
+00109$:
+;	src/main.c:257: if(static_buffers[i].buffer != NULL) {
+	mov	dptr,#__mulint_PARM_2
 	mov	a,r6
-	subb	a,#0x06
+	movx	@dptr,a
 	mov	a,r7
-	xrl	a,#0x80
-	subb	a,#0x80
-	jc	00122$
-	ljmp	00103$
-00122$:
-;	src/main.c:196: if(buffers[i].buffer != NULL) {
-	mov	ar4,r6
-	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	dpl,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	dph,a
 	movx	a,@dptr
 	mov	r2,a
@@ -1592,15 +2147,15 @@ _heap_report:
 	movx	a,@dptr
 	mov	r3,a
 	orl	a,r2
-	jnz	00123$
-	ljmp	00106$
-00123$:
-;	src/main.c:203: buffers[i].size - buffers[i].curr_available_char);
+	jnz	00139$
+	ljmp	00110$
+00139$:
+;	src/main.c:264: static_buffers[i].size - static_buffers[i].curr_available_char);
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r4,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r5,a
 	mov	a,#0x04
 	add	a,r4
@@ -1633,7 +2188,7 @@ _heap_report:
 	mov	a,r1
 	subb	a,r3
 	mov	(_heap_report_sloc1_1_0 + 1),a
-;	src/main.c:202: buffers[i].alphabet_chars,
+;	src/main.c:263: static_buffers[i].alphabet_chars,
 	mov	dpl,r4
 	mov	dph,r5
 	inc	dptr
@@ -1643,7 +2198,7 @@ _heap_report:
 	inc	dptr
 	movx	a,@dptr
 	mov	(_heap_report_sloc2_1_0 + 1),a
-;	src/main.c:200: buffers[i].buffer + buffers[i].size, 
+;	src/main.c:261: static_buffers[i].buffer + static_buffers[i].size, 
 	mov	dpl,r4
 	mov	dph,r5
 	movx	a,@dptr
@@ -1660,11 +2215,11 @@ _heap_report:
 	mov	_heap_report_sloc4_1_0,r2
 	mov	(_heap_report_sloc4_1_0 + 1),r3
 	mov	(_heap_report_sloc4_1_0 + 2),#0x00
-;	src/main.c:199: buffers[i].buffer, 
+;	src/main.c:260: static_buffers[i].buffer, 
 	mov	r4,_heap_report_sloc3_1_0
 	mov	r5,(_heap_report_sloc3_1_0 + 1)
 	mov	r3,#0x00
-;	src/main.c:197: printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu, contains %zu alphabet chars, has %zu chars remaining", 
+;	src/main.c:258: printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu, contains %zu alphabet chars, has %zu chars remaining", 
 	push	ar7
 	push	ar6
 	push	_heap_report_sloc1_1_0
@@ -1681,9 +2236,9 @@ _heap_report:
 	push	ar3
 	push	ar6
 	push	ar7
-	mov	a,#___str_9
+	mov	a,#___str_10
 	push	acc
-	mov	a,#(___str_9 >> 8)
+	mov	a,#(___str_10 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1693,7 +2248,7 @@ _heap_report:
 	mov	sp,a
 	pop	ar6
 	pop	ar7
-;	src/main.c:204: total_heap_sz += buffers[i].size; 
+;	src/main.c:265: total_heap_sz += static_buffers[i].size; 
 	mov	dpl,_heap_report_sloc0_1_0
 	mov	dph,(_heap_report_sloc0_1_0 + 1)
 	movx	a,@dptr
@@ -1701,13 +2256,13 @@ _heap_report:
 	inc	dptr
 	movx	a,@dptr
 	mov	r5,a
-	mov	dptr,#_heap_report_total_heap_sz_65537_100
+	mov	dptr,#_heap_report_total_heap_sz_65537_119
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r3,a
-	mov	dptr,#_heap_report_total_heap_sz_65537_100
+	mov	dptr,#_heap_report_total_heap_sz_65537_119
 	mov	a,r4
 	add	a,r2
 	movx	@dptr,a
@@ -1715,24 +2270,194 @@ _heap_report:
 	addc	a,r3
 	inc	dptr
 	movx	@dptr,a
-00106$:
-;	src/main.c:194: for(int i = 0; i < BUFFER_COUNT; i++)
+00110$:
+;	src/main.c:255: for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	inc	r6
-	cjne	r6,#0x00,00124$
+	cjne	r6,#0x00,00140$
 	inc	r7
-00124$:
+00140$:
+	clr	c
+	mov	a,r6
+	subb	a,#0x02
+	mov	a,r7
+	xrl	a,#0x80
+	subb	a,#0x80
+	jnc	00141$
+	ljmp	00109$
+00141$:
+;	src/main.c:269: buffer_t *curr = dynamic_buffers_list.head;
+	mov	dptr,#_dynamic_buffers_list
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+;	src/main.c:270: while(curr != NULL) {
+	mov	a,#0x04
+	add	a,r3
+	mov	r0,a
+	clr	a
+	addc	a,r4
+	mov	r1,a
+	mov	ar2,r5
+	mov	a,#0x02
+	add	a,r3
+	mov	_heap_report_sloc4_1_0,a
+	clr	a
+	addc	a,r4
+	mov	(_heap_report_sloc4_1_0 + 1),a
+	mov	(_heap_report_sloc4_1_0 + 2),r5
+	mov	_heap_report_sloc2_1_0,r6
+	mov	(_heap_report_sloc2_1_0 + 1),r7
+00106$:
+	mov	a,r3
+	orl	a,r4
+	jnz	00142$
+	ljmp	00108$
+00142$:
+;	src/main.c:271: if(curr->buffer != NULL) {
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
+	lcall	__gptrget
+	mov	_heap_report_sloc3_1_0,a
+	inc	dptr
+	lcall	__gptrget
+	mov	(_heap_report_sloc3_1_0 + 1),a
+	mov	a,_heap_report_sloc3_1_0
+	orl	a,(_heap_report_sloc3_1_0 + 1)
+	jnz	00143$
 	ljmp	00105$
-00103$:
-;	src/main.c:207: printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
-	mov	dptr,#_heap_report_total_heap_sz_65537_100
+00143$:
+;	src/main.c:278: curr->size - curr->alphabet_chars);
+	push	ar3
+	push	ar4
+	push	ar5
+	mov	dpl,r0
+	mov	dph,r1
+	mov	b,r2
+	lcall	__gptrget
+	mov	r4,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r5,a
+	mov	dpl,_heap_report_sloc4_1_0
+	mov	dph,(_heap_report_sloc4_1_0 + 1)
+	mov	b,(_heap_report_sloc4_1_0 + 2)
+	lcall	__gptrget
+	mov	_heap_report_sloc1_1_0,a
+	inc	dptr
+	lcall	__gptrget
+	mov	(_heap_report_sloc1_1_0 + 1),a
+	mov	a,r4
+	clr	c
+	subb	a,_heap_report_sloc1_1_0
+	mov	_heap_report_sloc0_1_0,a
+	mov	a,r5
+	subb	a,(_heap_report_sloc1_1_0 + 1)
+	mov	(_heap_report_sloc0_1_0 + 1),a
+;	src/main.c:275: curr->buffer + curr->size, 
+	mov	a,r4
+	add	a,_heap_report_sloc3_1_0
+	mov	r3,a
+	mov	a,r5
+	addc	a,(_heap_report_sloc3_1_0 + 1)
+	mov	r7,a
+	mov	_heap_report_sloc5_1_0,r3
+	mov	(_heap_report_sloc5_1_0 + 1),r7
+	mov	(_heap_report_sloc5_1_0 + 2),#0x00
+;	src/main.c:274: curr->buffer, 
+	mov	r6,_heap_report_sloc3_1_0
+	mov	r7,(_heap_report_sloc3_1_0 + 1)
+	mov	r3,#0x00
+;	src/main.c:272: printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu, contains %zu alphabet chars, has %zu chars remaining", 
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	push	ar1
+	push	ar0
+	push	_heap_report_sloc0_1_0
+	push	(_heap_report_sloc0_1_0 + 1)
+	push	_heap_report_sloc1_1_0
+	push	(_heap_report_sloc1_1_0 + 1)
+	push	ar4
+	push	ar5
+	push	_heap_report_sloc5_1_0
+	push	(_heap_report_sloc5_1_0 + 1)
+	push	(_heap_report_sloc5_1_0 + 2)
+	push	ar6
+	push	ar7
+	push	ar3
+	push	_heap_report_sloc2_1_0
+	push	(_heap_report_sloc2_1_0 + 1)
+	mov	a,#___str_10
+	push	acc
+	mov	a,#(___str_10 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xef
+	mov	sp,a
+	pop	ar0
+	pop	ar1
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+;	src/main.c:279: total_heap_sz += curr->size; 
+	mov	dpl,r0
+	mov	dph,r1
+	mov	b,r2
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	dptr,#_heap_report_total_heap_sz_65537_119
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	mov	dptr,#_heap_report_total_heap_sz_65537_119
+	mov	a,r6
+	add	a,r4
+	movx	@dptr,a
+	mov	a,r7
+	addc	a,r5
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:285: printf("\r\n");
+	pop	ar5
+	pop	ar4
+	pop	ar3
+;	src/main.c:279: total_heap_sz += curr->size; 
+00105$:
+;	src/main.c:281: i++;
+	inc	_heap_report_sloc2_1_0
+	clr	a
+	cjne	a,_heap_report_sloc2_1_0,00144$
+	inc	(_heap_report_sloc2_1_0 + 1)
+00144$:
+;	src/main.c:282: curr->next;
+	ljmp	00106$
+00108$:
+;	src/main.c:284: printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
+	mov	dptr,#_heap_report_total_heap_sz_65537_119
 	movx	a,@dptr
 	push	acc
 	inc	dptr
 	movx	a,@dptr
 	push	acc
-	mov	a,#(___sdcc_heap + 0x0400)
+	mov	a,#(___sdcc_heap + 0x1000)
 	push	acc
-	mov	a,#((___sdcc_heap + 0x0400) >> 8)
+	mov	a,#((___sdcc_heap + 0x1000) >> 8)
 	push	acc
 	clr	a
 	push	acc
@@ -1742,9 +2467,9 @@ _heap_report:
 	push	acc
 	clr	a
 	push	acc
-	mov	a,#___str_5
+	mov	a,#___str_6
 	push	acc
-	mov	a,#(___str_5 >> 8)
+	mov	a,#(___str_6 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1752,50 +2477,7 @@ _heap_report:
 	mov	a,sp
 	add	a,#0xf5
 	mov	sp,a
-;	src/main.c:208: printf("\r\n");
-	mov	a,#___str_10
-	push	acc
-	mov	a,#(___str_10 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	src/main.c:209: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'get_user_buffer_sz'
-;------------------------------------------------------------
-;maximum_sz                Allocated with name '_get_user_buffer_sz_maximum_sz_65536_104'
-;user_buffer_size          Allocated with name '_get_user_buffer_sz_user_buffer_size_65536_105'
-;------------------------------------------------------------
-;	src/main.c:213: size_t get_user_buffer_sz(size_t maximum_sz)
-;	-----------------------------------------
-;	 function get_user_buffer_sz
-;	-----------------------------------------
-_get_user_buffer_sz:
-	mov	r7,dph
-	mov	a,dpl
-	mov	dptr,#_get_user_buffer_sz_maximum_sz_65536_104
-	movx	@dptr,a
-	mov	a,r7
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:216: do {
-	mov	dptr,#_get_user_buffer_sz_maximum_sz_65536_104
-	movx	a,@dptr
-	mov	r6,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r7,a
-00103$:
-;	src/main.c:217: printf("\r\nPlease enter a valid buffer size that is divisible by 32 [64,%zu]: ", maximum_sz);
-	push	ar7
-	push	ar6
-	push	ar6
-	push	ar7
+;	src/main.c:285: printf("\r\n");
 	mov	a,#___str_11
 	push	acc
 	mov	a,#(___str_11 >> 8)
@@ -1803,181 +2485,40 @@ _get_user_buffer_sz:
 	mov	a,#0x80
 	push	acc
 	lcall	_printf
-	mov	a,sp
-	add	a,#0xfb
-	mov	sp,a
-;	src/main.c:218: get_string();
-	lcall	_get_string
-;	src/main.c:219: user_buffer_size = (size_t) atoi(get_input_buffer()); //TODO: replace with own implementation of atoi that respects the size_t
-	lcall	_get_input_buffer
-	lcall	_atoi
-	mov	r4,dpl
-	mov	r5,dph
-	pop	ar6
-	pop	ar7
-;	src/main.c:220: } while ((user_buffer_size > maximum_sz)
-	clr	c
-	mov	a,r6
-	subb	a,r4
-	mov	a,r7
-	subb	a,r5
-;	src/main.c:221: || (user_buffer_size < USER_BUFFER_MIN)
-	jc	00103$
-	mov	a,r4
-	subb	a,#0x40
-	mov	a,r5
-	subb	a,#0x00
-	jc	00103$
-;	src/main.c:222: || (MODULE_32(user_buffer_size) != 0));
-	mov	a,r4
-	anl	a,#0x1f
-	jnz	00103$
-;	src/main.c:223: return user_buffer_size;
-	mov	dpl,r4
-	mov	dph,r5
-;	src/main.c:224: }
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:286: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'free_all_buffers'
+;Allocation info for local variables in function 'get_user_buffer_sz'
 ;------------------------------------------------------------
-;i                         Allocated with name '_free_all_buffers_i_131072_108'
+;maximum_sz                Allocated with name '_get_user_buffer_sz_maximum_sz_65536_126'
+;user_buffer_size          Allocated with name '_get_user_buffer_sz_user_buffer_size_65536_127'
 ;------------------------------------------------------------
-;	src/main.c:227: void free_all_buffers()
+;	src/main.c:290: size_t get_user_buffer_sz(size_t maximum_sz)
 ;	-----------------------------------------
-;	 function free_all_buffers
+;	 function get_user_buffer_sz
 ;	-----------------------------------------
-_free_all_buffers:
-;	src/main.c:229: for(int i = 0; i < BUFFER_COUNT; i++)
-	mov	r6,#0x00
-	mov	r7,#0x00
-00105$:
-	clr	c
-	mov	a,r6
-	subb	a,#0x06
-	mov	a,r7
-	xrl	a,#0x80
-	subb	a,#0x80
-	jnc	00107$
-;	src/main.c:231: if (buffers[i].buffer != NULL)
-	mov	ar4,r6
-	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
-	mov	a,r4
-	add	a,#_buffers
-	mov	dpl,a
-	mov	a,r5
-	addc	a,#(_buffers >> 8)
-	mov	dph,a
-	movx	a,@dptr
-	mov	r4,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r5,a
-	orl	a,r4
-	jz	00102$
-;	src/main.c:233: free(buffers[i].buffer);
-	mov	r3,#0x00
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r3
-	push	ar7
-	push	ar6
-	lcall	_free
-	pop	ar6
-	pop	ar7
-00102$:
-;	src/main.c:235: buffers[i].buffer = NULL;
-	mov	ar4,r6
-	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
-	mov	a,r4
-	add	a,#_buffers
-	mov	dpl,a
-	mov	a,r5
-	addc	a,#(_buffers >> 8)
-	mov	dph,a
-	clr	a
-	movx	@dptr,a
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:236: buffers[i].size = 0; 
-	mov	a,r4
-	add	a,#_buffers
-	mov	r4,a
-	mov	a,r5
-	addc	a,#(_buffers >> 8)
-	mov	r5,a
-	mov	dpl,r4
-	mov	dph,r5
-	inc	dptr
-	inc	dptr
-	inc	dptr
-	inc	dptr
-	clr	a
-	movx	@dptr,a
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:229: for(int i = 0; i < BUFFER_COUNT; i++)
-	inc	r6
-	cjne	r6,#0x00,00124$
-	inc	r7
-00124$:
-	ljmp	00105$
-00107$:
-;	src/main.c:238: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'qmark_command_handler'
-;------------------------------------------------------------
-;sloc0                     Allocated with name '_qmark_command_handler_sloc0_1_0'
-;chars_received_since_last_qmark Allocated with name '_qmark_command_handler_chars_received_since_last_qmark_65537_112'
-;curr_output_char          Allocated with name '_qmark_command_handler_curr_output_char_65538_113'
-;i                         Allocated with name '_qmark_command_handler_i_131074_114'
-;curr_buffer_char          Allocated with name '_qmark_command_handler_curr_buffer_char_196610_115'
-;curr_char                 Allocated with name '_qmark_command_handler_curr_char_196610_115'
-;------------------------------------------------------------
-;	src/main.c:242: void qmark_command_handler()
-;	-----------------------------------------
-;	 function qmark_command_handler
-;	-----------------------------------------
-_qmark_command_handler:
-;	src/main.c:244: heap_report();
-	lcall	_heap_report
-;	src/main.c:245: size_t chars_received_since_last_qmark = get_char_count();
-	lcall	_get_char_count
-	mov	r6,dpl
+_get_user_buffer_sz:
 	mov	r7,dph
-;	src/main.c:246: reset_char_count();
+	mov	a,dpl
+	mov	dptr,#_get_user_buffer_sz_maximum_sz_65536_126
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:293: do {
+	mov	dptr,#_get_user_buffer_sz_maximum_sz_65536_126
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+00103$:
+;	src/main.c:294: printf("\r\nPlease enter a valid buffer size that is divisible by 32 [64,%zu]: ", maximum_sz);
 	push	ar7
 	push	ar6
-	lcall	_reset_char_count
-	pop	ar6
-	pop	ar7
-;	src/main.c:247: printf("\r\n Received %zu chars since last invocation of ?", chars_received_since_last_qmark);
 	push	ar6
 	push	ar7
 	mov	a,#___str_12
@@ -1990,13 +2531,211 @@ _qmark_command_handler:
 	mov	a,sp
 	add	a,#0xfb
 	mov	sp,a
-;	src/main.c:248: size_t curr_output_char = 0;
-	mov	dptr,#_qmark_command_handler_curr_output_char_65538_113
+;	src/main.c:295: get_string();
+	lcall	_get_string
+;	src/main.c:296: user_buffer_size = (size_t) atoi(get_input_buffer()); //TODO: replace with own implementation of atoi that respects the size_t
+	lcall	_get_input_buffer
+	lcall	_atoi
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
+;	src/main.c:297: } while ((user_buffer_size > maximum_sz)
+	clr	c
+	mov	a,r6
+	subb	a,r4
+	mov	a,r7
+	subb	a,r5
+;	src/main.c:298: || (user_buffer_size < USER_BUFFER_MIN)
+	jc	00103$
+	mov	a,r4
+	subb	a,#0x40
+	mov	a,r5
+	subb	a,#0x00
+	jc	00103$
+;	src/main.c:299: || (MODULE_32(user_buffer_size) != 0));
+	mov	a,r4
+	anl	a,#0x1f
+	jnz	00103$
+;	src/main.c:300: return user_buffer_size;
+	mov	dpl,r4
+	mov	dph,r5
+;	src/main.c:301: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'free_all_buffers'
+;------------------------------------------------------------
+;i                         Allocated with name '_free_all_buffers_i_131072_130'
+;------------------------------------------------------------
+;	src/main.c:304: void free_all_buffers()
+;	-----------------------------------------
+;	 function free_all_buffers
+;	-----------------------------------------
+_free_all_buffers:
+;	src/main.c:306: printf("\r\n Freeing ALL BUFFERS");
+	mov	a,#___str_13
+	push	acc
+	mov	a,#(___str_13 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:307: for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
+	mov	r6,#0x00
+	mov	r7,#0x00
+00105$:
+	clr	c
+	mov	a,r6
+	subb	a,#0x02
+	mov	a,r7
+	xrl	a,#0x80
+	subb	a,#0x80
+	jc	00122$
+	ljmp	00103$
+00122$:
+;	src/main.c:309: if(static_buffers[i].buffer != NULL)
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
+	mov	a,r4
+	add	a,#_static_buffers
+	mov	dpl,a
+	mov	a,r5
+	addc	a,#(_static_buffers >> 8)
+	mov	dph,a
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	orl	a,r4
+	jz	00102$
+;	src/main.c:311: free(static_buffers[i].buffer);
+	mov	r3,#0x00
+	mov	dpl,r4
+	mov	dph,r5
+	mov	b,r3
+	push	ar7
+	push	ar6
+	lcall	_free
+	pop	ar6
+	pop	ar7
+00102$:
+;	src/main.c:313: static_buffers[i].buffer = NULL;
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
+	mov	a,r4
+	add	a,#_static_buffers
+	mov	dpl,a
+	mov	a,r5
+	addc	a,#(_static_buffers >> 8)
+	mov	dph,a
 	clr	a
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:250: for(int i = 0; i < 2; i++)
+;	src/main.c:314: static_buffers[i].size = 0; 
+	mov	a,r4
+	add	a,#_static_buffers
+	mov	r4,a
+	mov	a,r5
+	addc	a,#(_static_buffers >> 8)
+	mov	r5,a
+	mov	dpl,r4
+	mov	dph,r5
+	inc	dptr
+	inc	dptr
+	inc	dptr
+	inc	dptr
+	clr	a
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:307: for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
+	inc	r6
+	cjne	r6,#0x00,00124$
+	inc	r7
+00124$:
+	ljmp	00105$
+00103$:
+;	src/main.c:316: free_all_elems_from_list(&dynamic_buffers_list); 
+	mov	dptr,#_dynamic_buffers_list
+	mov	b,#0x00
+;	src/main.c:317: }
+	ljmp	_free_all_elems_from_list
+;------------------------------------------------------------
+;Allocation info for local variables in function 'qmark_command_handler'
+;------------------------------------------------------------
+;sloc0                     Allocated with name '_qmark_command_handler_sloc0_1_0'
+;chars_received_since_last_qmark Allocated with name '_qmark_command_handler_chars_received_since_last_qmark_65537_134'
+;curr_output_char          Allocated with name '_qmark_command_handler_curr_output_char_65538_135'
+;i                         Allocated with name '_qmark_command_handler_i_131074_136'
+;curr_buffer_char          Allocated with name '_qmark_command_handler_curr_buffer_char_196610_137'
+;curr_char                 Allocated with name '_qmark_command_handler_curr_char_196610_137'
+;------------------------------------------------------------
+;	src/main.c:321: void qmark_command_handler()
+;	-----------------------------------------
+;	 function qmark_command_handler
+;	-----------------------------------------
+_qmark_command_handler:
+;	src/main.c:323: heap_report();
+	lcall	_heap_report
+;	src/main.c:324: size_t chars_received_since_last_qmark = get_char_count();
+	lcall	_get_char_count
+	mov	r6,dpl
+	mov	r7,dph
+;	src/main.c:325: reset_char_count();
+	push	ar7
+	push	ar6
+	lcall	_reset_char_count
+	pop	ar6
+	pop	ar7
+;	src/main.c:326: printf("\r\n Received %zu chars since last invocation of ?", chars_received_since_last_qmark);
+	push	ar6
+	push	ar7
+	mov	a,#___str_14
+	push	acc
+	mov	a,#(___str_14 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	mov	a,sp
+	add	a,#0xfb
+	mov	sp,a
+;	src/main.c:327: size_t curr_output_char = 0;
+	mov	dptr,#_qmark_command_handler_curr_output_char_65538_135
+	clr	a
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:329: for(int i = 0; i < 2; i++)
 	mov	r6,#0x00
 	mov	r7,#0x00
 00108$:
@@ -2009,27 +2748,26 @@ _qmark_command_handler:
 	jc	00134$
 	ljmp	00106$
 00134$:
-;	src/main.c:253: char curr_char = buffers[i].buffer[0];
-	mov	ar4,r6
+;	src/main.c:332: char curr_char = static_buffers[i].buffer[0];
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r6
+	movx	@dptr,a
 	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r4,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r5,a
 	mov	dpl,r4
 	mov	dph,r5
@@ -2041,10 +2779,10 @@ _qmark_command_handler:
 	mov	dpl,r2
 	mov	dph,r3
 	movx	a,@dptr
-	mov	dptr,#_qmark_command_handler_curr_char_196610_115
+	mov	dptr,#_qmark_command_handler_curr_char_196610_137
 	movx	@dptr,a
-;	src/main.c:254: while(curr_char != '\0')
-	mov	dptr,#_qmark_command_handler_curr_output_char_65538_113
+;	src/main.c:333: while(curr_char != '\0')
+	mov	dptr,#_qmark_command_handler_curr_output_char_65538_135
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
@@ -2053,18 +2791,16 @@ _qmark_command_handler:
 	mov	r0,#0x00
 	mov	r1,#0x00
 00103$:
-	mov	dptr,#_qmark_command_handler_curr_char_196610_115
+	mov	dptr,#_qmark_command_handler_curr_char_196610_137
 	movx	a,@dptr
 	jnz	00135$
 	ljmp	00117$
 00135$:
-;	src/main.c:256: if (MODULE_32(curr_output_char) == 0)
+;	src/main.c:335: if (MODULE_32(curr_output_char) == 0)
 	mov	a,r2
 	anl	a,#0x1f
-	jz	00137$
-	sjmp	00102$
-00137$:
-;	src/main.c:258: printf("\r\n");
+	jnz	00102$
+;	src/main.c:337: printf("\r\n");
 	push	ar7
 	push	ar6
 	push	ar5
@@ -2073,9 +2809,9 @@ _qmark_command_handler:
 	push	ar2
 	push	ar1
 	push	ar0
-	mov	a,#___str_10
+	mov	a,#___str_11
 	push	acc
-	mov	a,#(___str_10 >> 8)
+	mov	a,#(___str_11 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2092,10 +2828,10 @@ _qmark_command_handler:
 	pop	ar6
 	pop	ar7
 00102$:
-;	src/main.c:260: printf("%c", curr_char);
+;	src/main.c:339: printf("%c", curr_char);
 	push	ar6
 	push	ar7
-	mov	dptr,#_qmark_command_handler_curr_char_196610_115
+	mov	dptr,#_qmark_command_handler_curr_char_196610_137
 	movx	a,@dptr
 	mov	r7,a
 	mov	r6,#0x00
@@ -2109,9 +2845,9 @@ _qmark_command_handler:
 	push	ar0
 	push	ar7
 	push	ar6
-	mov	a,#___str_13
+	mov	a,#___str_15
 	push	acc
-	mov	a,#(___str_13 >> 8)
+	mov	a,#(___str_15 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2127,17 +2863,17 @@ _qmark_command_handler:
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	src/main.c:261: curr_output_char++;
+;	src/main.c:340: curr_output_char++;
 	inc	r2
 	cjne	r2,#0x00,00138$
 	inc	r3
 00138$:
-;	src/main.c:262: curr_buffer_char++;
+;	src/main.c:341: curr_buffer_char++;
 	inc	r0
 	cjne	r0,#0x00,00139$
 	inc	r1
 00139$:
-;	src/main.c:263: curr_char = buffers[i].buffer[curr_buffer_char];
+;	src/main.c:342: curr_char = static_buffers[i].buffer[curr_buffer_char];
 	mov	dpl,r4
 	mov	dph,r5
 	movx	a,@dptr
@@ -2152,39 +2888,36 @@ _qmark_command_handler:
 	addc	a,r7
 	mov	dph,a
 	movx	a,@dptr
-	mov	dptr,#_qmark_command_handler_curr_char_196610_115
+	mov	dptr,#_qmark_command_handler_curr_char_196610_137
 	movx	@dptr,a
 	pop	ar7
 	pop	ar6
 	ljmp	00103$
 00117$:
-	mov	dptr,#_qmark_command_handler_curr_output_char_65538_113
+	mov	dptr,#_qmark_command_handler_curr_output_char_65538_135
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:266: memset(buffers[i].buffer, '\0', buffers[i].size);
-	mov	ar4,r6
+;	src/main.c:345: memset(static_buffers[i].buffer, '\0', static_buffers[i].size);
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r6
+	movx	@dptr,a
 	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	dpl,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	dph,a
 	movx	a,@dptr
 	mov	r2,a
@@ -2195,10 +2928,10 @@ _qmark_command_handler:
 	mov	(_qmark_command_handler_sloc0_1_0 + 1),r3
 	mov	(_qmark_command_handler_sloc0_1_0 + 2),#0x00
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r4,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r5,a
 	mov	dpl,r4
 	mov	dph,r5
@@ -2223,8 +2956,6 @@ _qmark_command_handler:
 	mov	dpl,_qmark_command_handler_sloc0_1_0
 	mov	dph,(_qmark_command_handler_sloc0_1_0 + 1)
 	mov	b,(_qmark_command_handler_sloc0_1_0 + 2)
-	push	ar7
-	push	ar6
 	push	ar5
 	push	ar4
 	lcall	_memset
@@ -2232,7 +2963,7 @@ _qmark_command_handler:
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	src/main.c:267: buffers[i].alphabet_chars = 0;
+;	src/main.c:346: static_buffers[i].alphabet_chars = 0;
 	mov	dpl,r4
 	mov	dph,r5
 	inc	dptr
@@ -2241,7 +2972,7 @@ _qmark_command_handler:
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:268: buffers[i].curr_available_char = 0;
+;	src/main.c:347: static_buffers[i].curr_available_char = 0;
 	mov	a,#0x06
 	add	a,r4
 	mov	dpl,a
@@ -2252,28 +2983,17 @@ _qmark_command_handler:
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:250: for(int i = 0; i < 2; i++)
+;	src/main.c:329: for(int i = 0; i < 2; i++)
 	inc	r6
 	cjne	r6,#0x00,00140$
 	inc	r7
 00140$:
 	ljmp	00108$
 00106$:
-;	src/main.c:271: printf("\r\n");
-	mov	a,#___str_10
+;	src/main.c:350: printf("\r\n");
+	mov	a,#___str_11
 	push	acc
-	mov	a,#(___str_10 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	src/main.c:272: printf("\r\n");
-	mov	a,#___str_10
-	push	acc
-	mov	a,#(___str_10 >> 8)
+	mov	a,#(___str_11 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2281,7 +3001,18 @@ _qmark_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:273: }
+;	src/main.c:351: printf("\r\n");
+	mov	a,#___str_11
+	push	acc
+	mov	a,#(___str_11 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:352: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'enter_command_handler'
@@ -2290,20 +3021,20 @@ _qmark_command_handler:
 ;sloc1                     Allocated with name '_enter_command_handler_sloc1_1_0'
 ;sloc2                     Allocated with name '_enter_command_handler_sloc2_1_0'
 ;sloc3                     Allocated with name '_enter_command_handler_sloc3_1_0'
-;i                         Allocated with name '_enter_command_handler_i_131072_119'
-;address                   Allocated with name '_enter_command_handler_address_262144_121'
-;j                         Allocated with name '_enter_command_handler_j_393216_123'
+;i                         Allocated with name '_enter_command_handler_i_131072_141'
+;address                   Allocated with name '_enter_command_handler_address_262144_143'
+;j                         Allocated with name '_enter_command_handler_j_393216_145'
 ;------------------------------------------------------------
-;	src/main.c:275: void enter_command_handler()
+;	src/main.c:354: void enter_command_handler()
 ;	-----------------------------------------
 ;	 function enter_command_handler
 ;	-----------------------------------------
 _enter_command_handler:
-;	src/main.c:277: command_header("Dump Buffer");
-	mov	dptr,#___str_14
+;	src/main.c:356: command_header("Dump Admin Buffers");
+	mov	dptr,#___str_16
 	mov	b,#0x80
 	lcall	_command_header
-;	src/main.c:278: for(int i = 0; i < 2; i++)
+;	src/main.c:357: for(int i = 0; i < 2; i++)
 	mov	r6,#0x00
 	mov	r7,#0x00
 00111$:
@@ -2316,14 +3047,14 @@ _enter_command_handler:
 	jc	00142$
 	ret
 00142$:
-;	src/main.c:280: printf("\r\n Buffer %d ", i);
+;	src/main.c:359: printf("\r\n Buffer %d ", i);
 	push	ar7
 	push	ar6
 	push	ar6
 	push	ar7
-	mov	a,#___str_15
+	mov	a,#___str_17
 	push	acc
-	mov	a,#(___str_15 >> 8)
+	mov	a,#(___str_17 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2331,10 +3062,10 @@ _enter_command_handler:
 	mov	a,sp
 	add	a,#0xfb
 	mov	sp,a
-;	src/main.c:281: printf("\r\n----------");
-	mov	a,#___str_16
+;	src/main.c:360: printf("\r\n----------");
+	mov	a,#___str_18
 	push	acc
-	mov	a,#(___str_16 >> 8)
+	mov	a,#(___str_18 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2344,27 +3075,26 @@ _enter_command_handler:
 	dec	sp
 	pop	ar6
 	pop	ar7
-;	src/main.c:282: for(char *address = buffers[i].buffer; address < (buffers[i].buffer + buffers[i].size); address += 16)
-	mov	ar4,r6
+;	src/main.c:361: for(char *address = static_buffers[i].buffer; address < (static_buffers[i].buffer + static_buffers[i].size); address += 16)
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r6
+	movx	@dptr,a
 	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r2,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r3,a
 	mov	dpl,r2
 	mov	dph,r3
@@ -2381,10 +3111,10 @@ _enter_command_handler:
 	mov	_enter_command_handler_sloc3_1_0,r2
 	mov	(_enter_command_handler_sloc3_1_0 + 1),r3
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r4,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r5,a
 	mov	a,#0x04
 	add	a,r4
@@ -2436,16 +3166,16 @@ _enter_command_handler:
 	jc	00143$
 	ljmp	00102$
 00143$:
-;	src/main.c:284: printf("\r\n%04X:", (unsigned int) address);
+;	src/main.c:363: printf("\r\n%04X:", (unsigned int) address);
 	mov	r3,_enter_command_handler_sloc0_1_0
 	mov	r4,(_enter_command_handler_sloc0_1_0 + 1)
 	push	ar1
 	push	ar0
 	push	ar3
 	push	ar4
-	mov	a,#___str_17
+	mov	a,#___str_19
 	push	acc
-	mov	a,#(___str_17 >> 8)
+	mov	a,#(___str_19 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2455,7 +3185,7 @@ _enter_command_handler:
 	mov	sp,a
 	pop	ar0
 	pop	ar1
-;	src/main.c:285: for(int j = 0; j < 16; j++)
+;	src/main.c:364: for(int j = 0; j < 16; j++)
 	mov	r3,_enter_command_handler_sloc0_1_0
 	mov	r4,(_enter_command_handler_sloc0_1_0 + 1)
 	mov	r5,(_enter_command_handler_sloc0_1_0 + 2)
@@ -2470,7 +3200,7 @@ _enter_command_handler:
 	xrl	a,#0x80
 	subb	a,#0x80
 	jnc	00109$
-;	src/main.c:287: printf(" %02hhX", (unsigned char) *(address+j));
+;	src/main.c:366: printf(" %02hhX", (unsigned char) *(address+j));
 	push	ar0
 	push	ar1
 	mov	a,_enter_command_handler_sloc2_1_0
@@ -2493,9 +3223,9 @@ _enter_command_handler:
 	push	ar0
 	push	ar0
 	push	ar2
-	mov	a,#___str_18
+	mov	a,#___str_20
 	push	acc
-	mov	a,#(___str_18 >> 8)
+	mov	a,#(___str_20 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2508,7 +3238,7 @@ _enter_command_handler:
 	pop	ar3
 	pop	ar4
 	pop	ar5
-;	src/main.c:285: for(int j = 0; j < 16; j++)
+;	src/main.c:364: for(int j = 0; j < 16; j++)
 	inc	_enter_command_handler_sloc2_1_0
 	clr	a
 	cjne	a,_enter_command_handler_sloc2_1_0,00145$
@@ -2518,7 +3248,7 @@ _enter_command_handler:
 	pop	ar0
 	sjmp	00105$
 00109$:
-;	src/main.c:282: for(char *address = buffers[i].buffer; address < (buffers[i].buffer + buffers[i].size); address += 16)
+;	src/main.c:361: for(char *address = static_buffers[i].buffer; address < (static_buffers[i].buffer + static_buffers[i].size); address += 16)
 	mov	a,#0x10
 	add	a,_enter_command_handler_sloc0_1_0
 	mov	_enter_command_handler_sloc0_1_0,a
@@ -2527,12 +3257,12 @@ _enter_command_handler:
 	mov	(_enter_command_handler_sloc0_1_0 + 1),a
 	ljmp	00108$
 00102$:
-;	src/main.c:290: printf("\r\n");
+;	src/main.c:369: printf("\r\n");
 	push	ar1
 	push	ar0
-	mov	a,#___str_10
+	mov	a,#___str_11
 	push	acc
-	mov	a,#(___str_10 >> 8)
+	mov	a,#(___str_11 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2542,78 +3272,82 @@ _enter_command_handler:
 	dec	sp
 	pop	ar0
 	pop	ar1
-;	src/main.c:278: for(int i = 0; i < 2; i++)
+;	src/main.c:357: for(int i = 0; i < 2; i++)
 	mov	a,#0x01
 	add	a,r0
 	mov	r6,a
 	clr	a
 	addc	a,r1
 	mov	r7,a
-;	src/main.c:292: }
+;	src/main.c:371: }
 	ljmp	00111$
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'percent_command_handler'
 ;------------------------------------------------------------
 ;sloc0                     Allocated with name '_percent_command_handler_sloc0_1_0'
-;i                         Allocated with name '_percent_command_handler_i_131072_126'
+;i                         Allocated with name '_percent_command_handler_i_131072_148'
+;curr                      Allocated with name '_percent_command_handler_curr_65537_151'
 ;------------------------------------------------------------
-;	src/main.c:294: void percent_command_handler()
+;	src/main.c:373: void percent_command_handler()
 ;	-----------------------------------------
 ;	 function percent_command_handler
 ;	-----------------------------------------
 _percent_command_handler:
-;	src/main.c:296: command_header("Clear Buffers");
-	mov	dptr,#___str_19
+;	src/main.c:375: command_header("Clear Buffers");
+	mov	dptr,#___str_21
 	mov	b,#0x80
 	lcall	_command_header
-;	src/main.c:297: for(int i = 0; i < BUFFER_COUNT; i++)
+;	src/main.c:376: for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	mov	r6,#0x00
 	mov	r7,#0x00
-00103$:
+00107$:
 	clr	c
 	mov	a,r6
-	subb	a,#0x06
+	subb	a,#0x02
 	mov	a,r7
 	xrl	a,#0x80
 	subb	a,#0x80
-	jc	00116$
-	ret
-00116$:
-;	src/main.c:299: memset(buffers[i].buffer, 0x00, buffers[i].size);
-	mov	ar4,r6
+	jc	00128$
+	ljmp	00103$
+00128$:
+;	src/main.c:378: if (static_buffers[i].buffer != NULL) 
+	mov	dptr,#__mulint_PARM_2
+	mov	a,r6
+	movx	@dptr,a
 	mov	a,r7
-	swap	a
-	rr	a
-	anl	a,#0xf8
-	xch	a,r4
-	swap	a
-	rr	a
-	xch	a,r4
-	xrl	a,r4
-	xch	a,r4
-	anl	a,#0xf8
-	xch	a,r4
-	xrl	a,r4
-	mov	r5,a
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#0x000b
+	push	ar7
+	push	ar6
+	lcall	__mulint
+	mov	r4,dpl
+	mov	r5,dph
+	pop	ar6
+	pop	ar7
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	dpl,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	dph,a
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r3,a
-	mov	_percent_command_handler_sloc0_1_0,r2
-	mov	(_percent_command_handler_sloc0_1_0 + 1),r3
-	mov	(_percent_command_handler_sloc0_1_0 + 2),#0x00
+	orl	a,r2
+	jz	00108$
+;	src/main.c:380: memset(static_buffers[i].buffer, 0x00, static_buffers[i].size);
+	push	ar6
+	push	ar7
+	mov	ar1,r3
+	mov	r3,#0x00
 	mov	a,r4
-	add	a,#_buffers
+	add	a,#_static_buffers
 	mov	r4,a
 	mov	a,r5
-	addc	a,#(_buffers >> 8)
+	addc	a,#(_static_buffers >> 8)
 	mov	r5,a
 	mov	dpl,r4
 	mov	dph,r5
@@ -2625,19 +3359,19 @@ _percent_command_handler:
 	mov	r0,a
 	inc	dptr
 	movx	a,@dptr
-	mov	r3,a
+	mov	r7,a
 	mov	dptr,#_memset_PARM_2
 	clr	a
 	movx	@dptr,a
 	mov	dptr,#_memset_PARM_3
 	mov	a,r0
 	movx	@dptr,a
-	mov	a,r3
+	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-	mov	dpl,_percent_command_handler_sloc0_1_0
-	mov	dph,(_percent_command_handler_sloc0_1_0 + 1)
-	mov	b,(_percent_command_handler_sloc0_1_0 + 2)
+	mov	dpl,r2
+	mov	dph,r1
+	mov	b,r3
 	push	ar7
 	push	ar6
 	push	ar5
@@ -2647,7 +3381,7 @@ _percent_command_handler:
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	src/main.c:300: buffers[i].curr_available_char = 0;
+;	src/main.c:381: static_buffers[i].curr_available_char = 0;
 	mov	a,#0x06
 	add	a,r4
 	mov	dpl,a
@@ -2658,7 +3392,7 @@ _percent_command_handler:
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:301: buffers[i].alphabet_chars = 0; 
+;	src/main.c:382: static_buffers[i].alphabet_chars = 0; 
 	mov	dpl,r4
 	mov	dph,r5
 	inc	dptr
@@ -2666,174 +3400,447 @@ _percent_command_handler:
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:297: for(int i = 0; i < BUFFER_COUNT; i++)
+;	src/main.c:391: curr->alphabet_chars = 0; 
+	pop	ar7
+	pop	ar6
+;	src/main.c:382: static_buffers[i].alphabet_chars = 0; 
+00108$:
+;	src/main.c:376: for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
 	inc	r6
-	cjne	r6,#0x00,00117$
+	cjne	r6,#0x00,00130$
 	inc	r7
-00117$:
-;	src/main.c:303: }
-	ljmp	00103$
-;------------------------------------------------------------
-;Allocation info for local variables in function 'dollar_sign_command_handler'
-;------------------------------------------------------------
-;	src/main.c:305: void dollar_sign_command_handler()
-;	-----------------------------------------
-;	 function dollar_sign_command_handler
-;	-----------------------------------------
-_dollar_sign_command_handler:
-;	src/main.c:307: P1_0 = true;
-;	assignBit
-	setb	_P1_0
-;	src/main.c:308: memcpy(buffers[3].buffer, buffers[0].buffer, buffers[0].size);
-	mov	dptr,#(_buffers + 0x0018)
+00130$:
+	ljmp	00107$
+00103$:
+;	src/main.c:386: buffer_t *curr = dynamic_buffers_list.head;
+	mov	dptr,#_dynamic_buffers_list
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
 	movx	a,@dptr
 	mov	r6,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r7,a
-	mov	r5,#0x00
-	mov	dptr,#_buffers
-	movx	a,@dptr
+;	src/main.c:387: if (curr != NULL)
+	mov	a,r5
+	orl	a,r6
+	jnz	00131$
+	ret
+00131$:
+;	src/main.c:389: memset(curr->buffer, 0x00, curr->size);
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
 	mov	r3,a
 	inc	dptr
-	movx	a,@dptr
+	lcall	__gptrget
 	mov	r4,a
-	mov	r2,#0x00
-	mov	dptr,#(_buffers + 0x0004)
-	movx	a,@dptr
+	mov	_percent_command_handler_sloc0_1_0,r3
+	mov	(_percent_command_handler_sloc0_1_0 + 1),r4
+	mov	(_percent_command_handler_sloc0_1_0 + 2),#0x00
+	mov	a,#0x04
+	add	a,r5
+	mov	r0,a
+	clr	a
+	addc	a,r6
+	mov	r1,a
+	mov	ar4,r7
+	mov	dpl,r0
+	mov	dph,r1
+	mov	b,r4
+	lcall	__gptrget
 	mov	r0,a
 	inc	dptr
-	movx	a,@dptr
+	lcall	__gptrget
 	mov	r1,a
-	mov	dptr,#___memcpy_PARM_2
-	mov	a,r3
+	mov	dptr,#_memset_PARM_2
+	clr	a
 	movx	@dptr,a
-	mov	a,r4
-	inc	dptr
-	movx	@dptr,a
-	mov	a,r2
-	inc	dptr
-	movx	@dptr,a
-	mov	dptr,#___memcpy_PARM_3
+	mov	dptr,#_memset_PARM_3
 	mov	a,r0
 	movx	@dptr,a
 	mov	a,r1
 	inc	dptr
 	movx	@dptr,a
-	mov	dpl,r6
-	mov	dph,r7
-	mov	b,r5
-	lcall	___memcpy
-;	src/main.c:309: buffers[3].alphabet_chars = buffers[0].alphabet_chars;
-	mov	dptr,#(_buffers + 0x0002)
+	mov	dpl,_percent_command_handler_sloc0_1_0
+	mov	dph,(_percent_command_handler_sloc0_1_0 + 1)
+	mov	b,(_percent_command_handler_sloc0_1_0 + 2)
+	push	ar7
+	push	ar6
+	push	ar5
+	lcall	_memset
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	src/main.c:390: curr->curr_available_char = 0;
+	mov	a,#0x06
+	add	a,r5
+	mov	r2,a
+	clr	a
+	addc	a,r6
+	mov	r3,a
+	mov	ar4,r7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	clr	a
+	lcall	__gptrput
+	inc	dptr
+	lcall	__gptrput
+;	src/main.c:391: curr->alphabet_chars = 0; 
+	mov	a,#0x02
+	add	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	clr	a
+	lcall	__gptrput
+	inc	dptr
+;	src/main.c:393: }
+	ljmp	__gptrput
+;------------------------------------------------------------
+;Allocation info for local variables in function 'dollar_sign_command_handler'
+;------------------------------------------------------------
+;sloc0                     Allocated with name '_dollar_sign_command_handler_sloc0_1_0'
+;buffer_3                  Allocated with name '_dollar_sign_command_handler_buffer_3_65537_155'
+;------------------------------------------------------------
+;	src/main.c:395: void dollar_sign_command_handler()
+;	-----------------------------------------
+;	 function dollar_sign_command_handler
+;	-----------------------------------------
+_dollar_sign_command_handler:
+;	src/main.c:397: P1_0 = ON;
+;	assignBit
+	setb	_P1_0
+;	src/main.c:398: if (dynamic_buffers_list.head == NULL
+	mov	dptr,#_dynamic_buffers_list
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
 	movx	a,@dptr
 	mov	r6,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r7,a
-	mov	dptr,#(_buffers + 0x001a)
-	mov	a,r6
-	movx	@dptr,a
-	mov	a,r7
+	mov	a,r5
+	orl	a,r6
+	jz	00101$
+;	src/main.c:399: || dynamic_buffers_list.head->next == NULL) 
+	mov	a,#0x08
+	add	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r5,a
 	inc	dptr
-	movx	@dptr,a
-;	src/main.c:310: buffers[3].curr_available_char = buffers[0].curr_available_char;
-	mov	dptr,#(_buffers + 0x0006)
-	movx	a,@dptr
+	lcall	__gptrget
 	mov	r6,a
 	inc	dptr
-	movx	a,@dptr
+	lcall	__gptrget
 	mov	r7,a
-	mov	dptr,#(_buffers + 0x001e)
-	mov	a,r6
-	movx	@dptr,a
-	mov	a,r7
-	inc	dptr
-	movx	@dptr,a
-;	src/main.c:311: P1_0 = false; 
+	mov	a,r5
+	orl	a,r6
+	jnz	00102$
+00101$:
+;	src/main.c:401: P1_0 = OFF;
 ;	assignBit
 	clr	_P1_0
-;	src/main.c:312: }
+;	src/main.c:402: return; 
+	ret
+00102$:
+;	src/main.c:405: memcpy(buffer_3->buffer, static_buffers[0].buffer, static_buffers[0].size);
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r3,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r4,a
+	mov	_dollar_sign_command_handler_sloc0_1_0,r3
+	mov	(_dollar_sign_command_handler_sloc0_1_0 + 1),r4
+	mov	(_dollar_sign_command_handler_sloc0_1_0 + 2),#0x00
+	mov	dptr,#_static_buffers
+	movx	a,@dptr
+	mov	r0,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r1,a
+	mov	r4,#0x00
+	mov	dptr,#(_static_buffers + 0x0004)
+	movx	a,@dptr
+	mov	r2,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r3,a
+	mov	dptr,#___memcpy_PARM_2
+	mov	a,r0
+	movx	@dptr,a
+	mov	a,r1
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r4
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#___memcpy_PARM_3
+	mov	a,r2
+	movx	@dptr,a
+	mov	a,r3
+	inc	dptr
+	movx	@dptr,a
+	mov	dpl,_dollar_sign_command_handler_sloc0_1_0
+	mov	dph,(_dollar_sign_command_handler_sloc0_1_0 + 1)
+	mov	b,(_dollar_sign_command_handler_sloc0_1_0 + 2)
+	push	ar7
+	push	ar6
+	push	ar5
+	lcall	___memcpy
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	src/main.c:406: buffer_3->alphabet_chars = static_buffers[0].alphabet_chars;
+	mov	a,#0x02
+	add	a,r5
+	mov	r2,a
+	clr	a
+	addc	a,r6
+	mov	r3,a
+	mov	ar4,r7
+	mov	dptr,#(_static_buffers + 0x0002)
+	movx	a,@dptr
+	mov	r0,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r1,a
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	mov	a,r0
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r1
+	lcall	__gptrput
+;	src/main.c:407: buffer_3->curr_available_char = static_buffers[0].curr_available_char;
+	mov	a,#0x06
+	add	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	dptr,#(_static_buffers + 0x0006)
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r4,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	mov	a,r3
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	src/main.c:408: P1_0 = OFF; 
+;	assignBit
+	clr	_P1_0
+;	src/main.c:409: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'hashtag_command_handler'
 ;------------------------------------------------------------
-;i                         Allocated with name '_hashtag_command_handler_i_131072_130'
+;buffer_3                  Allocated with name '_hashtag_command_handler_buffer_3_65537_158'
+;i                         Allocated with name '_hashtag_command_handler_i_131073_159'
+;c                         Allocated with name '_hashtag_command_handler_c_196609_160'
 ;------------------------------------------------------------
-;	src/main.c:314: void hashtag_command_handler()
+;	src/main.c:411: void hashtag_command_handler()
 ;	-----------------------------------------
 ;	 function hashtag_command_handler
 ;	-----------------------------------------
 _hashtag_command_handler:
-;	src/main.c:316: P1_0 = true;
+;	src/main.c:413: P1_0 = ON;
 ;	assignBit
 	setb	_P1_0
-;	src/main.c:317: for(size_t i = 0; i < buffers[3].curr_available_char; i++)
-	mov	r6,#0x00
-	mov	r7,#0x00
-00103$:
-	mov	dptr,#(_buffers + 0x001e)
+;	src/main.c:414: if (dynamic_buffers_list.head == NULL
+	mov	dptr,#_dynamic_buffers_list
 	movx	a,@dptr
-	mov	r4,a
+	mov	r5,a
 	inc	dptr
 	movx	a,@dptr
-	mov	r5,a
-	clr	c
-	mov	a,r6
-	subb	a,r4
-	mov	a,r7
-	subb	a,r5
-	jnc	00101$
-;	src/main.c:319: buffers[3].buffer[i] |= LOWER_CASE_MASK;
-	mov	dptr,#(_buffers + 0x0018)
-	movx	a,@dptr
-	mov	r4,a
+	mov	r6,a
 	inc	dptr
 	movx	a,@dptr
+	mov	r7,a
+	mov	a,r5
+	orl	a,r6
+	jz	00101$
+;	src/main.c:415: || dynamic_buffers_list.head->next == NULL) 
+	mov	a,#0x08
+	add	a,r5
 	mov	r5,a
-	mov	a,r6
-	add	a,r4
-	mov	r4,a
-	mov	a,r7
-	addc	a,r5
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
 	mov	r5,a
-	mov	dpl,r4
-	mov	dph,r5
-	movx	a,@dptr
-	mov	r3,a
-	orl	ar3,#0x20
-	mov	dpl,r4
-	mov	dph,r5
-	mov	a,r3
-	movx	@dptr,a
-;	src/main.c:317: for(size_t i = 0; i < buffers[3].curr_available_char; i++)
-	inc	r6
-	cjne	r6,#0x00,00103$
-	inc	r7
-	sjmp	00103$
+	inc	dptr
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	a,r5
+	orl	a,r6
+	jnz	00102$
 00101$:
-;	src/main.c:321: P1_0 = false;
+;	src/main.c:417: P1_0 = OFF;
 ;	assignBit
 	clr	_P1_0
-;	src/main.c:322: }
+;	src/main.c:418: return; 
+	ret
+00102$:
+;	src/main.c:421: buffer_t *buffer_3 = dynamic_buffers_list.head->next;
+	mov	ar2,r5
+	mov	ar3,r6
+	mov	ar4,r7
+;	src/main.c:422: for(size_t i = 0; i < buffer_3->curr_available_char; i++)
+	mov	a,#0x06
+	add	a,r5
+	mov	r5,a
+	clr	a
+	addc	a,r6
+	mov	r6,a
+	mov	r0,#0x00
+	mov	r1,#0x00
+00109$:
+	push	ar2
+	push	ar3
+	push	ar4
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r3,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r4,a
+	clr	c
+	mov	a,r0
+	subb	a,r3
+	mov	a,r1
+	subb	a,r4
+	pop	ar4
+	pop	ar3
+	pop	ar2
+	jnc	00107$
+;	src/main.c:424: register char c = buffer_3->buffer[i];
+	push	ar5
+	push	ar6
+	push	ar7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	a,r0
+	add	a,r6
+	mov	dpl,a
+	mov	a,r1
+	addc	a,r7
+	mov	dph,a
+	movx	a,@dptr
+	mov	_hashtag_command_handler_c_196609_160,a
+;	src/main.c:425: if (c <= 'Z' || c >= 'A')
+	clr	c
+	mov	a,#0x5a
+	subb	a,_hashtag_command_handler_c_196609_160
+	pop	ar7
+	pop	ar6
+	pop	ar5
+	jnc	00104$
+	mov	a,#0x100 - 0x41
+	add	a,_hashtag_command_handler_c_196609_160
+	jnc	00110$
+00104$:
+;	src/main.c:427: buffer_3->buffer[i] |= LOWER_CASE_MASK;
+	push	ar5
+	push	ar6
+	push	ar7
+	mov	dpl,r2
+	mov	dph,r3
+	mov	b,r4
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	a,r0
+	add	a,r6
+	mov	r6,a
+	mov	a,r1
+	addc	a,r7
+	mov	r7,a
+	mov	dpl,r6
+	mov	dph,r7
+	movx	a,@dptr
+	mov	r5,a
+	orl	ar5,#0x20
+	mov	dpl,r6
+	mov	dph,r7
+	mov	a,r5
+	movx	@dptr,a
+;	src/main.c:430: P1_0 = OFF;
+	pop	ar7
+	pop	ar6
+	pop	ar5
+;	src/main.c:427: buffer_3->buffer[i] |= LOWER_CASE_MASK;
+00110$:
+;	src/main.c:422: for(size_t i = 0; i < buffer_3->curr_available_char; i++)
+	inc	r0
+	cjne	r0,#0x00,00135$
+	inc	r1
+00135$:
+	ljmp	00109$
+00107$:
+;	src/main.c:430: P1_0 = OFF;
+;	assignBit
+	clr	_P1_0
+;	src/main.c:431: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'main'
+;Allocation info for local variables in function 'plus_command_handler'
 ;------------------------------------------------------------
-;received_char             Allocated with name '_main_received_char_196609_135'
+;size                      Allocated with name '_plus_command_handler_size_65536_162'
+;new_buffer                Allocated with name '_plus_command_handler_new_buffer_65537_164'
 ;------------------------------------------------------------
-;	src/main.c:325: void main()
+;	src/main.c:434: void plus_command_handler() 
 ;	-----------------------------------------
-;	 function main
+;	 function plus_command_handler
 ;	-----------------------------------------
-_main:
-;	src/main.c:327: initialize_buffers();
-	lcall	_initialize_buffers
-00112$:
-;	src/main.c:331: printf("\r\nEnter a char: ");
-	mov	a,#___str_20
+_plus_command_handler:
+;	src/main.c:437: while (true) {
+00105$:
+;	src/main.c:438: printf("\r\nPlease enter a size for the new buffer, [200,600]: ");
+	mov	a,#___str_22
 	push	acc
-	mov	a,#(___str_20 >> 8)
+	mov	a,#(___str_22 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -2841,93 +3848,337 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:332: char received_char = get_next_input_char();
+;	src/main.c:439: get_string();
+	lcall	_get_string
+;	src/main.c:440: size = atoi(get_input_buffer());
+	lcall	_get_input_buffer
+	lcall	_atoi
+	mov	r6,dpl
+	mov	r7,dph
+;	src/main.c:441: if (size < MAX_USER_DETERMINED_BUFFER_SZ && size > MIN_USER_DETERMINED_BUFFER_SZ) break;
+	clr	c
+	mov	a,r6
+	subb	a,#0x58
+	mov	a,r7
+	xrl	a,#0x80
+	subb	a,#0x82
+	jnc	00102$
+	clr	c
+	mov	a,#0xc8
+	subb	a,r6
+	mov	a,#(0x00 ^ 0x80)
+	mov	b,r7
+	xrl	b,#0x80
+	subb	a,b
+	jc	00106$
+00102$:
+;	src/main.c:442: printf("\r\nBuffer size invalid!! Please try again");
+	mov	a,#___str_23
+	push	acc
+	mov	a,#(___str_23 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+	sjmp	00105$
+00106$:
+;	src/main.c:445: buffer_t *new_buffer = alloc_new_buffer((size_t) size);
+	mov	dpl,r6
+	mov	dph,r7
+	lcall	_alloc_new_buffer
+	mov	r5,dpl
+	mov	r6,dph
+	mov	r7,b
+;	src/main.c:447: if (new_buffer == NULL)
+	mov	a,r5
+	orl	a,r6
+	jnz	00108$
+;	src/main.c:449: printf("\r\n Allocation failed; able to allocate header but not buffer");
+	mov	a,#___str_24
+	push	acc
+	mov	a,#(___str_24 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:450: return;
+	ret
+00108$:
+;	src/main.c:453: append_to_buffer_list(&dynamic_buffers_list, new_buffer);
+	mov	dptr,#_append_to_buffer_list_PARM_2
+	mov	a,r5
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#_dynamic_buffers_list
+	mov	b,#0x00
+	lcall	_append_to_buffer_list
+;	src/main.c:455: printf("\r\n Allocation successful!! New buffer added");
+	mov	a,#___str_25
+	push	acc
+	mov	a,#(___str_25 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:457: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'minus_command_handler'
+;------------------------------------------------------------
+;buffer_num                Allocated with name '_minus_command_handler_buffer_num_65537_167'
+;freed                     Allocated with name '_minus_command_handler_freed_131073_170'
+;------------------------------------------------------------
+;	src/main.c:459: void minus_command_handler() 
+;	-----------------------------------------
+;	 function minus_command_handler
+;	-----------------------------------------
+_minus_command_handler:
+;	src/main.c:461: printf("\r\nPlease enter the number of the buffer you would like to free: ");
+	mov	a,#___str_26
+	push	acc
+	mov	a,#(___str_26 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:462: get_string(); 
+	lcall	_get_string
+;	src/main.c:463: int buffer_num = atoi(get_input_buffer()); 
+	lcall	_get_input_buffer
+	lcall	_atoi
+	mov	r6,dpl
+;	src/main.c:464: if (buffer_num < 0)
+	mov	a,dph
+	mov	r7,a
+	jnb	acc.7,00108$
+;	src/main.c:466: printf("\r\n Invalid buffer number, negatives not valid");
+	mov	a,#___str_27
+	push	acc
+	mov	a,#(___str_27 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:467: return;
+	ret
+00108$:
+;	src/main.c:469: else if (buffer_num <= 1) 
+	clr	c
+	mov	a,#0x01
+	subb	a,r6
+	mov	a,#(0x00 ^ 0x80)
+	mov	b,r7
+	xrl	b,#0x80
+	subb	a,b
+	jc	00105$
+;	src/main.c:471: printf("\r\n Invalid buffer number, buffers 0 & 1 are protected");
+	mov	a,#___str_28
+	push	acc
+	mov	a,#(___str_28 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:472: return; 
+	ret
+00105$:
+;	src/main.c:476: bool freed = remove_from_buffer_list(&dynamic_buffers_list, (size_t)(buffer_num-2));
+	mov	a,r6
+	add	a,#0xfe
+	mov	r6,a
+	mov	a,r7
+	addc	a,#0xff
+	mov	r7,a
+	mov	dptr,#_remove_from_buffer_list_PARM_2
+	mov	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+	mov	dptr,#_dynamic_buffers_list
+	mov	b,#0x00
+	lcall	_remove_from_buffer_list
+	mov	a,dpl
+;	src/main.c:477: if (freed)
+	jz	00102$
+;	src/main.c:479: printf("\r\n Successfully removed buffer");
+	mov	a,#___str_29
+	push	acc
+	mov	a,#(___str_29 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+	ret
+00102$:
+;	src/main.c:483: printf("\r\n Failed to remove buffer, idx too big");
+	mov	a,#___str_30
+	push	acc
+	mov	a,#(___str_30 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:487: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'main'
+;------------------------------------------------------------
+;received_char             Allocated with name '_main_received_char_196609_176'
+;------------------------------------------------------------
+;	src/main.c:489: void main()
+;	-----------------------------------------
+;	 function main
+;	-----------------------------------------
+_main:
+;	src/main.c:491: initialize_buffers();
+	lcall	_initialize_buffers
+00114$:
+;	src/main.c:495: printf("\r\nEnter a char: ");
+	mov	a,#___str_31
+	push	acc
+	mov	a,#(___str_31 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:496: char received_char = get_next_input_char();
 	lcall	_get_next_input_char
-;	src/main.c:333: if (is_alphabet_char(received_char))
+;	src/main.c:497: if (is_alphabet_char(received_char))
 	mov  r7,dpl
 	push	ar7
 	lcall	_is_alphabet_char
 	mov	a,dpl
 	pop	ar7
 	jz	00102$
-;	src/main.c:335: store_in_buffer(&buffers[0], received_char);
+;	src/main.c:499: store_in_buffer(&static_buffers[0], received_char);
 	mov	dptr,#_store_in_buffer_PARM_2
 	mov	a,r7
 	movx	@dptr,a
-	mov	dptr,#_buffers
+	mov	dptr,#_static_buffers
 	mov	b,#0x00
 	push	ar7
 	lcall	_store_in_buffer
 	pop	ar7
 	sjmp	00103$
 00102$:
-;	src/main.c:339: store_in_buffer(&buffers[1], received_char);
+;	src/main.c:503: store_in_buffer(&static_buffers[1], received_char);
 	mov	dptr,#_store_in_buffer_PARM_2
 	mov	a,r7
 	movx	@dptr,a
-	mov	dptr,#(_buffers + 0x0008)
+	mov	dptr,#(_static_buffers + 0x000b)
 	mov	b,#0x00
 	push	ar7
 	lcall	_store_in_buffer
 	pop	ar7
 00103$:
-;	src/main.c:342: switch(received_char)
-	cjne	r7,#0x23,00149$
+;	src/main.c:506: switch(received_char)
+	cjne	r7,#0x23,00159$
 	sjmp	00109$
-00149$:
-	cjne	r7,#0x24,00150$
+00159$:
+	cjne	r7,#0x24,00160$
 	sjmp	00108$
-00150$:
-	cjne	r7,#0x25,00151$
+00160$:
+	cjne	r7,#0x25,00161$
 	sjmp	00106$
-00151$:
-	cjne	r7,#0x3d,00152$
+00161$:
+	cjne	r7,#0x2b,00162$
+	sjmp	00110$
+00162$:
+	cjne	r7,#0x2d,00163$
+	sjmp	00111$
+00163$:
+	cjne	r7,#0x3d,00164$
 	sjmp	00105$
-00152$:
-	cjne	r7,#0x3f,00153$
+00164$:
+	cjne	r7,#0x3f,00165$
 	sjmp	00104$
-00153$:
-;	src/main.c:344: case '?':
-	cjne	r7,#0x40,00112$
+00165$:
+;	src/main.c:508: case '?':
+	cjne	r7,#0x40,00114$
 	sjmp	00107$
 00104$:
-;	src/main.c:345: qmark_command_handler();
+;	src/main.c:509: qmark_command_handler();
 	lcall	_qmark_command_handler
-;	src/main.c:346: break;
-;	src/main.c:347: case '=':
-	sjmp	00112$
+;	src/main.c:510: break;
+	ljmp	00114$
+;	src/main.c:511: case '=':
 00105$:
-;	src/main.c:348: enter_command_handler();
+;	src/main.c:512: enter_command_handler();
 	lcall	_enter_command_handler
-;	src/main.c:349: break;
-;	src/main.c:350: case '%':
-	sjmp	00112$
+;	src/main.c:513: break;
+	ljmp	00114$
+;	src/main.c:514: case '%':
 00106$:
-;	src/main.c:351: percent_command_handler();
+;	src/main.c:515: percent_command_handler();
 	lcall	_percent_command_handler
-;	src/main.c:352: break;
-	ljmp	00112$
-;	src/main.c:353: case '@':
+;	src/main.c:516: break;
+	ljmp	00114$
+;	src/main.c:517: case '@':
 00107$:
-;	src/main.c:354: free_all_buffers();
+;	src/main.c:518: free_all_buffers();
 	lcall	_free_all_buffers
-;	src/main.c:355: initialize_buffers();
+;	src/main.c:519: initialize_buffers();
 	lcall	_initialize_buffers
-;	src/main.c:356: break;
-	ljmp	00112$
-;	src/main.c:357: case '$':
+;	src/main.c:520: break;
+	ljmp	00114$
+;	src/main.c:521: case '$':
 00108$:
-;	src/main.c:358: dollar_sign_command_handler();
+;	src/main.c:522: dollar_sign_command_handler();
 	lcall	_dollar_sign_command_handler
-;	src/main.c:359: break;
-	ljmp	00112$
-;	src/main.c:360: case '#':
+;	src/main.c:523: break;
+	ljmp	00114$
+;	src/main.c:524: case '#':
 00109$:
-;	src/main.c:361: hashtag_command_handler();
+;	src/main.c:525: hashtag_command_handler();
 	lcall	_hashtag_command_handler
-;	src/main.c:363: }
-;	src/main.c:365: }
-	ljmp	00112$
+;	src/main.c:526: break;
+	ljmp	00114$
+;	src/main.c:527: case '+':
+00110$:
+;	src/main.c:528: plus_command_handler();
+	lcall	_plus_command_handler
+;	src/main.c:529: break;
+	ljmp	00114$
+;	src/main.c:530: case '-':
+00111$:
+;	src/main.c:531: minus_command_handler();
+	lcall	_minus_command_handler
+;	src/main.c:533: }
+;	src/main.c:535: }
+	ljmp	00114$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)
@@ -2941,58 +4192,65 @@ ___str_0:
 ___str_1:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Buffer Size too big, please pick a smaller buffer size"
+	.ascii " static_buffers[%d].buffer %p"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_2:
 	.db 0x0d
 	.db 0x0a
-	.ascii "student_number: %d"
+	.ascii "Buffer Size too big, please pick a smaller buffer size"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_3:
 	.db 0x0d
 	.db 0x0a
-	.ascii "user_buffer_size: %zu"
+	.ascii "student_number: %d"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_4:
 	.db 0x0d
 	.db 0x0a
-	.ascii "buffer_%d starts @ %p, ends @%p, size %zu"
+	.ascii "user_buffer_size: %zu"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_5:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Heap starts @ %p, ends @ %p, size: %zu"
+	.ascii "buffer_%d starts @ %p, ends @%p, size %zu"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_6:
 	.db 0x0d
 	.db 0x0a
-	.ascii "        %s"
+	.ascii "Heap starts @ %p, ends @ %p, size: %zu"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_7:
 	.db 0x0d
 	.db 0x0a
-	.ascii "------------------------------"
+	.ascii "        %s"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_8:
-	.ascii "HEAP REPORT"
+	.db 0x0d
+	.db 0x0a
+	.ascii "------------------------------"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_9:
+	.ascii "HEAP REPORT"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_10:
 	.db 0x0d
 	.db 0x0a
 	.ascii "buffer_%d starts @ %p, ends @%p, size %zu, contains %zu alph"
@@ -3000,13 +4258,13 @@ ___str_9:
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___str_10:
+___str_11:
 	.db 0x0d
 	.db 0x0a
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___str_11:
+___str_12:
 	.db 0x0d
 	.db 0x0a
 	.ascii "Please enter a valid buffer size that is divisible by 32 [64"
@@ -3014,59 +4272,133 @@ ___str_11:
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___str_12:
+___str_13:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Freeing ALL BUFFERS"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_14:
 	.db 0x0d
 	.db 0x0a
 	.ascii " Received %zu chars since last invocation of ?"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___str_13:
+___str_15:
 	.ascii "%c"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___str_14:
-	.ascii "Dump Buffer"
-	.db 0x00
-	.area CSEG    (CODE)
-	.area CONST   (CODE)
-___str_15:
-	.db 0x0d
-	.db 0x0a
-	.ascii " Buffer %d "
-	.db 0x00
-	.area CSEG    (CODE)
-	.area CONST   (CODE)
 ___str_16:
-	.db 0x0d
-	.db 0x0a
-	.ascii "----------"
+	.ascii "Dump Admin Buffers"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_17:
 	.db 0x0d
 	.db 0x0a
-	.ascii "%04X:"
+	.ascii " Buffer %d "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_18:
-	.ascii " %02hhX"
+	.db 0x0d
+	.db 0x0a
+	.ascii "----------"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_19:
-	.ascii "Clear Buffers"
+	.db 0x0d
+	.db 0x0a
+	.ascii "%04X:"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_20:
+	.ascii " %02hhX"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_21:
+	.ascii "Clear Buffers"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_22:
+	.db 0x0d
+	.db 0x0a
+	.ascii "Please enter a size for the new buffer, [200,600]: "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_23:
+	.db 0x0d
+	.db 0x0a
+	.ascii "Buffer size invalid!! Please try again"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_24:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Allocation failed; able to allocate header but not buffer"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_25:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Allocation successful!! New buffer added"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_26:
+	.db 0x0d
+	.db 0x0a
+	.ascii "Please enter the number of the buffer you would like to free"
+	.ascii ": "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_27:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Invalid buffer number, negatives not valid"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_28:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Invalid buffer number, buffers 0 & 1 are protected"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_29:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Successfully removed buffer"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_30:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Failed to remove buffer, idx too big"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_31:
 	.db 0x0d
 	.db 0x0a
 	.ascii "Enter a char: "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area XINIT   (CODE)
+__xinit__dynamic_buffers_list:
+; generic printIvalPtr
+	.byte #0x00,#0x00,#0x00
 	.area CABS    (ABS,CODE)

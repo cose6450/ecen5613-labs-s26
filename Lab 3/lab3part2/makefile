@@ -8,7 +8,7 @@
 # ------------------------------------------------------------------------------
 SDCC_PATH = "C:\Program Files\SDCC\bin\sdcc.exe" 
 BATCH_ISP_PATH = "C:\Program Files (x86)\Atmel\Flip 3.4.7\bin\batchisp.exe"
-COM_PORT = "COM4"
+COM_PORT = "COM5"
 CC = $(SDCC_PATH)
 
 putty:
@@ -37,8 +37,8 @@ user_program: bin/output.hex
 # --model-large : Generate code for Large model programs
 # --out-fmt-ihx : Generate Intel HEX output format
 
-bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel
-	$(CC) bin/main.rel bin/my_serial.rel bin/_heap.rel bin/input.rel\
+bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel bin/linked_list.rel
+	$(CC) bin/main.rel bin/my_serial.rel bin/_heap.rel bin/input.rel bin/linked_list.rel\
 	--code-loc 0x2000 --code-size 0x6000 \
 	--xram-loc 0x0001 --xram-size 0x7FFF \
 	--model-large --out-fmt-ihx -o bin/output.hex
@@ -49,7 +49,7 @@ bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel
 # --model-large :  Generate code for Large model programs
 # -I headers : Add headers directory to include path
 
-bin/main.rel: src/main.c headers/my_serial.h headers/input.h headers/heap.h
+bin/main.rel: src/main.c headers/my_serial.h headers/input.h headers/heap.h headers/linked_list.h
 	$(CC) -c -mmcs51 --model-large -I headers src/main.c -o bin/main.rel
 
 bin/_heap.rel: src/_heap.c headers/heap.h
@@ -59,7 +59,10 @@ bin/my_serial.rel: src/my_serial.c headers/my_serial.h
 	$(CC) -c -mmcs51 --model-large -I headers src/my_serial.c -o  bin/my_serial.rel
 
 bin/input.rel: src/input.c headers/input.h headers/my_serial.h
-	$(CC) -c -mmcs51 --model-large -I headers src/input.c -o bin/input.rel	
+	$(CC) -c -mmcs51 --model-large -I headers src/input.c -o bin/input.rel
+
+bin/linked_list.rel: src/linked_list.c headers/linked_list.h
+	$(CC) -c -mmcs51 --model-large -I headers src/linked_list.c -o bin/linked_list.rel	
 
 # Delete all generated files from bin directory
 clean:

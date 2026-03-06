@@ -43,6 +43,8 @@
 #include "input.h"
 #include "string.h"
 #include "heap.h"
+#include "linked_list.h"
+#include "allocation.h"
 /*
 [Important Note] if you have made this change via paulmon2 you can comment this section
 
@@ -59,20 +61,24 @@ extern __xdata char __sdcc_heap[HEAP_SIZE];
 #define USER_BUFFER_MIN (64)
 #define USER_BUFFER_MAX (1024)
 #define USER_BUFFER_ALIGNMENT (32)
-#define BUFFER_COUNT (6)
+#define BUFFER_ALWAYS_HELD_COUNT (2)
+#define INTIAL_DYNAMIC_BUFFER_COUNT (4)
 #define MODULE_32(x) ((x) & (31))
 #define MAX_STUDENT_NUMBER (99)
 #define BUFFER_SZ_TOO_BIG ("\r\nBuffer Size too big, please pick a smaller buffer size")
 #define LOWER_CASE_MASK (0x20)
+#define ON (true)
+#define OFF (false)
+#define MAX_USER_DETERMINED_BUFFER_SZ (600)
+#define MIN_USER_DETERMINED_BUFFER_SZ (200)
 
-typedef struct{
-    __xdata char *buffer;
-    size_t alphabet_chars; 
-    size_t size;
-    size_t curr_available_char; 
-} buffer_t; 
 
-buffer_t buffers[BUFFER_COUNT];
+
+
+
+
+buffer_t static_buffers[BUFFER_ALWAYS_HELD_COUNT];
+buffer_list_t dynamic_buffers_list = {NULL};
 
 #define NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ (4)
 void free_all_buffers();
@@ -84,8 +90,37 @@ bool is_alphabet_char(char c)
             || (c <= 'z' && c >= 'a');
 }
 
+void initialize_default_elements(buffer_t *buffer)
+{
+    buffer->alphabet_chars = 0;
+    buffer->curr_available_char = 0;
+    buffer->next = NULL;
+
+    memset(buffer->buffer, 0x00, buffer->size);
+}
+
+buffer_t *alloc_new_buffer(size_t size)
+{
+    buffer_t *header = malloc(sizeof(buffer_t));
+    if (header == NULL)
+    {
+        return NULL;
+    }
+    header->size = size;
+    header->buffer = malloc(size);
+    if (header->buffer == NULL)
+    {
+        free(header);
+        return NULL;
+    }
+    initialize_default_elements(header);
+    return header; 
+}
+
+
 void initialize_buffers()
 {
+    dynamic_buffers_list.head = NULL;
     int student_number = 0;
     while (true) 
     {
@@ -102,37 +137,49 @@ void initialize_buffers()
 
     size_t user_buffer_size = 0;
 
-    memset(buffers, 0, BUFFER_COUNT * sizeof(char *));
-    get_the_buffer_sz: 
+    memset(static_buffers, 0, BUFFER_ALWAYS_HELD_COUNT * sizeof(buffer_t));
     while(true)
     {
         user_buffer_size = get_user_buffer_sz(max_user_input);
-        for(int i = 0; i < NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ; i++)
+        for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
         {
 
-            buffers[i].buffer = malloc(user_buffer_size);
+            static_buffers[i].buffer = malloc(user_buffer_size);
             
-            if(buffers[i].buffer == NULL)
+            printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
+            if(static_buffers[i].buffer == NULL)
             {
                 free_all_buffers();
                 printf(BUFFER_SZ_TOO_BIG);
                 max_user_input = user_buffer_size-1;
                 goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
             } else{
-                buffers[i].size = (size_t) user_buffer_size;
-                buffers[i].alphabet_chars = 0; 
+                static_buffers[i].size = (size_t) user_buffer_size;
+                initialize_default_elements(&static_buffers[i]);
+                printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
             }
         }
 
-        free(buffers[2].buffer);
-        buffers[2].buffer = NULL; //make sure we don't accidentally double free
-        buffers[2].size = 0; 
 
+        for(int i = 0; i < INTIAL_DYNAMIC_BUFFER_COUNT; i++) 
+        {
+            buffer_t *new_buffer = alloc_new_buffer(user_buffer_size);
+            if (new_buffer == NULL)
+            {
+                free_all_buffers();
+                printf(BUFFER_SZ_TOO_BIG);
+                max_user_input = user_buffer_size-1;
+                goto get_the_buffer_sz; //TODO: find way that involves not using a goto to do this
+            }
+            else
+            {
+                append_to_buffer_list(&dynamic_buffers_list, new_buffer);
+            }
+        }
+        
+        buffer_t *buffer_4 = alloc_new_buffer((size_t) 10 * (student_number + 2));
 
-        buffers[4].size = (size_t) 10 * (student_number + 2);
-        buffers[4].buffer = malloc(buffers[4].size);
-
-        if (buffers[4].buffer == NULL)
+        if (buffer_4 == NULL)
         {
             free_all_buffers();
             printf(BUFFER_SZ_TOO_BIG);
@@ -140,9 +187,8 @@ void initialize_buffers()
             continue;
         }
 
-        buffers[5].size = (size_t) 2 * user_buffer_size; 
-        buffers[5].buffer = malloc(buffers[5].size);
-        if (buffers[5].buffer == NULL)
+        buffer_t *buffer_5 = alloc_new_buffer((size_t) 2 * user_buffer_size);
+        if (buffer_5 == NULL)
         {
             free_all_buffers();
             printf(BUFFER_SZ_TOO_BIG);
@@ -150,18 +196,32 @@ void initialize_buffers()
             continue;
         }
         break;
+        get_the_buffer_sz:;
     }
     
     printf("\r\nstudent_number: %d", student_number);
     printf("\r\nuser_buffer_size: %zu", user_buffer_size);
 
     size_t total_heap_sz = 0;
-    for(int i = 0; i < BUFFER_COUNT; i++)
+    int i = 0;
+    for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
     {
-        if(buffers[i].buffer != NULL) {
-            printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, buffers[i].buffer, buffers[i].buffer + buffers[i].size, buffers[i].size);
-            total_heap_sz += buffers[i].size; 
+        printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
+        if(static_buffers[i].buffer != NULL) {
+            printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, static_buffers[i].buffer, static_buffers[i].buffer + static_buffers[i].size, static_buffers[i].size);
+            total_heap_sz += static_buffers[i].size; 
         }
+    }
+
+    buffer_t *curr = dynamic_buffers_list.head;
+
+    while(curr != NULL) {
+        if(curr->buffer != NULL) {
+            printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, curr->buffer, curr->buffer + curr->size, curr->size);
+            total_heap_sz += curr->size; 
+        }
+        i++; 
+        curr = curr->next;
     }
     printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
 }
@@ -191,18 +251,35 @@ void heap_report()
 {
     command_header("HEAP REPORT");
     size_t total_heap_sz = 0;
-    for(int i = 0; i < BUFFER_COUNT; i++)
+    int i = 0; 
+    for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
     {
-        if(buffers[i].buffer != NULL) {
+        if(static_buffers[i].buffer != NULL) {
             printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu, contains %zu alphabet chars, has %zu chars remaining", 
                     i, 
-                    buffers[i].buffer, 
-                    buffers[i].buffer + buffers[i].size, 
-                    buffers[i].size,
-                    buffers[i].alphabet_chars,
-                    buffers[i].size - buffers[i].curr_available_char);
-            total_heap_sz += buffers[i].size; 
+                    static_buffers[i].buffer, 
+                    static_buffers[i].buffer + static_buffers[i].size, 
+                    static_buffers[i].size,
+                    static_buffers[i].alphabet_chars,
+                    static_buffers[i].size - static_buffers[i].curr_available_char);
+            total_heap_sz += static_buffers[i].size; 
         }
+    }
+
+    buffer_t *curr = dynamic_buffers_list.head;
+    while(curr != NULL) {
+        if(curr->buffer != NULL) {
+            printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu, contains %zu alphabet chars, has %zu chars remaining", 
+                    i, 
+                    curr->buffer, 
+                    curr->buffer + curr->size, 
+                    curr->size,
+                    curr->alphabet_chars,
+                    curr->size - curr->alphabet_chars);
+            total_heap_sz += curr->size; 
+        }
+        i++;
+        curr->next;
     }
     printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
     printf("\r\n");
@@ -226,15 +303,17 @@ size_t get_user_buffer_sz(size_t maximum_sz)
 
 void free_all_buffers()
 {
-    for(int i = 0; i < BUFFER_COUNT; i++)
+    printf("\r\n Freeing ALL BUFFERS");
+    for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
     {
-        if (buffers[i].buffer != NULL)
+        if(static_buffers[i].buffer != NULL)
         {
-            free(buffers[i].buffer);
+            free(static_buffers[i].buffer);
         }
-        buffers[i].buffer = NULL;
-        buffers[i].size = 0; 
+        static_buffers[i].buffer = NULL;
+        static_buffers[i].size = 0; 
     }
+    free_all_elems_from_list(&dynamic_buffers_list); 
 }
 
 
@@ -250,7 +329,7 @@ void qmark_command_handler()
     for(int i = 0; i < 2; i++)
     {
         size_t curr_buffer_char = 0;
-        char curr_char = buffers[i].buffer[0];
+        char curr_char = static_buffers[i].buffer[0];
         while(curr_char != '\0')
         {
             if (MODULE_32(curr_output_char) == 0)
@@ -260,12 +339,12 @@ void qmark_command_handler()
             printf("%c", curr_char);
             curr_output_char++;
             curr_buffer_char++;
-            curr_char = buffers[i].buffer[curr_buffer_char];
+            curr_char = static_buffers[i].buffer[curr_buffer_char];
         }
 
-        memset(buffers[i].buffer, '\0', buffers[i].size);
-        buffers[i].alphabet_chars = 0;
-        buffers[i].curr_available_char = 0;
+        memset(static_buffers[i].buffer, '\0', static_buffers[i].size);
+        static_buffers[i].alphabet_chars = 0;
+        static_buffers[i].curr_available_char = 0;
     }
 
     printf("\r\n");
@@ -274,12 +353,12 @@ void qmark_command_handler()
 
 void enter_command_handler()
 {
-    command_header("Dump Buffer");
+    command_header("Dump Admin Buffers");
     for(int i = 0; i < 2; i++)
     {
         printf("\r\n Buffer %d ", i);
         printf("\r\n----------");
-        for(char *address = buffers[i].buffer; address < (buffers[i].buffer + buffers[i].size); address += 16)
+        for(char *address = static_buffers[i].buffer; address < (static_buffers[i].buffer + static_buffers[i].size); address += 16)
         {
             printf("\r\n%04X:", (unsigned int) address);
             for(int j = 0; j < 16; j++)
@@ -294,33 +373,118 @@ void enter_command_handler()
 void percent_command_handler()
 {
     command_header("Clear Buffers");
-    for(int i = 0; i < BUFFER_COUNT; i++)
+    for(int i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
     {
-        memset(buffers[i].buffer, 0x00, buffers[i].size);
-        buffers[i].curr_available_char = 0;
-        buffers[i].alphabet_chars = 0; 
+        if (static_buffers[i].buffer != NULL) 
+        {
+            memset(static_buffers[i].buffer, 0x00, static_buffers[i].size);
+            static_buffers[i].curr_available_char = 0;
+            static_buffers[i].alphabet_chars = 0; 
+        }
+    }
+
+    buffer_t *curr = dynamic_buffers_list.head;
+    if (curr != NULL)
+    {
+        memset(curr->buffer, 0x00, curr->size);
+        curr->curr_available_char = 0;
+        curr->alphabet_chars = 0; 
     }
 }
 
 void dollar_sign_command_handler()
 {
-    P1_0 = true;
-    memcpy(buffers[3].buffer, buffers[0].buffer, buffers[0].size);
-    buffers[3].alphabet_chars = buffers[0].alphabet_chars;
-    buffers[3].curr_available_char = buffers[0].curr_available_char;
-    P1_0 = false; 
+    P1_0 = ON;
+    if (dynamic_buffers_list.head == NULL
+        || dynamic_buffers_list.head->next == NULL) 
+    { //handle the buffer not being allocated
+        P1_0 = OFF;
+        return; 
+    }
+    buffer_t* buffer_3 = dynamic_buffers_list.head->next;
+    memcpy(buffer_3->buffer, static_buffers[0].buffer, static_buffers[0].size);
+    buffer_3->alphabet_chars = static_buffers[0].alphabet_chars;
+    buffer_3->curr_available_char = static_buffers[0].curr_available_char;
+    P1_0 = OFF; 
 }
 
 void hashtag_command_handler()
 {
-    P1_0 = true;
-    for(size_t i = 0; i < buffers[3].curr_available_char; i++)
-    {
-        buffers[3].buffer[i] |= LOWER_CASE_MASK;
+    P1_0 = ON;
+    if (dynamic_buffers_list.head == NULL
+        || dynamic_buffers_list.head->next == NULL) 
+    { //handle the buffer not being allocated
+        P1_0 = OFF;
+        return; 
     }
-    P1_0 = false;
+
+    buffer_t *buffer_3 = dynamic_buffers_list.head->next;
+    for(size_t i = 0; i < buffer_3->curr_available_char; i++)
+    {
+        register char c = buffer_3->buffer[i];
+        if (c <= 'Z' || c >= 'A')
+        {
+            buffer_3->buffer[i] |= LOWER_CASE_MASK;
+        }
+    }
+    P1_0 = OFF;
 }
 
+
+void plus_command_handler() 
+{
+    int size = 0; 
+    while (true) {
+        printf("\r\nPlease enter a size for the new buffer, [200,600]: ");
+        get_string();
+        size = atoi(get_input_buffer());
+        if (size <= MAX_USER_DETERMINED_BUFFER_SZ && size >= MIN_USER_DETERMINED_BUFFER_SZ) break;
+        printf("\r\nBuffer size invalid!! Please try again");
+    }
+
+    buffer_t *new_buffer = alloc_new_buffer((size_t) size);
+
+    if (new_buffer == NULL)
+    {
+        printf("\r\n Allocation failed; able to allocate header but not buffer");
+        return;
+    }
+
+    append_to_buffer_list(&dynamic_buffers_list, new_buffer);
+
+    printf("\r\n Allocation successful!! New buffer added");
+    
+}
+
+void minus_command_handler() 
+{
+    printf("\r\nPlease enter the number of the buffer you would like to free: ");
+    get_string(); 
+    int buffer_num = atoi(get_input_buffer()); 
+    if (buffer_num < 0)
+    {
+        printf("\r\n Invalid buffer number, negatives not valid");
+        return;
+    }
+    else if (buffer_num <= 1) 
+    {
+        printf("\r\n Invalid buffer number, buffers 0 & 1 are protected");
+        return; 
+    }
+    else
+    {
+        bool freed = remove_from_buffer_list(&dynamic_buffers_list, (size_t)(buffer_num-2));
+        if (freed)
+        {
+            printf("\r\n Successfully removed buffer");
+        }
+        else
+        {
+            printf("\r\n Failed to remove buffer, idx too big");
+        }
+    }
+
+}
 
 void main()
 {
@@ -332,11 +496,11 @@ void main()
         char received_char = get_next_input_char();
         if (is_alphabet_char(received_char))
         {
-            store_in_buffer(&buffers[0], received_char);
+            store_in_buffer(&static_buffers[0], received_char);
         }
         else
         {
-            store_in_buffer(&buffers[1], received_char);
+            store_in_buffer(&static_buffers[1], received_char);
         }
 
         switch(received_char)
@@ -359,6 +523,12 @@ void main()
                 break;
             case '#':
                 hashtag_command_handler();
+                break;
+            case '+':
+                plus_command_handler();
+                break;
+            case '-':
+                minus_command_handler();
                 break;
         }
     }
