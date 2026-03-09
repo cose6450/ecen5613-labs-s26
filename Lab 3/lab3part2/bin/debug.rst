@@ -53,10 +53,10 @@
                                      53 ; external ram data
                                      54 ;--------------------------------------------------------
                                      55 	.area XSEG    (XDATA)
-      002071                         56 _dataout_PARM_2:
-      002071                         57 	.ds 1
-      002072                         58 _dataout_address_65536_2:
-      002072                         59 	.ds 2
+      002074                         56 _dataout_PARM_2:
+      002074                         57 	.ds 1
+      002075                         58 _dataout_address_65536_2:
+      002075                         59 	.ds 2
                                      60 ;--------------------------------------------------------
                                      61 ; absolute external ram data
                                      62 ;--------------------------------------------------------
@@ -101,7 +101,7 @@
                                     101 ;	-----------------------------------------
                                     102 ;	 function dataout
                                     103 ;	-----------------------------------------
-      003F74                        104 _dataout:
+      003FF4                        104 _dataout:
                            000007   105 	ar7 = 0x07
                            000006   106 	ar6 = 0x06
                            000005   107 	ar5 = 0x05
@@ -110,27 +110,27 @@
                            000002   110 	ar2 = 0x02
                            000001   111 	ar1 = 0x01
                            000000   112 	ar0 = 0x00
-      003F74 AF 83            [24]  113 	mov	r7,dph
-      003F76 E5 82            [12]  114 	mov	a,dpl
-      003F78 90 20 72         [24]  115 	mov	dptr,#_dataout_address_65536_2
-      003F7B F0               [24]  116 	movx	@dptr,a
-      003F7C EF               [12]  117 	mov	a,r7
-      003F7D A3               [24]  118 	inc	dptr
-      003F7E F0               [24]  119 	movx	@dptr,a
+      003FF4 AF 83            [24]  113 	mov	r7,dph
+      003FF6 E5 82            [12]  114 	mov	a,dpl
+      003FF8 90 20 75         [24]  115 	mov	dptr,#_dataout_address_65536_2
+      003FFB F0               [24]  116 	movx	@dptr,a
+      003FFC EF               [12]  117 	mov	a,r7
+      003FFD A3               [24]  118 	inc	dptr
+      003FFE F0               [24]  119 	movx	@dptr,a
                                     120 ;	src/debug.c:5: *address = out; 
-      003F7F 90 20 72         [24]  121 	mov	dptr,#_dataout_address_65536_2
-      003F82 E0               [24]  122 	movx	a,@dptr
-      003F83 FE               [12]  123 	mov	r6,a
-      003F84 A3               [24]  124 	inc	dptr
-      003F85 E0               [24]  125 	movx	a,@dptr
-      003F86 FF               [12]  126 	mov	r7,a
-      003F87 90 20 71         [24]  127 	mov	dptr,#_dataout_PARM_2
-      003F8A E0               [24]  128 	movx	a,@dptr
-      003F8B 8E 82            [24]  129 	mov	dpl,r6
-      003F8D 8F 83            [24]  130 	mov	dph,r7
-      003F8F F0               [24]  131 	movx	@dptr,a
+      003FFF 90 20 75         [24]  121 	mov	dptr,#_dataout_address_65536_2
+      004002 E0               [24]  122 	movx	a,@dptr
+      004003 FE               [12]  123 	mov	r6,a
+      004004 A3               [24]  124 	inc	dptr
+      004005 E0               [24]  125 	movx	a,@dptr
+      004006 FF               [12]  126 	mov	r7,a
+      004007 90 20 74         [24]  127 	mov	dptr,#_dataout_PARM_2
+      00400A E0               [24]  128 	movx	a,@dptr
+      00400B 8E 82            [24]  129 	mov	dpl,r6
+      00400D 8F 83            [24]  130 	mov	dph,r7
+      00400F F0               [24]  131 	movx	@dptr,a
                                     132 ;	src/debug.c:6: }
-      003F90 22               [24]  133 	ret
+      004010 22               [24]  133 	ret
                                     134 	.area CSEG    (CODE)
                                     135 	.area CONST   (CODE)
                                     136 	.area XINIT   (CODE)

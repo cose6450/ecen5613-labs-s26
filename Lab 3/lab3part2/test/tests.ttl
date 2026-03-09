@@ -14,10 +14,11 @@ filewriteln testoutputhandle "Terminal Buffer Program Regression Tests"
 SEPERATOR_LINE = "****************************************"
 filewriteln testoutputhandle SEPERATOR_LINE
 logopen logfile 1 0 
-timeout = 5
+timeout = 10
 call initial_test
 call setup_input_test
 call buffered_input_test
+call test_buffered_data_movement
 closett
 end
 
@@ -205,7 +206,7 @@ return
 
 :buffered_input_test
 test_name = "buffered_input_test"
-call log_test_hander
+call log_test_header
 sendln
 wait 'PAULMON2 Loc:2000 >'
 sendln 'j'
@@ -218,7 +219,7 @@ wait 'Enter a char:'
 send '='
 
 sprintf2 test_file "%s\test\buffered_input_first_char_test.txt" params[2]
-test_reason = "failed to handle initial character"
+test_reason = "failed to handle initial character sent"
 call compare_against_file
 
 ;send the characters that will fill the buffer
@@ -255,7 +256,7 @@ return
 
 :test_buffered_data_movement
 test_name = "test_buffered_data_movement"
-call log_test_hander
+call log_test_header
 sendln
 wait 'PAULMON2 Loc:2000 >'
 sendln 'j'
@@ -265,11 +266,49 @@ sendln '50'
 wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
 sendln '64'
 wait 'Enter a char:'
+send 'abc123$'
+wait 'END COMMAND'
+wait 'Enter a char:'
+send '&'
+wait 'Enter a valid buffer # [2-5]:'
+if result == 0 then
+    filewriteln testoutputfile "test_buffered_data_movement: failed -> didn't give valid buffer range"
+    setexitcode -1
+    end
+endif
+sendln '3'
+test_file = "test_buffered_data_movement_initial_copy.txt"
+test_reason = "failed to copy initial buffer"
+call compare_against_file
+send ?
+wait 'Enter a char:'
+send '&'
+wait 'Enter a valid buffer # [2-5]:'
+sendln '3'
+test_reason = "freed during ? mark operation"
+call compare_against_file ; should be the same since nothing should have changed
+send '%'
+wait 'END COMMAND'
+wait 'Enter a char:'
+send '&'
+wait 'Enter a valid buffer # [2-5]:'
+sendln '3'
+test_file = "test_buffered_data_movement_after_clear.txt"
+test_reason = "did not receive clear buffer after doing a clear"
+call compare_against_file
+
+
+filewriteln testoutputhandle 'test_buffered_data_movement: passed'
+
+;reset the device
+send '*'
+pause 3
+return
 
 
 
 
-:log_test_hander
+:log_test_header
 logwrite #$0A
 logwrite SEPERATOR_LINE
 logwrite #$0A
@@ -291,4 +330,5 @@ while result == 0
     endif
     filereadln testfilehandle line
 endwhile
+;fileclose testfilehandle
 return

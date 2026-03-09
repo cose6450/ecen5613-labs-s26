@@ -954,7 +954,7 @@ _ll_length:
 ;list                      Allocated with name '_ll_get_elem_list_65536_66'
 ;curr                      Allocated with name '_ll_get_elem_curr_65536_67'
 ;------------------------------------------------------------
-;	src/linked_list.c:88: size_t ll_get_elem(buffer_list_t *list, size_t elem_num)
+;	src/linked_list.c:88: buffer_t* ll_get_elem(buffer_list_t *list, size_t elem_num)
 ;	-----------------------------------------
 ;	 function ll_get_elem
 ;	-----------------------------------------

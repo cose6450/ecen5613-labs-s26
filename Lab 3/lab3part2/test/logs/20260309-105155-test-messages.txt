@@ -2,4 +2,4 @@ Terminal Buffer Program Regression Tests
 ****************************************
 basic_test: passed
 setup_input_test: passed
-buffered_input_test: passed
+buffered_input_test : failed -> failed to handle qmark output properly

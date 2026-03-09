@@ -427,11 +427,12 @@ void percent_command_handler()
     }
 
     buffer_t *curr = dynamic_buffers_list.head;
-    if (curr != NULL)
+    while (curr != NULL)
     {
         memset(curr->buffer, 0x00, curr->size);
         curr->curr_available_char = 0;
         curr->alphabet_chars = 0; 
+        curr = curr->next;
     }
 }
 
@@ -496,7 +497,7 @@ void plus_command_handler()
 
     if (new_buffer == NULL)
     {
-        printf("\r\n Allocation failed; able to allocate header but not buffer");
+        printf("\r\n Allocation failed; unable to allocate buffer");
         return;
     }
 
@@ -509,7 +510,13 @@ void plus_command_handler()
 void minus_command_handler() 
 {
     command_header("Free Buffer");
-    printf("\r\nPlease enter the number of the buffer you would like to free: ");
+    size_t length = ll_length(&dynamic_buffers_list);
+    if (length == 0)
+    {
+        printf("\r\n No buffers to free");
+        return; 
+    }
+    printf("\r\nPlease enter the number of the buffer you would like to free[2-%zu]: ", length + MIN_DYNAMIC_BUFFER_NUM - 1);
     get_string(); 
     int buffer_num = atoi(get_input_buffer()); 
     if (buffer_num < 0)
@@ -522,6 +529,11 @@ void minus_command_handler()
         printf("\r\n Invalid buffer number, buffers 0 & 1 are protected");
         return; 
     }
+    else if (buffer_num >= length)
+    {
+        printf("\r\n Invalid Buffer number; out of range");
+        return;
+    }
     else
     {
         bool freed = remove_from_buffer_list(&dynamic_buffers_list, (size_t)(buffer_num-2));
@@ -531,7 +543,7 @@ void minus_command_handler()
         }
         else
         {
-            printf("\r\n Failed to remove buffer, idx too big");
+            printf("\r\n Failed to remove buffer, ll error");
         }
     }
 

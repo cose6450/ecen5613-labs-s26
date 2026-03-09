@@ -1,4 +1,2 @@
 Terminal Buffer Program Regression Tests
 ****************************************
-basic_test: passed
-setup_input_test: failed -> entering -1 caused invalid output

@@ -46,14 +46,15 @@ Please enter the last two digits of your ID:50
 Please enter a valid buffer size that is divisible by 32 [64,1024]: 64
 student_number: 50
 user_buffer_size: 64
-buffer_0 starts @ X:0x003a, ends @X:0x007a, size 64
-buffer_1 starts @ X:0x007c, ends @X:0x00bc, size 64
-buffer_2 starts @ X:0x00cb, ends @X:0x010b, size 64
-buffer_3 starts @ X:0x011a, ends @X:0x015a, size 64
-buffer_4 starts @ X:0x0169, ends @X:0x0371, size 520
-buffer_5 starts @ X:0x0380, ends @X:0x0400, size 128
-Heap starts @ X:0x0038, ends @ X:0x2038, size: 904
+buffer_0 starts @ X:0x003d, ends @X:0x007d, size 64
+buffer_1 starts @ X:0x007f, ends @X:0x00bf, size 64
+buffer_2 starts @ X:0x00ce, ends @X:0x010e, size 64
+buffer_3 starts @ X:0x011d, ends @X:0x015d, size 64
+buffer_4 starts @ X:0x016c, ends @X:0x0374, size 520
+buffer_5 starts @ X:0x0383, ends @X:0x0403, size 128
+Heap starts @ X:0x003b, ends @ X:0x203b, size: 904
 Enter a char: *
+Resetting device
 ****************************************
 setup_input_test
 ****************************************
@@ -113,14 +114,15 @@ Please enter a valid buffer size that is divisible by 32 [64,1024]: 65
 Please enter a valid buffer size that is divisible by 32 [64,1024]: 1024
 student_number: 50
 user_buffer_size: 1024
-buffer_0 starts @ X:0x003a, ends @X:0x043a, size 1024
-buffer_1 starts @ X:0x043c, ends @X:0x083c, size 1024
-buffer_2 starts @ X:0x084b, ends @X:0x0c4b, size 1024
-buffer_3 starts @ X:0x0c5a, ends @X:0x105a, size 1024
-buffer_4 starts @ X:0x1069, ends @X:0x1271, size 520
-buffer_5 starts @ X:0x1280, ends @X:0x1a80, size 2048
-Heap starts @ X:0x0038, ends @ X:0x2038, size: 6664
+buffer_0 starts @ X:0x003d, ends @X:0x043d, size 1024
+buffer_1 starts @ X:0x043f, ends @X:0x083f, size 1024
+buffer_2 starts @ X:0x084e, ends @X:0x0c4e, size 1024
+buffer_3 starts @ X:0x0c5d, ends @X:0x105d, size 1024
+buffer_4 starts @ X:0x106c, ends @X:0x1274, size 520
+buffer_5 starts @ X:0x1283, ends @X:0x1a83, size 2048
+Heap starts @ X:0x003b, ends @ X:0x203b, size: 6664
 Enter a char: *
+Resetting device
 ****************************************
 buffered_input_test
 ****************************************
@@ -168,29 +170,30 @@ Please enter the last two digits of your ID:50
 Please enter a valid buffer size that is divisible by 32 [64,1024]: 64
 student_number: 50
 user_buffer_size: 64
-buffer_0 starts @ X:0x003a, ends @X:0x007a, size 64
-buffer_1 starts @ X:0x007c, ends @X:0x00bc, size 64
-buffer_2 starts @ X:0x00cb, ends @X:0x010b, size 64
-buffer_3 starts @ X:0x011a, ends @X:0x015a, size 64
-buffer_4 starts @ X:0x0169, ends @X:0x0371, size 520
-buffer_5 starts @ X:0x0380, ends @X:0x0400, size 128
-Heap starts @ X:0x0038, ends @ X:0x2038, size: 904
+buffer_0 starts @ X:0x003d, ends @X:0x007d, size 64
+buffer_1 starts @ X:0x007f, ends @X:0x00bf, size 64
+buffer_2 starts @ X:0x00ce, ends @X:0x010e, size 64
+buffer_3 starts @ X:0x011d, ends @X:0x015d, size 64
+buffer_4 starts @ X:0x016c, ends @X:0x0374, size 520
+buffer_5 starts @ X:0x0383, ends @X:0x0403, size 128
+Heap starts @ X:0x003b, ends @ X:0x203b, size: 904
 Enter a char: =
+------------------------------------------------
 Dump Admin Buffers
 ------------------------------------------------
  Buffer 0 
 ----------
-003A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-004A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-005A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-006A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+003D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+004D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+005D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+006D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
  Buffer 1 
 ----------
-007C: 3D 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-008C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-009C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00AC: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+007F: 3D 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+008F: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+009F: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00AF: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
 END COMMAND
 ------------------------------------------------
@@ -450,34 +453,36 @@ Enter a char: 8
 Enter a char: v
 Enter a char: 7
 Enter a char: =
+------------------------------------------------
 Dump Admin Buffers
 ------------------------------------------------
  Buffer 0 
 ----------
-003A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
-004A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
-005A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
-006A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+003D: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+004D: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+005D: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+006D: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
 
  Buffer 1 
 ----------
-007C: 3D 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
-008C: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
-009C: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
-00AC: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+007F: 3D 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+008F: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+009F: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+00AF: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
 
 END COMMAND
 ------------------------------------------------
 Enter a char: ?
-HEAP REPORT
 ------------------------------------------------
-buffer_0 starts @ X:0x003a, ends @X:0x007a, size 64, contains 64 alphabet chars, has 0 chars remaining
-buffer_1 starts @ X:0x007c, ends @X:0x00bc, size 64, contains 0 alphabet chars, has 0 chars remaining
-buffer_2 starts @ X:0x00cb, ends @X:0x010b, size 64, contains 0 alphabet chars, has 64 chars remaining
-buffer_3 starts @ X:0x011a, ends @X:0x015a, size 64, contains 0 alphabet chars, has 64 chars remaining
-buffer_4 starts @ X:0x0169, ends @X:0x0371, size 520, contains 0 alphabet chars, has 520 chars remaining
-buffer_5 starts @ X:0x0380, ends @X:0x0400, size 128, contains 0 alphabet chars, has 128 chars remaining
-Heap starts @ X:0x0038, ends @ X:0x2038, size: 904
+Heap Report
+------------------------------------------------
+buffer_0 starts @ X:0x003d, ends @X:0x007d, size 64, contains 64 alphabet chars, has 0 chars remaining
+buffer_1 starts @ X:0x007f, ends @X:0x00bf, size 64, contains 0 alphabet chars, has 0 chars remaining
+buffer_2 starts @ X:0x00ce, ends @X:0x010e, size 64, contains 0 alphabet chars, has 64 chars remaining
+buffer_3 starts @ X:0x011d, ends @X:0x015d, size 64, contains 0 alphabet chars, has 64 chars remaining
+buffer_4 starts @ X:0x016c, ends @X:0x0374, size 520, contains 0 alphabet chars, has 520 chars remaining
+buffer_5 starts @ X:0x0383, ends @X:0x0403, size 128, contains 0 alphabet chars, has 128 chars remaining
+Heap starts @ X:0x003b, ends @ X:0x203b, size: 904
 
  Received 258 chars since last invocation of ?
 abCDabCDabCDabCDabCDabCDabCDabCD
@@ -489,22 +494,24 @@ abCDabCDabCDabCDabCDabCDabCDabCD
 END COMMAND
 ------------------------------------------------
 Enter a char: =
+------------------------------------------------
 Dump Admin Buffers
 ------------------------------------------------
  Buffer 0 
 ----------
-003A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-004A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-005A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-006A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+003D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+004D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+005D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+006D: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
  Buffer 1 
 ----------
-007C: 3D 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-008C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-009C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00AC: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+007F: 3D 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+008F: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+009F: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00AF: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
 END COMMAND
 ------------------------------------------------
 Enter a char: *
+Resetting device
