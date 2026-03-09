@@ -457,18 +457,18 @@
                                     457 	.area XSEG    (XDATA)
       000000                        458 _string_input_buffer::
       000000                        459 	.ds 10
-      00000A                        460 _get_string_current_buffer_loc_65537_48:
-      00000A                        461 	.ds 3
-                                    462 ;--------------------------------------------------------
-                                    463 ; absolute external ram data
+      00000A                        460 _character_count::
+      00000A                        461 	.ds 2
+      00000C                        462 _get_string_current_buffer_loc_65537_48:
+      00000C                        463 	.ds 3
                                     464 ;--------------------------------------------------------
-                                    465 	.area XABS    (ABS,XDATA)
+                                    465 ; absolute external ram data
                                     466 ;--------------------------------------------------------
-                                    467 ; external initialized ram data
+                                    467 	.area XABS    (ABS,XDATA)
                                     468 ;--------------------------------------------------------
-                                    469 	.area XISEG   (XDATA)
-      000000                        470 _character_count::
-      000000                        471 	.ds 2
+                                    469 ; external initialized ram data
+                                    470 ;--------------------------------------------------------
+                                    471 	.area XISEG   (XDATA)
                                     472 	.area HOME    (CODE)
                                     473 	.area GSINIT0 (CODE)
                                     474 	.area GSINIT1 (CODE)
@@ -498,7 +498,7 @@
                                     498 ;------------------------------------------------------------
                                     499 ;Allocation info for local variables in function 'get_input_buffer'
                                     500 ;------------------------------------------------------------
-                                    501 ;	src/input.c:13: const char *get_input_buffer() {
+                                    501 ;	src/input.c:14: const char *get_input_buffer() {
                                     502 ;	-----------------------------------------
                                     503 ;	 function get_input_buffer
                                     504 ;	-----------------------------------------
@@ -511,10 +511,10 @@
                            000002   511 	ar2 = 0x02
                            000001   512 	ar1 = 0x01
                            000000   513 	ar0 = 0x00
-                                    514 ;	src/input.c:14: return string_input_buffer; 
+                                    514 ;	src/input.c:15: return string_input_buffer; 
       000000 90r00r00         [24]  515 	mov	dptr,#_string_input_buffer
       000003 75 F0 00         [24]  516 	mov	b,#0x00
-                                    517 ;	src/input.c:15: }
+                                    517 ;	src/input.c:16: }
       000006 22               [24]  518 	ret
                                     519 ;------------------------------------------------------------
                                     520 ;Allocation info for local variables in function 'get_string'
@@ -522,12 +522,12 @@
                                     522 ;received_char             Allocated with name '_get_string_received_char_65537_48'
                                     523 ;current_buffer_loc        Allocated with name '_get_string_current_buffer_loc_65537_48'
                                     524 ;------------------------------------------------------------
-                                    525 ;	src/input.c:17: void get_string()
+                                    525 ;	src/input.c:18: void get_string()
                                     526 ;	-----------------------------------------
                                     527 ;	 function get_string
                                     528 ;	-----------------------------------------
       000007                        529 _get_string:
-                                    530 ;	src/input.c:19: memset(string_input_buffer, '\0', BUFFER_SZ);
+                                    530 ;	src/input.c:20: memset(string_input_buffer, '\0', BUFFER_SZ);
       000007 90r00r00         [24]  531 	mov	dptr,#_memset_PARM_2
       00000A E4               [12]  532 	clr	a
       00000B F0               [24]  533 	movx	@dptr,a
@@ -540,8 +540,8 @@
       000015 90r00r00         [24]  540 	mov	dptr,#_string_input_buffer
       000018 75 F0 00         [24]  541 	mov	b,#0x00
       00001B 12r00r00         [24]  542 	lcall	_memset
-                                    543 ;	src/input.c:21: char *current_buffer_loc = string_input_buffer;
-      00001E 90r00r0A         [24]  544 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+                                    543 ;	src/input.c:22: char *current_buffer_loc = string_input_buffer;
+      00001E 90r00r0C         [24]  544 	mov	dptr,#_get_string_current_buffer_loc_65537_48
       000021 74r00            [12]  545 	mov	a,#_string_input_buffer
       000023 F0               [24]  546 	movx	@dptr,a
       000024 74s00            [12]  547 	mov	a,#(_string_input_buffer >> 8)
@@ -550,12 +550,12 @@
       000028 E4               [12]  550 	clr	a
       000029 A3               [24]  551 	inc	dptr
       00002A F0               [24]  552 	movx	@dptr,a
-                                    553 ;	src/input.c:22: do {
-      00002B                        554 00114$:
-                                    555 ;	src/input.c:23: received_char = getchar(); 
+                                    553 ;	src/input.c:23: do {
+      00002B                        554 00118$:
+                                    555 ;	src/input.c:24: received_char = getchar(); 
       00002B 12r00r00         [24]  556 	lcall	_getchar
       00002E AE 82            [24]  557 	mov	r6,dpl
-                                    558 ;	src/input.c:24: putchar(received_char);
+                                    558 ;	src/input.c:25: putchar(received_char);
       000030 8E 05            [24]  559 	mov	ar5,r6
       000032 7F 00            [12]  560 	mov	r7,#0x00
       000034 8D 82            [24]  561 	mov	dpl,r5
@@ -563,233 +563,257 @@
       000038 C0 06            [24]  563 	push	ar6
       00003A 12r00r00         [24]  564 	lcall	_putchar
       00003D D0 06            [24]  565 	pop	ar6
-                                    566 ;	src/input.c:27: && received_char != '\n'
-      00003F BE 0D 03         [24]  567 	cjne	r6,#0x0d,00159$
-      000042 D3               [12]  568 	setb	c
-      000043 80 01            [24]  569 	sjmp	00160$
-      000045                        570 00159$:
-      000045 C3               [12]  571 	clr	c
-      000046                        572 00160$:
-      000046 92*00            [24]  573 	mov	_get_string_sloc0_1_0,c
-      000048 40 32            [24]  574 	jc	00106$
-                                    575 ;	src/input.c:28: && received_char != '\0'
-      00004A BE 0A 02         [24]  576 	cjne	r6,#0x0a,00162$
-      00004D 80 2D            [24]  577 	sjmp	00106$
-      00004F                        578 00162$:
-      00004F EE               [12]  579 	mov	a,r6
-      000050 60 2A            [24]  580 	jz	00106$
-                                    581 ;	src/input.c:29: && received_char != DELETE)
-      000052 BE 7F 02         [24]  582 	cjne	r6,#0x7f,00164$
-      000055 80 25            [24]  583 	sjmp	00106$
-      000057                        584 00164$:
-                                    585 ;	src/input.c:31: *current_buffer_loc= received_char;
-      000057 90r00r0A         [24]  586 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      00005A E0               [24]  587 	movx	a,@dptr
-      00005B FC               [12]  588 	mov	r4,a
-      00005C A3               [24]  589 	inc	dptr
-      00005D E0               [24]  590 	movx	a,@dptr
-      00005E FD               [12]  591 	mov	r5,a
-      00005F A3               [24]  592 	inc	dptr
-      000060 E0               [24]  593 	movx	a,@dptr
-      000061 FF               [12]  594 	mov	r7,a
-      000062 8C 82            [24]  595 	mov	dpl,r4
-      000064 8D 83            [24]  596 	mov	dph,r5
-      000066 8F F0            [24]  597 	mov	b,r7
-      000068 EE               [12]  598 	mov	a,r6
-      000069 12r00r00         [24]  599 	lcall	__gptrput
-                                    600 ;	src/input.c:32: current_buffer_loc++;
-      00006C 90r00r0A         [24]  601 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      00006F 74 01            [12]  602 	mov	a,#0x01
-      000071 2C               [12]  603 	add	a,r4
-      000072 F0               [24]  604 	movx	@dptr,a
-      000073 E4               [12]  605 	clr	a
-      000074 3D               [12]  606 	addc	a,r5
-      000075 A3               [24]  607 	inc	dptr
-      000076 F0               [24]  608 	movx	@dptr,a
-      000077 EF               [12]  609 	mov	a,r7
-      000078 A3               [24]  610 	inc	dptr
-      000079 F0               [24]  611 	movx	@dptr,a
-      00007A 80 4F            [24]  612 	sjmp	00115$
-      00007C                        613 00106$:
-                                    614 ;	src/input.c:34: else if(received_char == DELETE)
-      00007C BE 7F 4C         [24]  615 	cjne	r6,#0x7f,00115$
-                                    616 ;	src/input.c:36: if (current_buffer_loc != string_input_buffer)
-      00007F 90r00r0A         [24]  617 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      000082 E0               [24]  618 	movx	a,@dptr
-      000083 FC               [12]  619 	mov	r4,a
-      000084 A3               [24]  620 	inc	dptr
-      000085 E0               [24]  621 	movx	a,@dptr
-      000086 FD               [12]  622 	mov	r5,a
-      000087 A3               [24]  623 	inc	dptr
-      000088 E0               [24]  624 	movx	a,@dptr
-      000089 FF               [12]  625 	mov	r7,a
-      00008A 74r00            [12]  626 	mov	a,#_string_input_buffer
-      00008C C0 E0            [24]  627 	push	acc
-      00008E 74s00            [12]  628 	mov	a,#(_string_input_buffer >> 8)
-      000090 C0 E0            [24]  629 	push	acc
-      000092 E4               [12]  630 	clr	a
-      000093 C0 E0            [24]  631 	push	acc
-      000095 8C 82            [24]  632 	mov	dpl,r4
-      000097 8D 83            [24]  633 	mov	dph,r5
-      000099 8F F0            [24]  634 	mov	b,r7
-      00009B 12r00r00         [24]  635 	lcall	___gptr_cmp
-      00009E 15 81            [12]  636 	dec	sp
-      0000A0 15 81            [12]  637 	dec	sp
-      0000A2 15 81            [12]  638 	dec	sp
-      0000A4 60 10            [24]  639 	jz	00102$
-                                    640 ;	src/input.c:38: current_buffer_loc--;
-      0000A6 1C               [12]  641 	dec	r4
-      0000A7 BC FF 01         [24]  642 	cjne	r4,#0xff,00168$
-      0000AA 1D               [12]  643 	dec	r5
-      0000AB                        644 00168$:
-      0000AB 90r00r0A         [24]  645 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      0000AE EC               [12]  646 	mov	a,r4
-      0000AF F0               [24]  647 	movx	@dptr,a
-      0000B0 ED               [12]  648 	mov	a,r5
-      0000B1 A3               [24]  649 	inc	dptr
-      0000B2 F0               [24]  650 	movx	@dptr,a
-      0000B3 EF               [12]  651 	mov	a,r7
-      0000B4 A3               [24]  652 	inc	dptr
-      0000B5 F0               [24]  653 	movx	@dptr,a
-      0000B6                        654 00102$:
-                                    655 ;	src/input.c:40: *current_buffer_loc = '\0';
-      0000B6 90r00r0A         [24]  656 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      0000B9 E0               [24]  657 	movx	a,@dptr
-      0000BA FC               [12]  658 	mov	r4,a
-      0000BB A3               [24]  659 	inc	dptr
-      0000BC E0               [24]  660 	movx	a,@dptr
-      0000BD FD               [12]  661 	mov	r5,a
-      0000BE A3               [24]  662 	inc	dptr
-      0000BF E0               [24]  663 	movx	a,@dptr
-      0000C0 FF               [12]  664 	mov	r7,a
-      0000C1 8C 82            [24]  665 	mov	dpl,r4
-      0000C3 8D 83            [24]  666 	mov	dph,r5
-      0000C5 8F F0            [24]  667 	mov	b,r7
-      0000C7 E4               [12]  668 	clr	a
-      0000C8 12r00r00         [24]  669 	lcall	__gptrput
-      0000CB                        670 00115$:
-                                    671 ;	src/input.c:44: && received_char != '\n' 
-      0000CB 20*00 32         [24]  672 	jb	_get_string_sloc0_1_0,00116$
-                                    673 ;	src/input.c:45: && received_char != '\0'
-      0000CE BE 0A 02         [24]  674 	cjne	r6,#0x0a,00170$
-      0000D1 80 2D            [24]  675 	sjmp	00116$
-      0000D3                        676 00170$:
-      0000D3 EE               [12]  677 	mov	a,r6
-      0000D4 60 2A            [24]  678 	jz	00116$
-                                    679 ;	src/input.c:46: && (current_buffer_loc < (string_input_buffer+BUFFER_SZ)));
-      0000D6 90r00r0A         [24]  680 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      0000D9 E0               [24]  681 	movx	a,@dptr
-      0000DA FD               [12]  682 	mov	r5,a
-      0000DB A3               [24]  683 	inc	dptr
-      0000DC E0               [24]  684 	movx	a,@dptr
-      0000DD FE               [12]  685 	mov	r6,a
-      0000DE A3               [24]  686 	inc	dptr
-      0000DF E0               [24]  687 	movx	a,@dptr
-      0000E0 FF               [12]  688 	mov	r7,a
-      0000E1 74r0A            [12]  689 	mov	a,#(_string_input_buffer + 0x000a)
-      0000E3 C0 E0            [24]  690 	push	acc
-      0000E5 74s00            [12]  691 	mov	a,#((_string_input_buffer + 0x000a) >> 8)
-      0000E7 C0 E0            [24]  692 	push	acc
-      0000E9 E4               [12]  693 	clr	a
-      0000EA C0 E0            [24]  694 	push	acc
-      0000EC 8D 82            [24]  695 	mov	dpl,r5
-      0000EE 8E 83            [24]  696 	mov	dph,r6
-      0000F0 8F F0            [24]  697 	mov	b,r7
-      0000F2 12r00r00         [24]  698 	lcall	___gptr_cmp
-      0000F5 15 81            [12]  699 	dec	sp
-      0000F7 15 81            [12]  700 	dec	sp
-      0000F9 15 81            [12]  701 	dec	sp
-      0000FB 50 03            [24]  702 	jnc	00172$
-      0000FD 02r00r2B         [24]  703 	ljmp	00114$
-      000100                        704 00172$:
-      000100                        705 00116$:
-                                    706 ;	src/input.c:47: *current_buffer_loc = '\0';
-      000100 90r00r0A         [24]  707 	mov	dptr,#_get_string_current_buffer_loc_65537_48
-      000103 E0               [24]  708 	movx	a,@dptr
-      000104 FD               [12]  709 	mov	r5,a
-      000105 A3               [24]  710 	inc	dptr
-      000106 E0               [24]  711 	movx	a,@dptr
-      000107 FE               [12]  712 	mov	r6,a
-      000108 A3               [24]  713 	inc	dptr
-      000109 E0               [24]  714 	movx	a,@dptr
-      00010A FF               [12]  715 	mov	r7,a
-      00010B 8D 82            [24]  716 	mov	dpl,r5
-      00010D 8E 83            [24]  717 	mov	dph,r6
-      00010F 8F F0            [24]  718 	mov	b,r7
-      000111 E4               [12]  719 	clr	a
-                                    720 ;	src/input.c:48: }
-      000112 02r00r00         [24]  721 	ljmp	__gptrput
-                                    722 ;------------------------------------------------------------
-                                    723 ;Allocation info for local variables in function 'get_next_input_char'
-                                    724 ;------------------------------------------------------------
-                                    725 ;c                         Allocated with name '_get_next_input_char_c_65536_53'
-                                    726 ;------------------------------------------------------------
-                                    727 ;	src/input.c:50: char get_next_input_char()
-                                    728 ;	-----------------------------------------
-                                    729 ;	 function get_next_input_char
-                                    730 ;	-----------------------------------------
-      000115                        731 _get_next_input_char:
-                                    732 ;	src/input.c:52: char c = getchar();
-      000115 12r00r00         [24]  733 	lcall	_getchar
-      000118 AE 82            [24]  734 	mov	r6,dpl
-                                    735 ;	src/input.c:53: putchar(c);
-      00011A 8E 05            [24]  736 	mov	ar5,r6
-      00011C 7F 00            [12]  737 	mov	r7,#0x00
-      00011E 8D 82            [24]  738 	mov	dpl,r5
-      000120 8F 83            [24]  739 	mov	dph,r7
-      000122 C0 06            [24]  740 	push	ar6
-      000124 12r00r00         [24]  741 	lcall	_putchar
-      000127 D0 06            [24]  742 	pop	ar6
-                                    743 ;	src/input.c:54: character_count++;
-      000129 90r00r00         [24]  744 	mov	dptr,#_character_count
-      00012C E0               [24]  745 	movx	a,@dptr
-      00012D 24 01            [12]  746 	add	a,#0x01
-      00012F F0               [24]  747 	movx	@dptr,a
-      000130 A3               [24]  748 	inc	dptr
-      000131 E0               [24]  749 	movx	a,@dptr
-      000132 34 00            [12]  750 	addc	a,#0x00
-      000134 F0               [24]  751 	movx	@dptr,a
-                                    752 ;	src/input.c:55: return c; 
-      000135 8E 82            [24]  753 	mov	dpl,r6
-                                    754 ;	src/input.c:56: }
-      000137 22               [24]  755 	ret
-                                    756 ;------------------------------------------------------------
-                                    757 ;Allocation info for local variables in function 'get_char_count'
-                                    758 ;------------------------------------------------------------
-                                    759 ;	src/input.c:58: size_t get_char_count()
-                                    760 ;	-----------------------------------------
-                                    761 ;	 function get_char_count
-                                    762 ;	-----------------------------------------
-      000138                        763 _get_char_count:
-                                    764 ;	src/input.c:60: return character_count;
-      000138 90r00r00         [24]  765 	mov	dptr,#_character_count
-      00013B E0               [24]  766 	movx	a,@dptr
-      00013C FE               [12]  767 	mov	r6,a
-      00013D A3               [24]  768 	inc	dptr
-      00013E E0               [24]  769 	movx	a,@dptr
-                                    770 ;	src/input.c:61: }
-      00013F 8E 82            [24]  771 	mov	dpl,r6
-      000141 F5 83            [12]  772 	mov	dph,a
-      000143 22               [24]  773 	ret
-                                    774 ;------------------------------------------------------------
-                                    775 ;Allocation info for local variables in function 'reset_char_count'
-                                    776 ;------------------------------------------------------------
-                                    777 ;	src/input.c:63: void reset_char_count()
-                                    778 ;	-----------------------------------------
-                                    779 ;	 function reset_char_count
-                                    780 ;	-----------------------------------------
-      000144                        781 _reset_char_count:
-                                    782 ;	src/input.c:65: character_count = 0; 
-      000144 90r00r00         [24]  783 	mov	dptr,#_character_count
-      000147 E4               [12]  784 	clr	a
-      000148 F0               [24]  785 	movx	@dptr,a
-      000149 A3               [24]  786 	inc	dptr
-      00014A F0               [24]  787 	movx	@dptr,a
-                                    788 ;	src/input.c:66: }
-      00014B 22               [24]  789 	ret
-                                    790 	.area CSEG    (CODE)
-                                    791 	.area CONST   (CODE)
-                                    792 	.area XINIT   (CODE)
-      000000                        793 __xinit__character_count:
-      000000 00 00                  794 	.byte #0x00, #0x00	; 0
-                                    795 	.area CABS    (ABS,CODE)
+                                    566 ;	src/input.c:31: if (received_char == BACKSPACE)
+      00003F E4               [12]  567 	clr	a
+      000040 BE 08 01         [24]  568 	cjne	r6,#0x08,00171$
+      000043 04               [12]  569 	inc	a
+      000044                        570 00171$:
+      000044 FF               [12]  571 	mov	r7,a
+      000045 60 14            [24]  572 	jz	00102$
+                                    573 ;	src/input.c:33: putchar(' ');
+      000047 90 00 20         [24]  574 	mov	dptr,#0x0020
+      00004A C0 07            [24]  575 	push	ar7
+      00004C C0 06            [24]  576 	push	ar6
+      00004E 12r00r00         [24]  577 	lcall	_putchar
+                                    578 ;	src/input.c:34: putchar('\b');
+      000051 90 00 08         [24]  579 	mov	dptr,#0x0008
+      000054 12r00r00         [24]  580 	lcall	_putchar
+      000057 D0 06            [24]  581 	pop	ar6
+      000059 D0 07            [24]  582 	pop	ar7
+      00005B                        583 00102$:
+                                    584 ;	src/input.c:37: && received_char != '\n'
+      00005B BE 0D 03         [24]  585 	cjne	r6,#0x0d,00174$
+      00005E D3               [12]  586 	setb	c
+      00005F 80 01            [24]  587 	sjmp	00175$
+      000061                        588 00174$:
+      000061 C3               [12]  589 	clr	c
+      000062                        590 00175$:
+      000062 92*00            [24]  591 	mov	_get_string_sloc0_1_0,c
+      000064 40 37            [24]  592 	jc	00109$
+                                    593 ;	src/input.c:38: && received_char != '\0'
+      000066 BE 0A 02         [24]  594 	cjne	r6,#0x0a,00177$
+      000069 80 32            [24]  595 	sjmp	00109$
+      00006B                        596 00177$:
+      00006B EE               [12]  597 	mov	a,r6
+      00006C 60 2F            [24]  598 	jz	00109$
+                                    599 ;	src/input.c:40: && received_char != BACKSPACE)
+      00006E BE 7F 02         [24]  600 	cjne	r6,#0x7f,00179$
+      000071 80 2A            [24]  601 	sjmp	00109$
+      000073                        602 00179$:
+      000073 BE 08 02         [24]  603 	cjne	r6,#0x08,00180$
+      000076 80 25            [24]  604 	sjmp	00109$
+      000078                        605 00180$:
+                                    606 ;	src/input.c:42: *current_buffer_loc= received_char;
+      000078 90r00r0C         [24]  607 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      00007B E0               [24]  608 	movx	a,@dptr
+      00007C FB               [12]  609 	mov	r3,a
+      00007D A3               [24]  610 	inc	dptr
+      00007E E0               [24]  611 	movx	a,@dptr
+      00007F FC               [12]  612 	mov	r4,a
+      000080 A3               [24]  613 	inc	dptr
+      000081 E0               [24]  614 	movx	a,@dptr
+      000082 FD               [12]  615 	mov	r5,a
+      000083 8B 82            [24]  616 	mov	dpl,r3
+      000085 8C 83            [24]  617 	mov	dph,r4
+      000087 8D F0            [24]  618 	mov	b,r5
+      000089 EE               [12]  619 	mov	a,r6
+      00008A 12r00r00         [24]  620 	lcall	__gptrput
+                                    621 ;	src/input.c:43: current_buffer_loc++;
+      00008D 90r00r0C         [24]  622 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      000090 74 01            [12]  623 	mov	a,#0x01
+      000092 2B               [12]  624 	add	a,r3
+      000093 F0               [24]  625 	movx	@dptr,a
+      000094 E4               [12]  626 	clr	a
+      000095 3C               [12]  627 	addc	a,r4
+      000096 A3               [24]  628 	inc	dptr
+      000097 F0               [24]  629 	movx	@dptr,a
+      000098 ED               [12]  630 	mov	a,r5
+      000099 A3               [24]  631 	inc	dptr
+      00009A F0               [24]  632 	movx	@dptr,a
+      00009B 80 54            [24]  633 	sjmp	00119$
+      00009D                        634 00109$:
+                                    635 ;	src/input.c:45: else if(received_char == DELETE || received_char == BACKSPACE)
+      00009D BE 7F 02         [24]  636 	cjne	r6,#0x7f,00181$
+      0000A0 80 03            [24]  637 	sjmp	00105$
+      0000A2                        638 00181$:
+      0000A2 EF               [12]  639 	mov	a,r7
+      0000A3 60 4C            [24]  640 	jz	00119$
+      0000A5                        641 00105$:
+                                    642 ;	src/input.c:47: if (current_buffer_loc != string_input_buffer)
+      0000A5 90r00r0C         [24]  643 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      0000A8 E0               [24]  644 	movx	a,@dptr
+      0000A9 FC               [12]  645 	mov	r4,a
+      0000AA A3               [24]  646 	inc	dptr
+      0000AB E0               [24]  647 	movx	a,@dptr
+      0000AC FD               [12]  648 	mov	r5,a
+      0000AD A3               [24]  649 	inc	dptr
+      0000AE E0               [24]  650 	movx	a,@dptr
+      0000AF FF               [12]  651 	mov	r7,a
+      0000B0 74r00            [12]  652 	mov	a,#_string_input_buffer
+      0000B2 C0 E0            [24]  653 	push	acc
+      0000B4 74s00            [12]  654 	mov	a,#(_string_input_buffer >> 8)
+      0000B6 C0 E0            [24]  655 	push	acc
+      0000B8 E4               [12]  656 	clr	a
+      0000B9 C0 E0            [24]  657 	push	acc
+      0000BB 8C 82            [24]  658 	mov	dpl,r4
+      0000BD 8D 83            [24]  659 	mov	dph,r5
+      0000BF 8F F0            [24]  660 	mov	b,r7
+      0000C1 12r00r00         [24]  661 	lcall	___gptr_cmp
+      0000C4 15 81            [12]  662 	dec	sp
+      0000C6 15 81            [12]  663 	dec	sp
+      0000C8 15 81            [12]  664 	dec	sp
+      0000CA 60 10            [24]  665 	jz	00104$
+                                    666 ;	src/input.c:49: current_buffer_loc--;
+      0000CC 1C               [12]  667 	dec	r4
+      0000CD BC FF 01         [24]  668 	cjne	r4,#0xff,00184$
+      0000D0 1D               [12]  669 	dec	r5
+      0000D1                        670 00184$:
+      0000D1 90r00r0C         [24]  671 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      0000D4 EC               [12]  672 	mov	a,r4
+      0000D5 F0               [24]  673 	movx	@dptr,a
+      0000D6 ED               [12]  674 	mov	a,r5
+      0000D7 A3               [24]  675 	inc	dptr
+      0000D8 F0               [24]  676 	movx	@dptr,a
+      0000D9 EF               [12]  677 	mov	a,r7
+      0000DA A3               [24]  678 	inc	dptr
+      0000DB F0               [24]  679 	movx	@dptr,a
+      0000DC                        680 00104$:
+                                    681 ;	src/input.c:51: *current_buffer_loc = '\0';
+      0000DC 90r00r0C         [24]  682 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      0000DF E0               [24]  683 	movx	a,@dptr
+      0000E0 FC               [12]  684 	mov	r4,a
+      0000E1 A3               [24]  685 	inc	dptr
+      0000E2 E0               [24]  686 	movx	a,@dptr
+      0000E3 FD               [12]  687 	mov	r5,a
+      0000E4 A3               [24]  688 	inc	dptr
+      0000E5 E0               [24]  689 	movx	a,@dptr
+      0000E6 FF               [12]  690 	mov	r7,a
+      0000E7 8C 82            [24]  691 	mov	dpl,r4
+      0000E9 8D 83            [24]  692 	mov	dph,r5
+      0000EB 8F F0            [24]  693 	mov	b,r7
+      0000ED E4               [12]  694 	clr	a
+      0000EE 12r00r00         [24]  695 	lcall	__gptrput
+      0000F1                        696 00119$:
+                                    697 ;	src/input.c:55: && received_char != '\n' 
+      0000F1 20*00 32         [24]  698 	jb	_get_string_sloc0_1_0,00120$
+                                    699 ;	src/input.c:56: && received_char != '\0'
+      0000F4 BE 0A 02         [24]  700 	cjne	r6,#0x0a,00186$
+      0000F7 80 2D            [24]  701 	sjmp	00120$
+      0000F9                        702 00186$:
+      0000F9 EE               [12]  703 	mov	a,r6
+      0000FA 60 2A            [24]  704 	jz	00120$
+                                    705 ;	src/input.c:57: && (current_buffer_loc < (string_input_buffer+BUFFER_SZ-1)));
+      0000FC 90r00r0C         [24]  706 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      0000FF E0               [24]  707 	movx	a,@dptr
+      000100 FD               [12]  708 	mov	r5,a
+      000101 A3               [24]  709 	inc	dptr
+      000102 E0               [24]  710 	movx	a,@dptr
+      000103 FE               [12]  711 	mov	r6,a
+      000104 A3               [24]  712 	inc	dptr
+      000105 E0               [24]  713 	movx	a,@dptr
+      000106 FF               [12]  714 	mov	r7,a
+      000107 74r09            [12]  715 	mov	a,#(_string_input_buffer + 0x0009)
+      000109 C0 E0            [24]  716 	push	acc
+      00010B 74s00            [12]  717 	mov	a,#((_string_input_buffer + 0x0009) >> 8)
+      00010D C0 E0            [24]  718 	push	acc
+      00010F E4               [12]  719 	clr	a
+      000110 C0 E0            [24]  720 	push	acc
+      000112 8D 82            [24]  721 	mov	dpl,r5
+      000114 8E 83            [24]  722 	mov	dph,r6
+      000116 8F F0            [24]  723 	mov	b,r7
+      000118 12r00r00         [24]  724 	lcall	___gptr_cmp
+      00011B 15 81            [12]  725 	dec	sp
+      00011D 15 81            [12]  726 	dec	sp
+      00011F 15 81            [12]  727 	dec	sp
+      000121 50 03            [24]  728 	jnc	00188$
+      000123 02r00r2B         [24]  729 	ljmp	00118$
+      000126                        730 00188$:
+      000126                        731 00120$:
+                                    732 ;	src/input.c:58: *current_buffer_loc = '\0';
+      000126 90r00r0C         [24]  733 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+      000129 E0               [24]  734 	movx	a,@dptr
+      00012A FD               [12]  735 	mov	r5,a
+      00012B A3               [24]  736 	inc	dptr
+      00012C E0               [24]  737 	movx	a,@dptr
+      00012D FE               [12]  738 	mov	r6,a
+      00012E A3               [24]  739 	inc	dptr
+      00012F E0               [24]  740 	movx	a,@dptr
+      000130 FF               [12]  741 	mov	r7,a
+      000131 8D 82            [24]  742 	mov	dpl,r5
+      000133 8E 83            [24]  743 	mov	dph,r6
+      000135 8F F0            [24]  744 	mov	b,r7
+      000137 E4               [12]  745 	clr	a
+                                    746 ;	src/input.c:59: }
+      000138 02r00r00         [24]  747 	ljmp	__gptrput
+                                    748 ;------------------------------------------------------------
+                                    749 ;Allocation info for local variables in function 'get_next_input_char'
+                                    750 ;------------------------------------------------------------
+                                    751 ;c                         Allocated with name '_get_next_input_char_c_65536_54'
+                                    752 ;------------------------------------------------------------
+                                    753 ;	src/input.c:61: char get_next_input_char()
+                                    754 ;	-----------------------------------------
+                                    755 ;	 function get_next_input_char
+                                    756 ;	-----------------------------------------
+      00013B                        757 _get_next_input_char:
+                                    758 ;	src/input.c:63: char c = getchar();
+      00013B 12r00r00         [24]  759 	lcall	_getchar
+      00013E AE 82            [24]  760 	mov	r6,dpl
+                                    761 ;	src/input.c:64: putchar(c);
+      000140 8E 05            [24]  762 	mov	ar5,r6
+      000142 7F 00            [12]  763 	mov	r7,#0x00
+      000144 8D 82            [24]  764 	mov	dpl,r5
+      000146 8F 83            [24]  765 	mov	dph,r7
+      000148 C0 06            [24]  766 	push	ar6
+      00014A 12r00r00         [24]  767 	lcall	_putchar
+      00014D D0 06            [24]  768 	pop	ar6
+                                    769 ;	src/input.c:65: character_count++;
+      00014F 90r00r0A         [24]  770 	mov	dptr,#_character_count
+      000152 E0               [24]  771 	movx	a,@dptr
+      000153 24 01            [12]  772 	add	a,#0x01
+      000155 F0               [24]  773 	movx	@dptr,a
+      000156 A3               [24]  774 	inc	dptr
+      000157 E0               [24]  775 	movx	a,@dptr
+      000158 34 00            [12]  776 	addc	a,#0x00
+      00015A F0               [24]  777 	movx	@dptr,a
+                                    778 ;	src/input.c:66: return c; 
+      00015B 8E 82            [24]  779 	mov	dpl,r6
+                                    780 ;	src/input.c:67: }
+      00015D 22               [24]  781 	ret
+                                    782 ;------------------------------------------------------------
+                                    783 ;Allocation info for local variables in function 'get_char_count'
+                                    784 ;------------------------------------------------------------
+                                    785 ;	src/input.c:69: size_t get_char_count()
+                                    786 ;	-----------------------------------------
+                                    787 ;	 function get_char_count
+                                    788 ;	-----------------------------------------
+      00015E                        789 _get_char_count:
+                                    790 ;	src/input.c:71: return character_count;
+      00015E 90r00r0A         [24]  791 	mov	dptr,#_character_count
+      000161 E0               [24]  792 	movx	a,@dptr
+      000162 FE               [12]  793 	mov	r6,a
+      000163 A3               [24]  794 	inc	dptr
+      000164 E0               [24]  795 	movx	a,@dptr
+                                    796 ;	src/input.c:72: }
+      000165 8E 82            [24]  797 	mov	dpl,r6
+      000167 F5 83            [12]  798 	mov	dph,a
+      000169 22               [24]  799 	ret
+                                    800 ;------------------------------------------------------------
+                                    801 ;Allocation info for local variables in function 'reset_char_count'
+                                    802 ;------------------------------------------------------------
+                                    803 ;	src/input.c:74: void reset_char_count()
+                                    804 ;	-----------------------------------------
+                                    805 ;	 function reset_char_count
+                                    806 ;	-----------------------------------------
+      00016A                        807 _reset_char_count:
+                                    808 ;	src/input.c:76: character_count = 0; 
+      00016A 90r00r0A         [24]  809 	mov	dptr,#_character_count
+      00016D E4               [12]  810 	clr	a
+      00016E F0               [24]  811 	movx	@dptr,a
+      00016F A3               [24]  812 	inc	dptr
+      000170 F0               [24]  813 	movx	@dptr,a
+                                    814 ;	src/input.c:77: }
+      000171 22               [24]  815 	ret
+                                    816 	.area CSEG    (CODE)
+                                    817 	.area CONST   (CODE)
+                                    818 	.area XINIT   (CODE)
+                                    819 	.area CABS    (ABS,CODE)

@@ -457,6 +457,8 @@ _get_string_sloc0_1_0:
 	.area XSEG    (XDATA)
 _string_input_buffer::
 	.ds 10
+_character_count::
+	.ds 2
 _get_string_current_buffer_loc_65537_48:
 	.ds 3
 ;--------------------------------------------------------
@@ -467,8 +469,6 @@ _get_string_current_buffer_loc_65537_48:
 ; external initialized ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
-_character_count::
-	.ds 2
 	.area HOME    (CODE)
 	.area GSINIT0 (CODE)
 	.area GSINIT1 (CODE)
@@ -498,7 +498,7 @@ _character_count::
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'get_input_buffer'
 ;------------------------------------------------------------
-;	src/input.c:13: const char *get_input_buffer() {
+;	src/input.c:14: const char *get_input_buffer() {
 ;	-----------------------------------------
 ;	 function get_input_buffer
 ;	-----------------------------------------
@@ -511,10 +511,10 @@ _get_input_buffer:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	src/input.c:14: return string_input_buffer; 
+;	src/input.c:15: return string_input_buffer; 
 	mov	dptr,#_string_input_buffer
 	mov	b,#0x00
-;	src/input.c:15: }
+;	src/input.c:16: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'get_string'
@@ -522,12 +522,12 @@ _get_input_buffer:
 ;received_char             Allocated with name '_get_string_received_char_65537_48'
 ;current_buffer_loc        Allocated with name '_get_string_current_buffer_loc_65537_48'
 ;------------------------------------------------------------
-;	src/input.c:17: void get_string()
+;	src/input.c:18: void get_string()
 ;	-----------------------------------------
 ;	 function get_string
 ;	-----------------------------------------
 _get_string:
-;	src/input.c:19: memset(string_input_buffer, '\0', BUFFER_SZ);
+;	src/input.c:20: memset(string_input_buffer, '\0', BUFFER_SZ);
 	mov	dptr,#_memset_PARM_2
 	clr	a
 	movx	@dptr,a
@@ -540,7 +540,7 @@ _get_string:
 	mov	dptr,#_string_input_buffer
 	mov	b,#0x00
 	lcall	_memset
-;	src/input.c:21: char *current_buffer_loc = string_input_buffer;
+;	src/input.c:22: char *current_buffer_loc = string_input_buffer;
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	mov	a,#_string_input_buffer
 	movx	@dptr,a
@@ -550,12 +550,12 @@ _get_string:
 	clr	a
 	inc	dptr
 	movx	@dptr,a
-;	src/input.c:22: do {
-00114$:
-;	src/input.c:23: received_char = getchar(); 
+;	src/input.c:23: do {
+00118$:
+;	src/input.c:24: received_char = getchar(); 
 	lcall	_getchar
 	mov	r6,dpl
-;	src/input.c:24: putchar(received_char);
+;	src/input.c:25: putchar(received_char);
 	mov	ar5,r6
 	mov	r7,#0x00
 	mov	dpl,r5
@@ -563,57 +563,83 @@ _get_string:
 	push	ar6
 	lcall	_putchar
 	pop	ar6
-;	src/input.c:27: && received_char != '\n'
-	cjne	r6,#0x0d,00159$
+;	src/input.c:31: if (received_char == BACKSPACE)
+	clr	a
+	cjne	r6,#0x08,00171$
+	inc	a
+00171$:
+	mov	r7,a
+	jz	00102$
+;	src/input.c:33: putchar(' ');
+	mov	dptr,#0x0020
+	push	ar7
+	push	ar6
+	lcall	_putchar
+;	src/input.c:34: putchar('\b');
+	mov	dptr,#0x0008
+	lcall	_putchar
+	pop	ar6
+	pop	ar7
+00102$:
+;	src/input.c:37: && received_char != '\n'
+	cjne	r6,#0x0d,00174$
 	setb	c
-	sjmp	00160$
-00159$:
+	sjmp	00175$
+00174$:
 	clr	c
-00160$:
+00175$:
 	mov	_get_string_sloc0_1_0,c
-	jc	00106$
-;	src/input.c:28: && received_char != '\0'
-	cjne	r6,#0x0a,00162$
-	sjmp	00106$
-00162$:
+	jc	00109$
+;	src/input.c:38: && received_char != '\0'
+	cjne	r6,#0x0a,00177$
+	sjmp	00109$
+00177$:
 	mov	a,r6
-	jz	00106$
-;	src/input.c:29: && received_char != DELETE)
-	cjne	r6,#0x7f,00164$
-	sjmp	00106$
-00164$:
-;	src/input.c:31: *current_buffer_loc= received_char;
+	jz	00109$
+;	src/input.c:40: && received_char != BACKSPACE)
+	cjne	r6,#0x7f,00179$
+	sjmp	00109$
+00179$:
+	cjne	r6,#0x08,00180$
+	sjmp	00109$
+00180$:
+;	src/input.c:42: *current_buffer_loc= received_char;
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
 	movx	a,@dptr
 	mov	r4,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r5,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r7,a
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r7
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
 	mov	a,r6
 	lcall	__gptrput
-;	src/input.c:32: current_buffer_loc++;
+;	src/input.c:43: current_buffer_loc++;
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	mov	a,#0x01
-	add	a,r4
+	add	a,r3
 	movx	@dptr,a
 	clr	a
-	addc	a,r5
+	addc	a,r4
 	inc	dptr
 	movx	@dptr,a
+	mov	a,r5
+	inc	dptr
+	movx	@dptr,a
+	sjmp	00119$
+00109$:
+;	src/input.c:45: else if(received_char == DELETE || received_char == BACKSPACE)
+	cjne	r6,#0x7f,00181$
+	sjmp	00105$
+00181$:
 	mov	a,r7
-	inc	dptr
-	movx	@dptr,a
-	sjmp	00115$
-00106$:
-;	src/input.c:34: else if(received_char == DELETE)
-	cjne	r6,#0x7f,00115$
-;	src/input.c:36: if (current_buffer_loc != string_input_buffer)
+	jz	00119$
+00105$:
+;	src/input.c:47: if (current_buffer_loc != string_input_buffer)
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	movx	a,@dptr
 	mov	r4,a
@@ -636,12 +662,12 @@ _get_string:
 	dec	sp
 	dec	sp
 	dec	sp
-	jz	00102$
-;	src/input.c:38: current_buffer_loc--;
+	jz	00104$
+;	src/input.c:49: current_buffer_loc--;
 	dec	r4
-	cjne	r4,#0xff,00168$
+	cjne	r4,#0xff,00184$
 	dec	r5
-00168$:
+00184$:
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	mov	a,r4
 	movx	@dptr,a
@@ -651,8 +677,8 @@ _get_string:
 	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-00102$:
-;	src/input.c:40: *current_buffer_loc = '\0';
+00104$:
+;	src/input.c:51: *current_buffer_loc = '\0';
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	movx	a,@dptr
 	mov	r4,a
@@ -667,16 +693,16 @@ _get_string:
 	mov	b,r7
 	clr	a
 	lcall	__gptrput
-00115$:
-;	src/input.c:44: && received_char != '\n' 
-	jb	_get_string_sloc0_1_0,00116$
-;	src/input.c:45: && received_char != '\0'
-	cjne	r6,#0x0a,00170$
-	sjmp	00116$
-00170$:
+00119$:
+;	src/input.c:55: && received_char != '\n' 
+	jb	_get_string_sloc0_1_0,00120$
+;	src/input.c:56: && received_char != '\0'
+	cjne	r6,#0x0a,00186$
+	sjmp	00120$
+00186$:
 	mov	a,r6
-	jz	00116$
-;	src/input.c:46: && (current_buffer_loc < (string_input_buffer+BUFFER_SZ)));
+	jz	00120$
+;	src/input.c:57: && (current_buffer_loc < (string_input_buffer+BUFFER_SZ-1)));
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	movx	a,@dptr
 	mov	r5,a
@@ -686,9 +712,9 @@ _get_string:
 	inc	dptr
 	movx	a,@dptr
 	mov	r7,a
-	mov	a,#(_string_input_buffer + 0x000a)
+	mov	a,#(_string_input_buffer + 0x0009)
 	push	acc
-	mov	a,#((_string_input_buffer + 0x000a) >> 8)
+	mov	a,#((_string_input_buffer + 0x0009) >> 8)
 	push	acc
 	clr	a
 	push	acc
@@ -699,11 +725,11 @@ _get_string:
 	dec	sp
 	dec	sp
 	dec	sp
-	jnc	00172$
-	ljmp	00114$
-00172$:
-00116$:
-;	src/input.c:47: *current_buffer_loc = '\0';
+	jnc	00188$
+	ljmp	00118$
+00188$:
+00120$:
+;	src/input.c:58: *current_buffer_loc = '\0';
 	mov	dptr,#_get_string_current_buffer_loc_65537_48
 	movx	a,@dptr
 	mov	r5,a
@@ -717,22 +743,22 @@ _get_string:
 	mov	dph,r6
 	mov	b,r7
 	clr	a
-;	src/input.c:48: }
+;	src/input.c:59: }
 	ljmp	__gptrput
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'get_next_input_char'
 ;------------------------------------------------------------
-;c                         Allocated with name '_get_next_input_char_c_65536_53'
+;c                         Allocated with name '_get_next_input_char_c_65536_54'
 ;------------------------------------------------------------
-;	src/input.c:50: char get_next_input_char()
+;	src/input.c:61: char get_next_input_char()
 ;	-----------------------------------------
 ;	 function get_next_input_char
 ;	-----------------------------------------
 _get_next_input_char:
-;	src/input.c:52: char c = getchar();
+;	src/input.c:63: char c = getchar();
 	lcall	_getchar
 	mov	r6,dpl
-;	src/input.c:53: putchar(c);
+;	src/input.c:64: putchar(c);
 	mov	ar5,r6
 	mov	r7,#0x00
 	mov	dpl,r5
@@ -740,7 +766,7 @@ _get_next_input_char:
 	push	ar6
 	lcall	_putchar
 	pop	ar6
-;	src/input.c:54: character_count++;
+;	src/input.c:65: character_count++;
 	mov	dptr,#_character_count
 	movx	a,@dptr
 	add	a,#0x01
@@ -749,47 +775,45 @@ _get_next_input_char:
 	movx	a,@dptr
 	addc	a,#0x00
 	movx	@dptr,a
-;	src/input.c:55: return c; 
+;	src/input.c:66: return c; 
 	mov	dpl,r6
-;	src/input.c:56: }
+;	src/input.c:67: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'get_char_count'
 ;------------------------------------------------------------
-;	src/input.c:58: size_t get_char_count()
+;	src/input.c:69: size_t get_char_count()
 ;	-----------------------------------------
 ;	 function get_char_count
 ;	-----------------------------------------
 _get_char_count:
-;	src/input.c:60: return character_count;
+;	src/input.c:71: return character_count;
 	mov	dptr,#_character_count
 	movx	a,@dptr
 	mov	r6,a
 	inc	dptr
 	movx	a,@dptr
-;	src/input.c:61: }
+;	src/input.c:72: }
 	mov	dpl,r6
 	mov	dph,a
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'reset_char_count'
 ;------------------------------------------------------------
-;	src/input.c:63: void reset_char_count()
+;	src/input.c:74: void reset_char_count()
 ;	-----------------------------------------
 ;	 function reset_char_count
 ;	-----------------------------------------
 _reset_char_count:
-;	src/input.c:65: character_count = 0; 
+;	src/input.c:76: character_count = 0; 
 	mov	dptr,#_character_count
 	clr	a
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/input.c:66: }
+;	src/input.c:77: }
 	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)
-__xinit__character_count:
-	.byte #0x00, #0x00	; 0
 	.area CABS    (ABS,CODE)

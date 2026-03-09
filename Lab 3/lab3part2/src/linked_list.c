@@ -72,3 +72,26 @@ void free_all_elems_from_list(buffer_list_t *list)
         buffer_to_free = list->head;
     }
 }
+
+size_t ll_length(buffer_list_t *list)
+{
+    size_t size;
+    buffer_t *curr = list->head;
+    while(curr != NULL)
+    {
+        size++;
+        curr = curr->next;
+    }
+    return size; 
+}
+
+buffer_t* ll_get_elem(buffer_list_t *list, size_t elem_num)
+{
+    buffer_t *curr = list->head;
+    while(curr != NULL && elem_num > 0)
+    {
+        curr = curr->next;
+        elem_num--;
+    }
+    return curr;
+}

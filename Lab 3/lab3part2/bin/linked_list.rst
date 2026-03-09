@@ -9,814 +9,1074 @@
                                       9 ; Public variables in this module
                                      10 ;--------------------------------------------------------
                                      11 	.globl _free
-                                     12 	.globl _remove_from_buffer_list_PARM_2
-                                     13 	.globl _append_to_buffer_list_PARM_2
-                                     14 	.globl _append_to_buffer_list
-                                     15 	.globl _remove_from_buffer_list
-                                     16 	.globl _free_all_elems_from_list
-                                     17 ;--------------------------------------------------------
-                                     18 ; special function registers
-                                     19 ;--------------------------------------------------------
-                                     20 	.area RSEG    (ABS,DATA)
-      000000                         21 	.org 0x0000
+                                     12 	.globl _ll_get_elem_PARM_2
+                                     13 	.globl _remove_from_buffer_list_PARM_2
+                                     14 	.globl _append_to_buffer_list_PARM_2
+                                     15 	.globl _append_to_buffer_list
+                                     16 	.globl _remove_from_buffer_list
+                                     17 	.globl _free_all_elems_from_list
+                                     18 	.globl _ll_length
+                                     19 	.globl _ll_get_elem
+                                     20 ;--------------------------------------------------------
+                                     21 ; special function registers
                                      22 ;--------------------------------------------------------
-                                     23 ; special function bits
-                                     24 ;--------------------------------------------------------
-                                     25 	.area RSEG    (ABS,DATA)
-      000000                         26 	.org 0x0000
+                                     23 	.area RSEG    (ABS,DATA)
+      000000                         24 	.org 0x0000
+                                     25 ;--------------------------------------------------------
+                                     26 ; special function bits
                                      27 ;--------------------------------------------------------
-                                     28 ; overlayable register banks
-                                     29 ;--------------------------------------------------------
-                                     30 	.area REG_BANK_0	(REL,OVR,DATA)
-      000000                         31 	.ds 8
+                                     28 	.area RSEG    (ABS,DATA)
+      000000                         29 	.org 0x0000
+                                     30 ;--------------------------------------------------------
+                                     31 ; overlayable register banks
                                      32 ;--------------------------------------------------------
-                                     33 ; internal ram data
-                                     34 ;--------------------------------------------------------
-                                     35 	.area DSEG    (DATA)
-      000008                         36 _remove_from_buffer_list_sloc0_1_0:
-      000008                         37 	.ds 3
-      00000B                         38 _free_all_elems_from_list_sloc0_1_0:
-      00000B                         39 	.ds 3
-                                     40 ;--------------------------------------------------------
-                                     41 ; overlayable items in internal ram
-                                     42 ;--------------------------------------------------------
-                                     43 	.area	OSEG    (OVR,DATA)
-      00001B                         44 _append_to_buffer_list_sloc0_1_0:
-      00001B                         45 	.ds 3
-                                     46 ;--------------------------------------------------------
-                                     47 ; indirectly addressable internal ram data
-                                     48 ;--------------------------------------------------------
-                                     49 	.area ISEG    (DATA)
-                                     50 ;--------------------------------------------------------
-                                     51 ; absolute internal ram data
-                                     52 ;--------------------------------------------------------
-                                     53 	.area IABS    (ABS,DATA)
-                                     54 	.area IABS    (ABS,DATA)
+                                     33 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                         34 	.ds 8
+                                     35 ;--------------------------------------------------------
+                                     36 ; internal ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area DSEG    (DATA)
+      000008                         39 _remove_from_buffer_list_sloc0_1_0:
+      000008                         40 	.ds 3
+      00000B                         41 _free_all_elems_from_list_sloc0_1_0:
+      00000B                         42 	.ds 3
+                                     43 ;--------------------------------------------------------
+                                     44 ; overlayable items in internal ram
+                                     45 ;--------------------------------------------------------
+                                     46 	.area	OSEG    (OVR,DATA)
+      00001B                         47 _append_to_buffer_list_sloc0_1_0:
+      00001B                         48 	.ds 3
+                                     49 ;--------------------------------------------------------
+                                     50 ; indirectly addressable internal ram data
+                                     51 ;--------------------------------------------------------
+                                     52 	.area ISEG    (DATA)
+                                     53 ;--------------------------------------------------------
+                                     54 ; absolute internal ram data
                                      55 ;--------------------------------------------------------
-                                     56 ; bit data
-                                     57 ;--------------------------------------------------------
-                                     58 	.area BSEG    (BIT)
-                                     59 ;--------------------------------------------------------
-                                     60 ; paged external ram data
-                                     61 ;--------------------------------------------------------
-                                     62 	.area PSEG    (PAG,XDATA)
-                                     63 ;--------------------------------------------------------
-                                     64 ; external ram data
-                                     65 ;--------------------------------------------------------
-                                     66 	.area XSEG    (XDATA)
-      002041                         67 _append_to_buffer_list_PARM_2:
-      002041                         68 	.ds 3
-      002044                         69 _append_to_buffer_list_list_65536_45:
-      002044                         70 	.ds 3
-      002047                         71 _append_to_buffer_list_tail_131072_48:
-      002047                         72 	.ds 3
-      00204A                         73 _remove_from_buffer_list_PARM_2:
-      00204A                         74 	.ds 2
-      00204C                         75 _remove_from_buffer_list_list_65536_50:
-      00204C                         76 	.ds 3
-      00204F                         77 _remove_from_buffer_list_to_free_65537_52:
-      00204F                         78 	.ds 3
-      002052                         79 _remove_from_buffer_list_prev_131073_54:
-      002052                         80 	.ds 3
-      002055                         81 _free_all_elems_from_list_list_65536_57:
-      002055                         82 	.ds 3
-      002058                         83 _free_all_elems_from_list_buffer_to_free_65536_58:
-      002058                         84 	.ds 3
-                                     85 ;--------------------------------------------------------
-                                     86 ; absolute external ram data
-                                     87 ;--------------------------------------------------------
-                                     88 	.area XABS    (ABS,XDATA)
-                                     89 ;--------------------------------------------------------
-                                     90 ; external initialized ram data
-                                     91 ;--------------------------------------------------------
-                                     92 	.area XISEG   (XDATA)
-                                     93 	.area HOME    (CODE)
-                                     94 	.area GSINIT0 (CODE)
-                                     95 	.area GSINIT1 (CODE)
-                                     96 	.area GSINIT2 (CODE)
-                                     97 	.area GSINIT3 (CODE)
-                                     98 	.area GSINIT4 (CODE)
-                                     99 	.area GSINIT5 (CODE)
-                                    100 	.area GSINIT  (CODE)
-                                    101 	.area GSFINAL (CODE)
-                                    102 	.area CSEG    (CODE)
-                                    103 ;--------------------------------------------------------
-                                    104 ; global & static initialisations
-                                    105 ;--------------------------------------------------------
-                                    106 	.area HOME    (CODE)
-                                    107 	.area GSINIT  (CODE)
-                                    108 	.area GSFINAL (CODE)
-                                    109 	.area GSINIT  (CODE)
-                                    110 ;--------------------------------------------------------
-                                    111 ; Home
-                                    112 ;--------------------------------------------------------
-                                    113 	.area HOME    (CODE)
-                                    114 	.area HOME    (CODE)
-                                    115 ;--------------------------------------------------------
-                                    116 ; code
-                                    117 ;--------------------------------------------------------
-                                    118 	.area CSEG    (CODE)
-                                    119 ;------------------------------------------------------------
-                                    120 ;Allocation info for local variables in function 'append_to_buffer_list'
-                                    121 ;------------------------------------------------------------
-                                    122 ;buffer                    Allocated with name '_append_to_buffer_list_PARM_2'
-                                    123 ;list                      Allocated with name '_append_to_buffer_list_list_65536_45'
-                                    124 ;tail                      Allocated with name '_append_to_buffer_list_tail_131072_48'
-                                    125 ;sloc0                     Allocated with name '_append_to_buffer_list_sloc0_1_0'
-                                    126 ;------------------------------------------------------------
-                                    127 ;	src/linked_list.c:5: bool append_to_buffer_list(buffer_list_t *list, buffer_t *buffer)
-                                    128 ;	-----------------------------------------
-                                    129 ;	 function append_to_buffer_list
-                                    130 ;	-----------------------------------------
-      003698                        131 _append_to_buffer_list:
-                           000007   132 	ar7 = 0x07
-                           000006   133 	ar6 = 0x06
-                           000005   134 	ar5 = 0x05
-                           000004   135 	ar4 = 0x04
-                           000003   136 	ar3 = 0x03
-                           000002   137 	ar2 = 0x02
-                           000001   138 	ar1 = 0x01
-                           000000   139 	ar0 = 0x00
-      003698 AF F0            [24]  140 	mov	r7,b
-      00369A AE 83            [24]  141 	mov	r6,dph
-      00369C E5 82            [12]  142 	mov	a,dpl
-      00369E 90 20 44         [24]  143 	mov	dptr,#_append_to_buffer_list_list_65536_45
-      0036A1 F0               [24]  144 	movx	@dptr,a
-      0036A2 EE               [12]  145 	mov	a,r6
-      0036A3 A3               [24]  146 	inc	dptr
-      0036A4 F0               [24]  147 	movx	@dptr,a
-      0036A5 EF               [12]  148 	mov	a,r7
-      0036A6 A3               [24]  149 	inc	dptr
-      0036A7 F0               [24]  150 	movx	@dptr,a
-                                    151 ;	src/linked_list.c:7: if (list->head == NULL) 
-      0036A8 90 20 44         [24]  152 	mov	dptr,#_append_to_buffer_list_list_65536_45
-      0036AB E0               [24]  153 	movx	a,@dptr
-      0036AC F5 1B            [12]  154 	mov	_append_to_buffer_list_sloc0_1_0,a
-      0036AE A3               [24]  155 	inc	dptr
-      0036AF E0               [24]  156 	movx	a,@dptr
-      0036B0 F5 1C            [12]  157 	mov	(_append_to_buffer_list_sloc0_1_0 + 1),a
-      0036B2 A3               [24]  158 	inc	dptr
-      0036B3 E0               [24]  159 	movx	a,@dptr
-      0036B4 F5 1D            [12]  160 	mov	(_append_to_buffer_list_sloc0_1_0 + 2),a
-      0036B6 85 1B 82         [24]  161 	mov	dpl,_append_to_buffer_list_sloc0_1_0
-      0036B9 85 1C 83         [24]  162 	mov	dph,(_append_to_buffer_list_sloc0_1_0 + 1)
-      0036BC 85 1D F0         [24]  163 	mov	b,(_append_to_buffer_list_sloc0_1_0 + 2)
-      0036BF 12 49 DF         [24]  164 	lcall	__gptrget
-      0036C2 FA               [12]  165 	mov	r2,a
-      0036C3 A3               [24]  166 	inc	dptr
-      0036C4 12 49 DF         [24]  167 	lcall	__gptrget
-      0036C7 FB               [12]  168 	mov	r3,a
-      0036C8 A3               [24]  169 	inc	dptr
-      0036C9 12 49 DF         [24]  170 	lcall	__gptrget
-      0036CC FC               [12]  171 	mov	r4,a
-      0036CD EA               [12]  172 	mov	a,r2
-      0036CE 4B               [12]  173 	orl	a,r3
-      0036CF 70 24            [24]  174 	jnz	00105$
-                                    175 ;	src/linked_list.c:9: list->head = buffer; 
-      0036D1 90 20 41         [24]  176 	mov	dptr,#_append_to_buffer_list_PARM_2
-      0036D4 E0               [24]  177 	movx	a,@dptr
-      0036D5 F8               [12]  178 	mov	r0,a
-      0036D6 A3               [24]  179 	inc	dptr
-      0036D7 E0               [24]  180 	movx	a,@dptr
-      0036D8 F9               [12]  181 	mov	r1,a
-      0036D9 A3               [24]  182 	inc	dptr
-      0036DA E0               [24]  183 	movx	a,@dptr
-      0036DB FF               [12]  184 	mov	r7,a
-      0036DC 85 1B 82         [24]  185 	mov	dpl,_append_to_buffer_list_sloc0_1_0
-      0036DF 85 1C 83         [24]  186 	mov	dph,(_append_to_buffer_list_sloc0_1_0 + 1)
-      0036E2 85 1D F0         [24]  187 	mov	b,(_append_to_buffer_list_sloc0_1_0 + 2)
-      0036E5 E8               [12]  188 	mov	a,r0
-      0036E6 12 3D 85         [24]  189 	lcall	__gptrput
-      0036E9 A3               [24]  190 	inc	dptr
-      0036EA E9               [12]  191 	mov	a,r1
-      0036EB 12 3D 85         [24]  192 	lcall	__gptrput
-      0036EE A3               [24]  193 	inc	dptr
-      0036EF EF               [12]  194 	mov	a,r7
-      0036F0 12 3D 85         [24]  195 	lcall	__gptrput
-      0036F3 80 61            [24]  196 	sjmp	00106$
-      0036F5                        197 00105$:
-                                    198 ;	src/linked_list.c:13: buffer_t *tail = list->head;
-      0036F5 90 20 47         [24]  199 	mov	dptr,#_append_to_buffer_list_tail_131072_48
-      0036F8 EA               [12]  200 	mov	a,r2
-      0036F9 F0               [24]  201 	movx	@dptr,a
-      0036FA EB               [12]  202 	mov	a,r3
-      0036FB A3               [24]  203 	inc	dptr
-      0036FC F0               [24]  204 	movx	@dptr,a
-      0036FD EC               [12]  205 	mov	a,r4
-      0036FE A3               [24]  206 	inc	dptr
-      0036FF F0               [24]  207 	movx	@dptr,a
-                                    208 ;	src/linked_list.c:14: while(tail->next != NULL)
-      003700                        209 00101$:
-      003700 90 20 47         [24]  210 	mov	dptr,#_append_to_buffer_list_tail_131072_48
-      003703 E0               [24]  211 	movx	a,@dptr
-      003704 FD               [12]  212 	mov	r5,a
-      003705 A3               [24]  213 	inc	dptr
-      003706 E0               [24]  214 	movx	a,@dptr
-      003707 FE               [12]  215 	mov	r6,a
-      003708 A3               [24]  216 	inc	dptr
-      003709 E0               [24]  217 	movx	a,@dptr
-      00370A FF               [12]  218 	mov	r7,a
-      00370B 74 08            [12]  219 	mov	a,#0x08
-      00370D 2D               [12]  220 	add	a,r5
-      00370E FD               [12]  221 	mov	r5,a
-      00370F E4               [12]  222 	clr	a
-      003710 3E               [12]  223 	addc	a,r6
-      003711 FE               [12]  224 	mov	r6,a
-      003712 8D 82            [24]  225 	mov	dpl,r5
-      003714 8E 83            [24]  226 	mov	dph,r6
-      003716 8F F0            [24]  227 	mov	b,r7
-      003718 12 49 DF         [24]  228 	lcall	__gptrget
-      00371B FA               [12]  229 	mov	r2,a
-      00371C A3               [24]  230 	inc	dptr
-      00371D 12 49 DF         [24]  231 	lcall	__gptrget
-      003720 FB               [12]  232 	mov	r3,a
-      003721 A3               [24]  233 	inc	dptr
-      003722 12 49 DF         [24]  234 	lcall	__gptrget
-      003725 FC               [12]  235 	mov	r4,a
-      003726 EA               [12]  236 	mov	a,r2
-      003727 4B               [12]  237 	orl	a,r3
-      003728 60 0D            [24]  238 	jz	00103$
-                                    239 ;	src/linked_list.c:16: tail = tail->next;
-      00372A 90 20 47         [24]  240 	mov	dptr,#_append_to_buffer_list_tail_131072_48
-      00372D EA               [12]  241 	mov	a,r2
-      00372E F0               [24]  242 	movx	@dptr,a
-      00372F EB               [12]  243 	mov	a,r3
-      003730 A3               [24]  244 	inc	dptr
-      003731 F0               [24]  245 	movx	@dptr,a
-      003732 EC               [12]  246 	mov	a,r4
-      003733 A3               [24]  247 	inc	dptr
-      003734 F0               [24]  248 	movx	@dptr,a
-      003735 80 C9            [24]  249 	sjmp	00101$
-      003737                        250 00103$:
-                                    251 ;	src/linked_list.c:18: tail->next = buffer;
-      003737 90 20 41         [24]  252 	mov	dptr,#_append_to_buffer_list_PARM_2
-      00373A E0               [24]  253 	movx	a,@dptr
-      00373B FA               [12]  254 	mov	r2,a
-      00373C A3               [24]  255 	inc	dptr
-      00373D E0               [24]  256 	movx	a,@dptr
-      00373E FB               [12]  257 	mov	r3,a
-      00373F A3               [24]  258 	inc	dptr
-      003740 E0               [24]  259 	movx	a,@dptr
-      003741 FC               [12]  260 	mov	r4,a
-      003742 8D 82            [24]  261 	mov	dpl,r5
-      003744 8E 83            [24]  262 	mov	dph,r6
-      003746 8F F0            [24]  263 	mov	b,r7
-      003748 EA               [12]  264 	mov	a,r2
-      003749 12 3D 85         [24]  265 	lcall	__gptrput
-      00374C A3               [24]  266 	inc	dptr
-      00374D EB               [12]  267 	mov	a,r3
-      00374E 12 3D 85         [24]  268 	lcall	__gptrput
-      003751 A3               [24]  269 	inc	dptr
-      003752 EC               [12]  270 	mov	a,r4
-      003753 12 3D 85         [24]  271 	lcall	__gptrput
-      003756                        272 00106$:
-                                    273 ;	src/linked_list.c:20: buffer->next = NULL; 
-      003756 90 20 41         [24]  274 	mov	dptr,#_append_to_buffer_list_PARM_2
-      003759 E0               [24]  275 	movx	a,@dptr
-      00375A FD               [12]  276 	mov	r5,a
-      00375B A3               [24]  277 	inc	dptr
-      00375C E0               [24]  278 	movx	a,@dptr
-      00375D FE               [12]  279 	mov	r6,a
-      00375E A3               [24]  280 	inc	dptr
-      00375F E0               [24]  281 	movx	a,@dptr
-      003760 FF               [12]  282 	mov	r7,a
-      003761 74 08            [12]  283 	mov	a,#0x08
-      003763 2D               [12]  284 	add	a,r5
-      003764 FD               [12]  285 	mov	r5,a
-      003765 E4               [12]  286 	clr	a
-      003766 3E               [12]  287 	addc	a,r6
-      003767 FE               [12]  288 	mov	r6,a
-      003768 8D 82            [24]  289 	mov	dpl,r5
-      00376A 8E 83            [24]  290 	mov	dph,r6
-      00376C 8F F0            [24]  291 	mov	b,r7
-      00376E E4               [12]  292 	clr	a
-      00376F 12 3D 85         [24]  293 	lcall	__gptrput
-      003772 A3               [24]  294 	inc	dptr
-      003773 12 3D 85         [24]  295 	lcall	__gptrput
-      003776 A3               [24]  296 	inc	dptr
-      003777 12 3D 85         [24]  297 	lcall	__gptrput
-                                    298 ;	src/linked_list.c:21: return true;
-      00377A 75 82 01         [24]  299 	mov	dpl,#0x01
-                                    300 ;	src/linked_list.c:22: }
-      00377D 22               [24]  301 	ret
-                                    302 ;------------------------------------------------------------
-                                    303 ;Allocation info for local variables in function 'remove_from_buffer_list'
-                                    304 ;------------------------------------------------------------
-                                    305 ;sloc0                     Allocated with name '_remove_from_buffer_list_sloc0_1_0'
-                                    306 ;idx                       Allocated with name '_remove_from_buffer_list_PARM_2'
-                                    307 ;list                      Allocated with name '_remove_from_buffer_list_list_65536_50'
-                                    308 ;to_free                   Allocated with name '_remove_from_buffer_list_to_free_65537_52'
-                                    309 ;prev                      Allocated with name '_remove_from_buffer_list_prev_131073_54'
-                                    310 ;------------------------------------------------------------
-                                    311 ;	src/linked_list.c:25: bool remove_from_buffer_list(buffer_list_t *list, size_t idx)
-                                    312 ;	-----------------------------------------
-                                    313 ;	 function remove_from_buffer_list
-                                    314 ;	-----------------------------------------
-      00377E                        315 _remove_from_buffer_list:
-      00377E AF F0            [24]  316 	mov	r7,b
-      003780 AE 83            [24]  317 	mov	r6,dph
-      003782 E5 82            [12]  318 	mov	a,dpl
-      003784 90 20 4C         [24]  319 	mov	dptr,#_remove_from_buffer_list_list_65536_50
-      003787 F0               [24]  320 	movx	@dptr,a
-      003788 EE               [12]  321 	mov	a,r6
-      003789 A3               [24]  322 	inc	dptr
-      00378A F0               [24]  323 	movx	@dptr,a
-      00378B EF               [12]  324 	mov	a,r7
-      00378C A3               [24]  325 	inc	dptr
-      00378D F0               [24]  326 	movx	@dptr,a
-                                    327 ;	src/linked_list.c:27: if (list == NULL) return false;
-      00378E 90 20 4C         [24]  328 	mov	dptr,#_remove_from_buffer_list_list_65536_50
-      003791 E0               [24]  329 	movx	a,@dptr
-      003792 F5 08            [12]  330 	mov	_remove_from_buffer_list_sloc0_1_0,a
-      003794 A3               [24]  331 	inc	dptr
-      003795 E0               [24]  332 	movx	a,@dptr
-      003796 F5 09            [12]  333 	mov	(_remove_from_buffer_list_sloc0_1_0 + 1),a
-      003798 A3               [24]  334 	inc	dptr
-      003799 E0               [24]  335 	movx	a,@dptr
-      00379A F5 0A            [12]  336 	mov	(_remove_from_buffer_list_sloc0_1_0 + 2),a
-      00379C E5 08            [12]  337 	mov	a,_remove_from_buffer_list_sloc0_1_0
-      00379E 45 09            [12]  338 	orl	a,(_remove_from_buffer_list_sloc0_1_0 + 1)
-      0037A0 70 03            [24]  339 	jnz	00102$
-      0037A2 F5 82            [12]  340 	mov	dpl,a
-      0037A4 22               [24]  341 	ret
-      0037A5                        342 00102$:
-                                    343 ;	src/linked_list.c:28: if (list->head == NULL) return false;
-      0037A5 85 08 82         [24]  344 	mov	dpl,_remove_from_buffer_list_sloc0_1_0
-      0037A8 85 09 83         [24]  345 	mov	dph,(_remove_from_buffer_list_sloc0_1_0 + 1)
-      0037AB 85 0A F0         [24]  346 	mov	b,(_remove_from_buffer_list_sloc0_1_0 + 2)
-      0037AE 12 49 DF         [24]  347 	lcall	__gptrget
-      0037B1 FA               [12]  348 	mov	r2,a
-      0037B2 A3               [24]  349 	inc	dptr
-      0037B3 12 49 DF         [24]  350 	lcall	__gptrget
-      0037B6 FB               [12]  351 	mov	r3,a
-      0037B7 A3               [24]  352 	inc	dptr
-      0037B8 12 49 DF         [24]  353 	lcall	__gptrget
-      0037BB FC               [12]  354 	mov	r4,a
-      0037BC EA               [12]  355 	mov	a,r2
-      0037BD 4B               [12]  356 	orl	a,r3
-      0037BE 70 03            [24]  357 	jnz	00104$
-      0037C0 F5 82            [12]  358 	mov	dpl,a
-      0037C2 22               [24]  359 	ret
-      0037C3                        360 00104$:
-                                    361 ;	src/linked_list.c:31: if (idx == 0)
-      0037C3 90 20 4A         [24]  362 	mov	dptr,#_remove_from_buffer_list_PARM_2
-      0037C6 E0               [24]  363 	movx	a,@dptr
-      0037C7 F8               [12]  364 	mov	r0,a
-      0037C8 A3               [24]  365 	inc	dptr
-      0037C9 E0               [24]  366 	movx	a,@dptr
-      0037CA F9               [12]  367 	mov	r1,a
-      0037CB 90 20 4A         [24]  368 	mov	dptr,#_remove_from_buffer_list_PARM_2
-      0037CE E0               [24]  369 	movx	a,@dptr
-      0037CF F5 F0            [12]  370 	mov	b,a
-      0037D1 A3               [24]  371 	inc	dptr
-      0037D2 E0               [24]  372 	movx	a,@dptr
-      0037D3 45 F0            [12]  373 	orl	a,b
-      0037D5 70 42            [24]  374 	jnz	00112$
-                                    375 ;	src/linked_list.c:34: to_free = list->head;
-      0037D7 90 20 4F         [24]  376 	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
-      0037DA EA               [12]  377 	mov	a,r2
-      0037DB F0               [24]  378 	movx	@dptr,a
-      0037DC EB               [12]  379 	mov	a,r3
-      0037DD A3               [24]  380 	inc	dptr
-      0037DE F0               [24]  381 	movx	@dptr,a
-      0037DF EC               [12]  382 	mov	a,r4
-      0037E0 A3               [24]  383 	inc	dptr
-      0037E1 F0               [24]  384 	movx	@dptr,a
-                                    385 ;	src/linked_list.c:35: list->head = list->head->next;  
-      0037E2 74 08            [12]  386 	mov	a,#0x08
-      0037E4 2A               [12]  387 	add	a,r2
-      0037E5 FD               [12]  388 	mov	r5,a
-      0037E6 E4               [12]  389 	clr	a
-      0037E7 3B               [12]  390 	addc	a,r3
-      0037E8 FE               [12]  391 	mov	r6,a
-      0037E9 8C 07            [24]  392 	mov	ar7,r4
-      0037EB 8D 82            [24]  393 	mov	dpl,r5
-      0037ED 8E 83            [24]  394 	mov	dph,r6
-      0037EF 8F F0            [24]  395 	mov	b,r7
-      0037F1 12 49 DF         [24]  396 	lcall	__gptrget
-      0037F4 FD               [12]  397 	mov	r5,a
-      0037F5 A3               [24]  398 	inc	dptr
-      0037F6 12 49 DF         [24]  399 	lcall	__gptrget
-      0037F9 FE               [12]  400 	mov	r6,a
-      0037FA A3               [24]  401 	inc	dptr
-      0037FB 12 49 DF         [24]  402 	lcall	__gptrget
-      0037FE FF               [12]  403 	mov	r7,a
-      0037FF 85 08 82         [24]  404 	mov	dpl,_remove_from_buffer_list_sloc0_1_0
-      003802 85 09 83         [24]  405 	mov	dph,(_remove_from_buffer_list_sloc0_1_0 + 1)
-      003805 85 0A F0         [24]  406 	mov	b,(_remove_from_buffer_list_sloc0_1_0 + 2)
-      003808 ED               [12]  407 	mov	a,r5
-      003809 12 3D 85         [24]  408 	lcall	__gptrput
-      00380C A3               [24]  409 	inc	dptr
-      00380D EE               [12]  410 	mov	a,r6
-      00380E 12 3D 85         [24]  411 	lcall	__gptrput
-      003811 A3               [24]  412 	inc	dptr
-      003812 EF               [12]  413 	mov	a,r7
-      003813 12 3D 85         [24]  414 	lcall	__gptrput
-      003816 02 38 E1         [24]  415 	ljmp	00113$
-      003819                        416 00112$:
-                                    417 ;	src/linked_list.c:39: buffer_t *prev = list->head;
-      003819 90 20 52         [24]  418 	mov	dptr,#_remove_from_buffer_list_prev_131073_54
-      00381C EA               [12]  419 	mov	a,r2
-      00381D F0               [24]  420 	movx	@dptr,a
-      00381E EB               [12]  421 	mov	a,r3
-      00381F A3               [24]  422 	inc	dptr
-      003820 F0               [24]  423 	movx	@dptr,a
-      003821 EC               [12]  424 	mov	a,r4
-      003822 A3               [24]  425 	inc	dptr
-      003823 F0               [24]  426 	movx	@dptr,a
-                                    427 ;	src/linked_list.c:40: idx--;
-      003824 18               [12]  428 	dec	r0
-      003825 B8 FF 01         [24]  429 	cjne	r0,#0xff,00160$
-      003828 19               [12]  430 	dec	r1
-      003829                        431 00160$:
-      003829 90 20 4A         [24]  432 	mov	dptr,#_remove_from_buffer_list_PARM_2
-      00382C E8               [12]  433 	mov	a,r0
-      00382D F0               [24]  434 	movx	@dptr,a
-      00382E E9               [12]  435 	mov	a,r1
-      00382F A3               [24]  436 	inc	dptr
-      003830 F0               [24]  437 	movx	@dptr,a
-                                    438 ;	src/linked_list.c:41: while(idx > 0 && prev->next != NULL)
-      003831 90 20 4A         [24]  439 	mov	dptr,#_remove_from_buffer_list_PARM_2
-      003834 E0               [24]  440 	movx	a,@dptr
-      003835 FE               [12]  441 	mov	r6,a
-      003836 A3               [24]  442 	inc	dptr
-      003837 E0               [24]  443 	movx	a,@dptr
-      003838 FF               [12]  444 	mov	r7,a
-      003839                        445 00106$:
-      003839 EE               [12]  446 	mov	a,r6
-      00383A 4F               [12]  447 	orl	a,r7
-      00383B 60 3C            [24]  448 	jz	00108$
-      00383D 90 20 52         [24]  449 	mov	dptr,#_remove_from_buffer_list_prev_131073_54
-      003840 E0               [24]  450 	movx	a,@dptr
-      003841 FB               [12]  451 	mov	r3,a
-      003842 A3               [24]  452 	inc	dptr
-      003843 E0               [24]  453 	movx	a,@dptr
-      003844 FC               [12]  454 	mov	r4,a
-      003845 A3               [24]  455 	inc	dptr
-      003846 E0               [24]  456 	movx	a,@dptr
-      003847 FD               [12]  457 	mov	r5,a
-      003848 74 08            [12]  458 	mov	a,#0x08
-      00384A 2B               [12]  459 	add	a,r3
-      00384B FB               [12]  460 	mov	r3,a
-      00384C E4               [12]  461 	clr	a
-      00384D 3C               [12]  462 	addc	a,r4
-      00384E FC               [12]  463 	mov	r4,a
-      00384F 8B 82            [24]  464 	mov	dpl,r3
-      003851 8C 83            [24]  465 	mov	dph,r4
-      003853 8D F0            [24]  466 	mov	b,r5
-      003855 12 49 DF         [24]  467 	lcall	__gptrget
-      003858 FB               [12]  468 	mov	r3,a
-      003859 A3               [24]  469 	inc	dptr
-      00385A 12 49 DF         [24]  470 	lcall	__gptrget
-      00385D FC               [12]  471 	mov	r4,a
-      00385E A3               [24]  472 	inc	dptr
-      00385F 12 49 DF         [24]  473 	lcall	__gptrget
-      003862 FD               [12]  474 	mov	r5,a
-      003863 EB               [12]  475 	mov	a,r3
-      003864 4C               [12]  476 	orl	a,r4
-      003865 60 12            [24]  477 	jz	00108$
-                                    478 ;	src/linked_list.c:43: prev = prev->next;
-      003867 90 20 52         [24]  479 	mov	dptr,#_remove_from_buffer_list_prev_131073_54
-      00386A EB               [12]  480 	mov	a,r3
-      00386B F0               [24]  481 	movx	@dptr,a
-      00386C EC               [12]  482 	mov	a,r4
-      00386D A3               [24]  483 	inc	dptr
-      00386E F0               [24]  484 	movx	@dptr,a
-      00386F ED               [12]  485 	mov	a,r5
-      003870 A3               [24]  486 	inc	dptr
-      003871 F0               [24]  487 	movx	@dptr,a
-                                    488 ;	src/linked_list.c:44: idx--;
-      003872 1E               [12]  489 	dec	r6
-      003873 BE FF 01         [24]  490 	cjne	r6,#0xff,00163$
-      003876 1F               [12]  491 	dec	r7
-      003877                        492 00163$:
-      003877 80 C0            [24]  493 	sjmp	00106$
-      003879                        494 00108$:
-                                    495 ;	src/linked_list.c:47: if (idx != 0) return false;
-      003879 EE               [12]  496 	mov	a,r6
-      00387A 4F               [12]  497 	orl	a,r7
-      00387B 60 04            [24]  498 	jz	00110$
-      00387D 75 82 00         [24]  499 	mov	dpl,#0x00
-      003880 22               [24]  500 	ret
-      003881                        501 00110$:
-                                    502 ;	src/linked_list.c:48: to_free = prev->next;
-      003881 90 20 52         [24]  503 	mov	dptr,#_remove_from_buffer_list_prev_131073_54
-      003884 E0               [24]  504 	movx	a,@dptr
-      003885 FD               [12]  505 	mov	r5,a
-      003886 A3               [24]  506 	inc	dptr
-      003887 E0               [24]  507 	movx	a,@dptr
-      003888 FE               [12]  508 	mov	r6,a
-      003889 A3               [24]  509 	inc	dptr
-      00388A E0               [24]  510 	movx	a,@dptr
-      00388B FF               [12]  511 	mov	r7,a
-      00388C 74 08            [12]  512 	mov	a,#0x08
-      00388E 2D               [12]  513 	add	a,r5
-      00388F FD               [12]  514 	mov	r5,a
-      003890 E4               [12]  515 	clr	a
-      003891 3E               [12]  516 	addc	a,r6
-      003892 FE               [12]  517 	mov	r6,a
-      003893 8D 82            [24]  518 	mov	dpl,r5
-      003895 8E 83            [24]  519 	mov	dph,r6
-      003897 8F F0            [24]  520 	mov	b,r7
-      003899 12 49 DF         [24]  521 	lcall	__gptrget
-      00389C FA               [12]  522 	mov	r2,a
-      00389D A3               [24]  523 	inc	dptr
-      00389E 12 49 DF         [24]  524 	lcall	__gptrget
-      0038A1 FB               [12]  525 	mov	r3,a
-      0038A2 A3               [24]  526 	inc	dptr
-      0038A3 12 49 DF         [24]  527 	lcall	__gptrget
-      0038A6 FC               [12]  528 	mov	r4,a
-      0038A7 90 20 4F         [24]  529 	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
-      0038AA EA               [12]  530 	mov	a,r2
-      0038AB F0               [24]  531 	movx	@dptr,a
-      0038AC EB               [12]  532 	mov	a,r3
-      0038AD A3               [24]  533 	inc	dptr
-      0038AE F0               [24]  534 	movx	@dptr,a
-      0038AF EC               [12]  535 	mov	a,r4
-      0038B0 A3               [24]  536 	inc	dptr
-      0038B1 F0               [24]  537 	movx	@dptr,a
-                                    538 ;	src/linked_list.c:49: prev->next = to_free->next;
-      0038B2 74 08            [12]  539 	mov	a,#0x08
-      0038B4 2A               [12]  540 	add	a,r2
-      0038B5 FA               [12]  541 	mov	r2,a
-      0038B6 E4               [12]  542 	clr	a
-      0038B7 3B               [12]  543 	addc	a,r3
-      0038B8 FB               [12]  544 	mov	r3,a
-      0038B9 8A 82            [24]  545 	mov	dpl,r2
-      0038BB 8B 83            [24]  546 	mov	dph,r3
-      0038BD 8C F0            [24]  547 	mov	b,r4
-      0038BF 12 49 DF         [24]  548 	lcall	__gptrget
-      0038C2 FA               [12]  549 	mov	r2,a
-      0038C3 A3               [24]  550 	inc	dptr
-      0038C4 12 49 DF         [24]  551 	lcall	__gptrget
-      0038C7 FB               [12]  552 	mov	r3,a
-      0038C8 A3               [24]  553 	inc	dptr
-      0038C9 12 49 DF         [24]  554 	lcall	__gptrget
-      0038CC FC               [12]  555 	mov	r4,a
-      0038CD 8D 82            [24]  556 	mov	dpl,r5
-      0038CF 8E 83            [24]  557 	mov	dph,r6
-      0038D1 8F F0            [24]  558 	mov	b,r7
-      0038D3 EA               [12]  559 	mov	a,r2
-      0038D4 12 3D 85         [24]  560 	lcall	__gptrput
-      0038D7 A3               [24]  561 	inc	dptr
-      0038D8 EB               [12]  562 	mov	a,r3
-      0038D9 12 3D 85         [24]  563 	lcall	__gptrput
-      0038DC A3               [24]  564 	inc	dptr
-      0038DD EC               [12]  565 	mov	a,r4
-      0038DE 12 3D 85         [24]  566 	lcall	__gptrput
-      0038E1                        567 00113$:
-                                    568 ;	src/linked_list.c:52: if (to_free == NULL) return false; 
-      0038E1 90 20 4F         [24]  569 	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
-      0038E4 E0               [24]  570 	movx	a,@dptr
-      0038E5 FE               [12]  571 	mov	r6,a
-      0038E6 A3               [24]  572 	inc	dptr
-      0038E7 E0               [24]  573 	movx	a,@dptr
-      0038E8 FD               [12]  574 	mov	r5,a
-      0038E9 A3               [24]  575 	inc	dptr
-      0038EA E0               [24]  576 	movx	a,@dptr
-      0038EB FF               [12]  577 	mov	r7,a
-      0038EC 90 20 4F         [24]  578 	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
-      0038EF E0               [24]  579 	movx	a,@dptr
-      0038F0 F5 F0            [12]  580 	mov	b,a
-      0038F2 A3               [24]  581 	inc	dptr
-      0038F3 E0               [24]  582 	movx	a,@dptr
-      0038F4 45 F0            [12]  583 	orl	a,b
-      0038F6 70 03            [24]  584 	jnz	00115$
-      0038F8 F5 82            [12]  585 	mov	dpl,a
-      0038FA 22               [24]  586 	ret
-      0038FB                        587 00115$:
-                                    588 ;	src/linked_list.c:53: if (to_free->buffer != NULL) 
-      0038FB 8E 82            [24]  589 	mov	dpl,r6
-      0038FD 8D 83            [24]  590 	mov	dph,r5
-      0038FF 8F F0            [24]  591 	mov	b,r7
-      003901 12 49 DF         [24]  592 	lcall	__gptrget
-      003904 FE               [12]  593 	mov	r6,a
-      003905 A3               [24]  594 	inc	dptr
-      003906 12 49 DF         [24]  595 	lcall	__gptrget
-      003909 FF               [12]  596 	mov	r7,a
-      00390A 4E               [12]  597 	orl	a,r6
-      00390B 60 0B            [24]  598 	jz	00117$
-                                    599 ;	src/linked_list.c:55: free(to_free->buffer);
-      00390D 7D 00            [12]  600 	mov	r5,#0x00
-      00390F 8E 82            [24]  601 	mov	dpl,r6
-      003911 8F 83            [24]  602 	mov	dph,r7
-      003913 8D F0            [24]  603 	mov	b,r5
-      003915 12 3A 6E         [24]  604 	lcall	_free
-      003918                        605 00117$:
-                                    606 ;	src/linked_list.c:57: free(to_free);
-      003918 90 20 4F         [24]  607 	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
-      00391B E0               [24]  608 	movx	a,@dptr
-      00391C FD               [12]  609 	mov	r5,a
-      00391D A3               [24]  610 	inc	dptr
-      00391E E0               [24]  611 	movx	a,@dptr
-      00391F FE               [12]  612 	mov	r6,a
-      003920 A3               [24]  613 	inc	dptr
-      003921 E0               [24]  614 	movx	a,@dptr
-      003922 FF               [12]  615 	mov	r7,a
-      003923 8D 82            [24]  616 	mov	dpl,r5
-      003925 8E 83            [24]  617 	mov	dph,r6
-      003927 8F F0            [24]  618 	mov	b,r7
-      003929 12 3A 6E         [24]  619 	lcall	_free
-                                    620 ;	src/linked_list.c:58: return true; 
-      00392C 75 82 01         [24]  621 	mov	dpl,#0x01
-                                    622 ;	src/linked_list.c:59: }
-      00392F 22               [24]  623 	ret
-                                    624 ;------------------------------------------------------------
-                                    625 ;Allocation info for local variables in function 'free_all_elems_from_list'
-                                    626 ;------------------------------------------------------------
-                                    627 ;sloc0                     Allocated with name '_free_all_elems_from_list_sloc0_1_0'
-                                    628 ;list                      Allocated with name '_free_all_elems_from_list_list_65536_57'
-                                    629 ;buffer_to_free            Allocated with name '_free_all_elems_from_list_buffer_to_free_65536_58'
-                                    630 ;------------------------------------------------------------
-                                    631 ;	src/linked_list.c:61: void free_all_elems_from_list(buffer_list_t *list)
-                                    632 ;	-----------------------------------------
-                                    633 ;	 function free_all_elems_from_list
-                                    634 ;	-----------------------------------------
-      003930                        635 _free_all_elems_from_list:
-      003930 AF F0            [24]  636 	mov	r7,b
-      003932 AE 83            [24]  637 	mov	r6,dph
-      003934 E5 82            [12]  638 	mov	a,dpl
-      003936 90 20 55         [24]  639 	mov	dptr,#_free_all_elems_from_list_list_65536_57
-      003939 F0               [24]  640 	movx	@dptr,a
-      00393A EE               [12]  641 	mov	a,r6
-      00393B A3               [24]  642 	inc	dptr
-      00393C F0               [24]  643 	movx	@dptr,a
-      00393D EF               [12]  644 	mov	a,r7
-      00393E A3               [24]  645 	inc	dptr
-      00393F F0               [24]  646 	movx	@dptr,a
-                                    647 ;	src/linked_list.c:63: buffer_t *buffer_to_free = list->head;
-      003940 90 20 55         [24]  648 	mov	dptr,#_free_all_elems_from_list_list_65536_57
-      003943 E0               [24]  649 	movx	a,@dptr
-      003944 FD               [12]  650 	mov	r5,a
-      003945 A3               [24]  651 	inc	dptr
-      003946 E0               [24]  652 	movx	a,@dptr
-      003947 FE               [12]  653 	mov	r6,a
-      003948 A3               [24]  654 	inc	dptr
-      003949 E0               [24]  655 	movx	a,@dptr
-      00394A FF               [12]  656 	mov	r7,a
-      00394B 8D 82            [24]  657 	mov	dpl,r5
-      00394D 8E 83            [24]  658 	mov	dph,r6
-      00394F 8F F0            [24]  659 	mov	b,r7
-      003951 12 49 DF         [24]  660 	lcall	__gptrget
-      003954 FA               [12]  661 	mov	r2,a
-      003955 A3               [24]  662 	inc	dptr
-      003956 12 49 DF         [24]  663 	lcall	__gptrget
-      003959 FB               [12]  664 	mov	r3,a
-      00395A A3               [24]  665 	inc	dptr
-      00395B 12 49 DF         [24]  666 	lcall	__gptrget
-      00395E FC               [12]  667 	mov	r4,a
-      00395F 90 20 58         [24]  668 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
-      003962 EA               [12]  669 	mov	a,r2
-      003963 F0               [24]  670 	movx	@dptr,a
-      003964 EB               [12]  671 	mov	a,r3
-      003965 A3               [24]  672 	inc	dptr
-      003966 F0               [24]  673 	movx	@dptr,a
-      003967 EC               [12]  674 	mov	a,r4
-      003968 A3               [24]  675 	inc	dptr
-      003969 F0               [24]  676 	movx	@dptr,a
-                                    677 ;	src/linked_list.c:64: while(list->head != NULL)
-      00396A                        678 00103$:
-      00396A 90 20 55         [24]  679 	mov	dptr,#_free_all_elems_from_list_list_65536_57
-      00396D E0               [24]  680 	movx	a,@dptr
-      00396E FA               [12]  681 	mov	r2,a
-      00396F A3               [24]  682 	inc	dptr
-      003970 E0               [24]  683 	movx	a,@dptr
-      003971 FB               [12]  684 	mov	r3,a
-      003972 A3               [24]  685 	inc	dptr
-      003973 E0               [24]  686 	movx	a,@dptr
-      003974 FC               [12]  687 	mov	r4,a
-      003975 8A 82            [24]  688 	mov	dpl,r2
-      003977 8B 83            [24]  689 	mov	dph,r3
-      003979 8C F0            [24]  690 	mov	b,r4
-      00397B 12 49 DF         [24]  691 	lcall	__gptrget
-      00397E F5 0B            [12]  692 	mov	_free_all_elems_from_list_sloc0_1_0,a
-      003980 A3               [24]  693 	inc	dptr
-      003981 12 49 DF         [24]  694 	lcall	__gptrget
-      003984 F5 0C            [12]  695 	mov	(_free_all_elems_from_list_sloc0_1_0 + 1),a
-      003986 A3               [24]  696 	inc	dptr
-      003987 12 49 DF         [24]  697 	lcall	__gptrget
-      00398A F5 0D            [12]  698 	mov	(_free_all_elems_from_list_sloc0_1_0 + 2),a
-      00398C E5 0B            [12]  699 	mov	a,_free_all_elems_from_list_sloc0_1_0
-      00398E 45 0C            [12]  700 	orl	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
-      003990 70 01            [24]  701 	jnz	00120$
-      003992 22               [24]  702 	ret
-      003993                        703 00120$:
-                                    704 ;	src/linked_list.c:66: list->head = list->head->next;
-      003993 C0 05            [24]  705 	push	ar5
-      003995 C0 06            [24]  706 	push	ar6
-      003997 C0 07            [24]  707 	push	ar7
-      003999 74 08            [12]  708 	mov	a,#0x08
-      00399B 25 0B            [12]  709 	add	a,_free_all_elems_from_list_sloc0_1_0
-      00399D F8               [12]  710 	mov	r0,a
-      00399E E4               [12]  711 	clr	a
-      00399F 35 0C            [12]  712 	addc	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
-      0039A1 F9               [12]  713 	mov	r1,a
-      0039A2 AF 0D            [24]  714 	mov	r7,(_free_all_elems_from_list_sloc0_1_0 + 2)
-      0039A4 88 82            [24]  715 	mov	dpl,r0
-      0039A6 89 83            [24]  716 	mov	dph,r1
-      0039A8 8F F0            [24]  717 	mov	b,r7
-      0039AA 12 49 DF         [24]  718 	lcall	__gptrget
-      0039AD F8               [12]  719 	mov	r0,a
-      0039AE A3               [24]  720 	inc	dptr
-      0039AF 12 49 DF         [24]  721 	lcall	__gptrget
-      0039B2 F9               [12]  722 	mov	r1,a
-      0039B3 A3               [24]  723 	inc	dptr
-      0039B4 12 49 DF         [24]  724 	lcall	__gptrget
-      0039B7 FF               [12]  725 	mov	r7,a
-      0039B8 8A 82            [24]  726 	mov	dpl,r2
-      0039BA 8B 83            [24]  727 	mov	dph,r3
-      0039BC 8C F0            [24]  728 	mov	b,r4
-      0039BE E8               [12]  729 	mov	a,r0
-      0039BF 12 3D 85         [24]  730 	lcall	__gptrput
-      0039C2 A3               [24]  731 	inc	dptr
-      0039C3 E9               [12]  732 	mov	a,r1
-      0039C4 12 3D 85         [24]  733 	lcall	__gptrput
-      0039C7 A3               [24]  734 	inc	dptr
-      0039C8 EF               [12]  735 	mov	a,r7
-      0039C9 12 3D 85         [24]  736 	lcall	__gptrput
-                                    737 ;	src/linked_list.c:67: if (buffer_to_free->buffer != NULL)
-      0039CC 90 20 58         [24]  738 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
-      0039CF E0               [24]  739 	movx	a,@dptr
-      0039D0 FD               [12]  740 	mov	r5,a
-      0039D1 A3               [24]  741 	inc	dptr
-      0039D2 E0               [24]  742 	movx	a,@dptr
-      0039D3 FE               [12]  743 	mov	r6,a
-      0039D4 A3               [24]  744 	inc	dptr
-      0039D5 E0               [24]  745 	movx	a,@dptr
-      0039D6 FF               [12]  746 	mov	r7,a
-      0039D7 8D 82            [24]  747 	mov	dpl,r5
-      0039D9 8E 83            [24]  748 	mov	dph,r6
-      0039DB 8F F0            [24]  749 	mov	b,r7
-      0039DD 12 49 DF         [24]  750 	lcall	__gptrget
-      0039E0 F5 0B            [12]  751 	mov	_free_all_elems_from_list_sloc0_1_0,a
-      0039E2 A3               [24]  752 	inc	dptr
-      0039E3 12 49 DF         [24]  753 	lcall	__gptrget
-      0039E6 F5 0C            [12]  754 	mov	(_free_all_elems_from_list_sloc0_1_0 + 1),a
-      0039E8 D0 07            [24]  755 	pop	ar7
-      0039EA D0 06            [24]  756 	pop	ar6
-      0039EC D0 05            [24]  757 	pop	ar5
-      0039EE E5 0B            [12]  758 	mov	a,_free_all_elems_from_list_sloc0_1_0
-      0039F0 45 0C            [12]  759 	orl	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
-      0039F2 60 1B            [24]  760 	jz	00102$
-                                    761 ;	src/linked_list.c:69: free(buffer_to_free->buffer);
-      0039F4 AB 0B            [24]  762 	mov	r3,_free_all_elems_from_list_sloc0_1_0
-      0039F6 AC 0C            [24]  763 	mov	r4,(_free_all_elems_from_list_sloc0_1_0 + 1)
-      0039F8 7A 00            [12]  764 	mov	r2,#0x00
-      0039FA 8B 82            [24]  765 	mov	dpl,r3
-      0039FC 8C 83            [24]  766 	mov	dph,r4
-      0039FE 8A F0            [24]  767 	mov	b,r2
-      003A00 C0 07            [24]  768 	push	ar7
-      003A02 C0 06            [24]  769 	push	ar6
-      003A04 C0 05            [24]  770 	push	ar5
-      003A06 12 3A 6E         [24]  771 	lcall	_free
-      003A09 D0 05            [24]  772 	pop	ar5
-      003A0B D0 06            [24]  773 	pop	ar6
-      003A0D D0 07            [24]  774 	pop	ar7
-      003A0F                        775 00102$:
-                                    776 ;	src/linked_list.c:71: free(buffer_to_free);
-      003A0F 90 20 58         [24]  777 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
-      003A12 E0               [24]  778 	movx	a,@dptr
-      003A13 FA               [12]  779 	mov	r2,a
-      003A14 A3               [24]  780 	inc	dptr
-      003A15 E0               [24]  781 	movx	a,@dptr
-      003A16 FB               [12]  782 	mov	r3,a
-      003A17 A3               [24]  783 	inc	dptr
-      003A18 E0               [24]  784 	movx	a,@dptr
-      003A19 FC               [12]  785 	mov	r4,a
-      003A1A 8A 82            [24]  786 	mov	dpl,r2
-      003A1C 8B 83            [24]  787 	mov	dph,r3
-      003A1E 8C F0            [24]  788 	mov	b,r4
-      003A20 C0 07            [24]  789 	push	ar7
-      003A22 C0 06            [24]  790 	push	ar6
-      003A24 C0 05            [24]  791 	push	ar5
-      003A26 12 3A 6E         [24]  792 	lcall	_free
-      003A29 D0 05            [24]  793 	pop	ar5
-      003A2B D0 06            [24]  794 	pop	ar6
-      003A2D D0 07            [24]  795 	pop	ar7
-                                    796 ;	src/linked_list.c:72: buffer_to_free = list->head;
-      003A2F 8D 82            [24]  797 	mov	dpl,r5
-      003A31 8E 83            [24]  798 	mov	dph,r6
-      003A33 8F F0            [24]  799 	mov	b,r7
-      003A35 12 49 DF         [24]  800 	lcall	__gptrget
-      003A38 FA               [12]  801 	mov	r2,a
-      003A39 A3               [24]  802 	inc	dptr
-      003A3A 12 49 DF         [24]  803 	lcall	__gptrget
-      003A3D FB               [12]  804 	mov	r3,a
-      003A3E A3               [24]  805 	inc	dptr
-      003A3F 12 49 DF         [24]  806 	lcall	__gptrget
-      003A42 FC               [12]  807 	mov	r4,a
-      003A43 90 20 58         [24]  808 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
-      003A46 EA               [12]  809 	mov	a,r2
-      003A47 F0               [24]  810 	movx	@dptr,a
-      003A48 EB               [12]  811 	mov	a,r3
-      003A49 A3               [24]  812 	inc	dptr
-      003A4A F0               [24]  813 	movx	@dptr,a
-      003A4B EC               [12]  814 	mov	a,r4
-      003A4C A3               [24]  815 	inc	dptr
-      003A4D F0               [24]  816 	movx	@dptr,a
-                                    817 ;	src/linked_list.c:74: }
-      003A4E 02 39 6A         [24]  818 	ljmp	00103$
-                                    819 	.area CSEG    (CODE)
-                                    820 	.area CONST   (CODE)
-                                    821 	.area XINIT   (CODE)
-                                    822 	.area CABS    (ABS,CODE)
+                                     56 	.area IABS    (ABS,DATA)
+                                     57 	.area IABS    (ABS,DATA)
+                                     58 ;--------------------------------------------------------
+                                     59 ; bit data
+                                     60 ;--------------------------------------------------------
+                                     61 	.area BSEG    (BIT)
+                                     62 ;--------------------------------------------------------
+                                     63 ; paged external ram data
+                                     64 ;--------------------------------------------------------
+                                     65 	.area PSEG    (PAG,XDATA)
+                                     66 ;--------------------------------------------------------
+                                     67 ; external ram data
+                                     68 ;--------------------------------------------------------
+                                     69 	.area XSEG    (XDATA)
+      002047                         70 _append_to_buffer_list_PARM_2:
+      002047                         71 	.ds 3
+      00204A                         72 _append_to_buffer_list_list_65536_47:
+      00204A                         73 	.ds 3
+      00204D                         74 _append_to_buffer_list_tail_131072_50:
+      00204D                         75 	.ds 3
+      002050                         76 _remove_from_buffer_list_PARM_2:
+      002050                         77 	.ds 2
+      002052                         78 _remove_from_buffer_list_list_65536_52:
+      002052                         79 	.ds 3
+      002055                         80 _remove_from_buffer_list_to_free_65537_54:
+      002055                         81 	.ds 3
+      002058                         82 _remove_from_buffer_list_prev_131073_56:
+      002058                         83 	.ds 3
+      00205B                         84 _free_all_elems_from_list_list_65536_59:
+      00205B                         85 	.ds 3
+      00205E                         86 _free_all_elems_from_list_buffer_to_free_65536_60:
+      00205E                         87 	.ds 3
+      002061                         88 _ll_length_list_65536_63:
+      002061                         89 	.ds 3
+      002064                         90 _ll_length_size_65536_64:
+      002064                         91 	.ds 2
+      002066                         92 _ll_length_curr_65536_64:
+      002066                         93 	.ds 3
+      002069                         94 _ll_get_elem_PARM_2:
+      002069                         95 	.ds 2
+      00206B                         96 _ll_get_elem_list_65536_66:
+      00206B                         97 	.ds 3
+      00206E                         98 _ll_get_elem_curr_65536_67:
+      00206E                         99 	.ds 3
+                                    100 ;--------------------------------------------------------
+                                    101 ; absolute external ram data
+                                    102 ;--------------------------------------------------------
+                                    103 	.area XABS    (ABS,XDATA)
+                                    104 ;--------------------------------------------------------
+                                    105 ; external initialized ram data
+                                    106 ;--------------------------------------------------------
+                                    107 	.area XISEG   (XDATA)
+                                    108 	.area HOME    (CODE)
+                                    109 	.area GSINIT0 (CODE)
+                                    110 	.area GSINIT1 (CODE)
+                                    111 	.area GSINIT2 (CODE)
+                                    112 	.area GSINIT3 (CODE)
+                                    113 	.area GSINIT4 (CODE)
+                                    114 	.area GSINIT5 (CODE)
+                                    115 	.area GSINIT  (CODE)
+                                    116 	.area GSFINAL (CODE)
+                                    117 	.area CSEG    (CODE)
+                                    118 ;--------------------------------------------------------
+                                    119 ; global & static initialisations
+                                    120 ;--------------------------------------------------------
+                                    121 	.area HOME    (CODE)
+                                    122 	.area GSINIT  (CODE)
+                                    123 	.area GSFINAL (CODE)
+                                    124 	.area GSINIT  (CODE)
+                                    125 ;--------------------------------------------------------
+                                    126 ; Home
+                                    127 ;--------------------------------------------------------
+                                    128 	.area HOME    (CODE)
+                                    129 	.area HOME    (CODE)
+                                    130 ;--------------------------------------------------------
+                                    131 ; code
+                                    132 ;--------------------------------------------------------
+                                    133 	.area CSEG    (CODE)
+                                    134 ;------------------------------------------------------------
+                                    135 ;Allocation info for local variables in function 'append_to_buffer_list'
+                                    136 ;------------------------------------------------------------
+                                    137 ;buffer                    Allocated with name '_append_to_buffer_list_PARM_2'
+                                    138 ;list                      Allocated with name '_append_to_buffer_list_list_65536_47'
+                                    139 ;tail                      Allocated with name '_append_to_buffer_list_tail_131072_50'
+                                    140 ;sloc0                     Allocated with name '_append_to_buffer_list_sloc0_1_0'
+                                    141 ;------------------------------------------------------------
+                                    142 ;	src/linked_list.c:5: bool append_to_buffer_list(buffer_list_t *list, buffer_t *buffer)
+                                    143 ;	-----------------------------------------
+                                    144 ;	 function append_to_buffer_list
+                                    145 ;	-----------------------------------------
+      003A94                        146 _append_to_buffer_list:
+                           000007   147 	ar7 = 0x07
+                           000006   148 	ar6 = 0x06
+                           000005   149 	ar5 = 0x05
+                           000004   150 	ar4 = 0x04
+                           000003   151 	ar3 = 0x03
+                           000002   152 	ar2 = 0x02
+                           000001   153 	ar1 = 0x01
+                           000000   154 	ar0 = 0x00
+      003A94 AF F0            [24]  155 	mov	r7,b
+      003A96 AE 83            [24]  156 	mov	r6,dph
+      003A98 E5 82            [12]  157 	mov	a,dpl
+      003A9A 90 20 4A         [24]  158 	mov	dptr,#_append_to_buffer_list_list_65536_47
+      003A9D F0               [24]  159 	movx	@dptr,a
+      003A9E EE               [12]  160 	mov	a,r6
+      003A9F A3               [24]  161 	inc	dptr
+      003AA0 F0               [24]  162 	movx	@dptr,a
+      003AA1 EF               [12]  163 	mov	a,r7
+      003AA2 A3               [24]  164 	inc	dptr
+      003AA3 F0               [24]  165 	movx	@dptr,a
+                                    166 ;	src/linked_list.c:7: if (list->head == NULL) 
+      003AA4 90 20 4A         [24]  167 	mov	dptr,#_append_to_buffer_list_list_65536_47
+      003AA7 E0               [24]  168 	movx	a,@dptr
+      003AA8 F5 1B            [12]  169 	mov	_append_to_buffer_list_sloc0_1_0,a
+      003AAA A3               [24]  170 	inc	dptr
+      003AAB E0               [24]  171 	movx	a,@dptr
+      003AAC F5 1C            [12]  172 	mov	(_append_to_buffer_list_sloc0_1_0 + 1),a
+      003AAE A3               [24]  173 	inc	dptr
+      003AAF E0               [24]  174 	movx	a,@dptr
+      003AB0 F5 1D            [12]  175 	mov	(_append_to_buffer_list_sloc0_1_0 + 2),a
+      003AB2 85 1B 82         [24]  176 	mov	dpl,_append_to_buffer_list_sloc0_1_0
+      003AB5 85 1C 83         [24]  177 	mov	dph,(_append_to_buffer_list_sloc0_1_0 + 1)
+      003AB8 85 1D F0         [24]  178 	mov	b,(_append_to_buffer_list_sloc0_1_0 + 2)
+      003ABB 12 4F 02         [24]  179 	lcall	__gptrget
+      003ABE FA               [12]  180 	mov	r2,a
+      003ABF A3               [24]  181 	inc	dptr
+      003AC0 12 4F 02         [24]  182 	lcall	__gptrget
+      003AC3 FB               [12]  183 	mov	r3,a
+      003AC4 A3               [24]  184 	inc	dptr
+      003AC5 12 4F 02         [24]  185 	lcall	__gptrget
+      003AC8 FC               [12]  186 	mov	r4,a
+      003AC9 EA               [12]  187 	mov	a,r2
+      003ACA 4B               [12]  188 	orl	a,r3
+      003ACB 70 24            [24]  189 	jnz	00105$
+                                    190 ;	src/linked_list.c:9: list->head = buffer; 
+      003ACD 90 20 47         [24]  191 	mov	dptr,#_append_to_buffer_list_PARM_2
+      003AD0 E0               [24]  192 	movx	a,@dptr
+      003AD1 F8               [12]  193 	mov	r0,a
+      003AD2 A3               [24]  194 	inc	dptr
+      003AD3 E0               [24]  195 	movx	a,@dptr
+      003AD4 F9               [12]  196 	mov	r1,a
+      003AD5 A3               [24]  197 	inc	dptr
+      003AD6 E0               [24]  198 	movx	a,@dptr
+      003AD7 FF               [12]  199 	mov	r7,a
+      003AD8 85 1B 82         [24]  200 	mov	dpl,_append_to_buffer_list_sloc0_1_0
+      003ADB 85 1C 83         [24]  201 	mov	dph,(_append_to_buffer_list_sloc0_1_0 + 1)
+      003ADE 85 1D F0         [24]  202 	mov	b,(_append_to_buffer_list_sloc0_1_0 + 2)
+      003AE1 E8               [12]  203 	mov	a,r0
+      003AE2 12 42 A8         [24]  204 	lcall	__gptrput
+      003AE5 A3               [24]  205 	inc	dptr
+      003AE6 E9               [12]  206 	mov	a,r1
+      003AE7 12 42 A8         [24]  207 	lcall	__gptrput
+      003AEA A3               [24]  208 	inc	dptr
+      003AEB EF               [12]  209 	mov	a,r7
+      003AEC 12 42 A8         [24]  210 	lcall	__gptrput
+      003AEF 80 61            [24]  211 	sjmp	00106$
+      003AF1                        212 00105$:
+                                    213 ;	src/linked_list.c:13: buffer_t *tail = list->head;
+      003AF1 90 20 4D         [24]  214 	mov	dptr,#_append_to_buffer_list_tail_131072_50
+      003AF4 EA               [12]  215 	mov	a,r2
+      003AF5 F0               [24]  216 	movx	@dptr,a
+      003AF6 EB               [12]  217 	mov	a,r3
+      003AF7 A3               [24]  218 	inc	dptr
+      003AF8 F0               [24]  219 	movx	@dptr,a
+      003AF9 EC               [12]  220 	mov	a,r4
+      003AFA A3               [24]  221 	inc	dptr
+      003AFB F0               [24]  222 	movx	@dptr,a
+                                    223 ;	src/linked_list.c:14: while(tail->next != NULL)
+      003AFC                        224 00101$:
+      003AFC 90 20 4D         [24]  225 	mov	dptr,#_append_to_buffer_list_tail_131072_50
+      003AFF E0               [24]  226 	movx	a,@dptr
+      003B00 FD               [12]  227 	mov	r5,a
+      003B01 A3               [24]  228 	inc	dptr
+      003B02 E0               [24]  229 	movx	a,@dptr
+      003B03 FE               [12]  230 	mov	r6,a
+      003B04 A3               [24]  231 	inc	dptr
+      003B05 E0               [24]  232 	movx	a,@dptr
+      003B06 FF               [12]  233 	mov	r7,a
+      003B07 74 08            [12]  234 	mov	a,#0x08
+      003B09 2D               [12]  235 	add	a,r5
+      003B0A FD               [12]  236 	mov	r5,a
+      003B0B E4               [12]  237 	clr	a
+      003B0C 3E               [12]  238 	addc	a,r6
+      003B0D FE               [12]  239 	mov	r6,a
+      003B0E 8D 82            [24]  240 	mov	dpl,r5
+      003B10 8E 83            [24]  241 	mov	dph,r6
+      003B12 8F F0            [24]  242 	mov	b,r7
+      003B14 12 4F 02         [24]  243 	lcall	__gptrget
+      003B17 FA               [12]  244 	mov	r2,a
+      003B18 A3               [24]  245 	inc	dptr
+      003B19 12 4F 02         [24]  246 	lcall	__gptrget
+      003B1C FB               [12]  247 	mov	r3,a
+      003B1D A3               [24]  248 	inc	dptr
+      003B1E 12 4F 02         [24]  249 	lcall	__gptrget
+      003B21 FC               [12]  250 	mov	r4,a
+      003B22 EA               [12]  251 	mov	a,r2
+      003B23 4B               [12]  252 	orl	a,r3
+      003B24 60 0D            [24]  253 	jz	00103$
+                                    254 ;	src/linked_list.c:16: tail = tail->next;
+      003B26 90 20 4D         [24]  255 	mov	dptr,#_append_to_buffer_list_tail_131072_50
+      003B29 EA               [12]  256 	mov	a,r2
+      003B2A F0               [24]  257 	movx	@dptr,a
+      003B2B EB               [12]  258 	mov	a,r3
+      003B2C A3               [24]  259 	inc	dptr
+      003B2D F0               [24]  260 	movx	@dptr,a
+      003B2E EC               [12]  261 	mov	a,r4
+      003B2F A3               [24]  262 	inc	dptr
+      003B30 F0               [24]  263 	movx	@dptr,a
+      003B31 80 C9            [24]  264 	sjmp	00101$
+      003B33                        265 00103$:
+                                    266 ;	src/linked_list.c:18: tail->next = buffer;
+      003B33 90 20 47         [24]  267 	mov	dptr,#_append_to_buffer_list_PARM_2
+      003B36 E0               [24]  268 	movx	a,@dptr
+      003B37 FA               [12]  269 	mov	r2,a
+      003B38 A3               [24]  270 	inc	dptr
+      003B39 E0               [24]  271 	movx	a,@dptr
+      003B3A FB               [12]  272 	mov	r3,a
+      003B3B A3               [24]  273 	inc	dptr
+      003B3C E0               [24]  274 	movx	a,@dptr
+      003B3D FC               [12]  275 	mov	r4,a
+      003B3E 8D 82            [24]  276 	mov	dpl,r5
+      003B40 8E 83            [24]  277 	mov	dph,r6
+      003B42 8F F0            [24]  278 	mov	b,r7
+      003B44 EA               [12]  279 	mov	a,r2
+      003B45 12 42 A8         [24]  280 	lcall	__gptrput
+      003B48 A3               [24]  281 	inc	dptr
+      003B49 EB               [12]  282 	mov	a,r3
+      003B4A 12 42 A8         [24]  283 	lcall	__gptrput
+      003B4D A3               [24]  284 	inc	dptr
+      003B4E EC               [12]  285 	mov	a,r4
+      003B4F 12 42 A8         [24]  286 	lcall	__gptrput
+      003B52                        287 00106$:
+                                    288 ;	src/linked_list.c:20: buffer->next = NULL; 
+      003B52 90 20 47         [24]  289 	mov	dptr,#_append_to_buffer_list_PARM_2
+      003B55 E0               [24]  290 	movx	a,@dptr
+      003B56 FD               [12]  291 	mov	r5,a
+      003B57 A3               [24]  292 	inc	dptr
+      003B58 E0               [24]  293 	movx	a,@dptr
+      003B59 FE               [12]  294 	mov	r6,a
+      003B5A A3               [24]  295 	inc	dptr
+      003B5B E0               [24]  296 	movx	a,@dptr
+      003B5C FF               [12]  297 	mov	r7,a
+      003B5D 74 08            [12]  298 	mov	a,#0x08
+      003B5F 2D               [12]  299 	add	a,r5
+      003B60 FD               [12]  300 	mov	r5,a
+      003B61 E4               [12]  301 	clr	a
+      003B62 3E               [12]  302 	addc	a,r6
+      003B63 FE               [12]  303 	mov	r6,a
+      003B64 8D 82            [24]  304 	mov	dpl,r5
+      003B66 8E 83            [24]  305 	mov	dph,r6
+      003B68 8F F0            [24]  306 	mov	b,r7
+      003B6A E4               [12]  307 	clr	a
+      003B6B 12 42 A8         [24]  308 	lcall	__gptrput
+      003B6E A3               [24]  309 	inc	dptr
+      003B6F 12 42 A8         [24]  310 	lcall	__gptrput
+      003B72 A3               [24]  311 	inc	dptr
+      003B73 12 42 A8         [24]  312 	lcall	__gptrput
+                                    313 ;	src/linked_list.c:21: return true;
+      003B76 75 82 01         [24]  314 	mov	dpl,#0x01
+                                    315 ;	src/linked_list.c:22: }
+      003B79 22               [24]  316 	ret
+                                    317 ;------------------------------------------------------------
+                                    318 ;Allocation info for local variables in function 'remove_from_buffer_list'
+                                    319 ;------------------------------------------------------------
+                                    320 ;sloc0                     Allocated with name '_remove_from_buffer_list_sloc0_1_0'
+                                    321 ;idx                       Allocated with name '_remove_from_buffer_list_PARM_2'
+                                    322 ;list                      Allocated with name '_remove_from_buffer_list_list_65536_52'
+                                    323 ;to_free                   Allocated with name '_remove_from_buffer_list_to_free_65537_54'
+                                    324 ;prev                      Allocated with name '_remove_from_buffer_list_prev_131073_56'
+                                    325 ;------------------------------------------------------------
+                                    326 ;	src/linked_list.c:25: bool remove_from_buffer_list(buffer_list_t *list, size_t idx)
+                                    327 ;	-----------------------------------------
+                                    328 ;	 function remove_from_buffer_list
+                                    329 ;	-----------------------------------------
+      003B7A                        330 _remove_from_buffer_list:
+      003B7A AF F0            [24]  331 	mov	r7,b
+      003B7C AE 83            [24]  332 	mov	r6,dph
+      003B7E E5 82            [12]  333 	mov	a,dpl
+      003B80 90 20 52         [24]  334 	mov	dptr,#_remove_from_buffer_list_list_65536_52
+      003B83 F0               [24]  335 	movx	@dptr,a
+      003B84 EE               [12]  336 	mov	a,r6
+      003B85 A3               [24]  337 	inc	dptr
+      003B86 F0               [24]  338 	movx	@dptr,a
+      003B87 EF               [12]  339 	mov	a,r7
+      003B88 A3               [24]  340 	inc	dptr
+      003B89 F0               [24]  341 	movx	@dptr,a
+                                    342 ;	src/linked_list.c:27: if (list == NULL) return false;
+      003B8A 90 20 52         [24]  343 	mov	dptr,#_remove_from_buffer_list_list_65536_52
+      003B8D E0               [24]  344 	movx	a,@dptr
+      003B8E F5 08            [12]  345 	mov	_remove_from_buffer_list_sloc0_1_0,a
+      003B90 A3               [24]  346 	inc	dptr
+      003B91 E0               [24]  347 	movx	a,@dptr
+      003B92 F5 09            [12]  348 	mov	(_remove_from_buffer_list_sloc0_1_0 + 1),a
+      003B94 A3               [24]  349 	inc	dptr
+      003B95 E0               [24]  350 	movx	a,@dptr
+      003B96 F5 0A            [12]  351 	mov	(_remove_from_buffer_list_sloc0_1_0 + 2),a
+      003B98 E5 08            [12]  352 	mov	a,_remove_from_buffer_list_sloc0_1_0
+      003B9A 45 09            [12]  353 	orl	a,(_remove_from_buffer_list_sloc0_1_0 + 1)
+      003B9C 70 03            [24]  354 	jnz	00102$
+      003B9E F5 82            [12]  355 	mov	dpl,a
+      003BA0 22               [24]  356 	ret
+      003BA1                        357 00102$:
+                                    358 ;	src/linked_list.c:28: if (list->head == NULL) return false;
+      003BA1 85 08 82         [24]  359 	mov	dpl,_remove_from_buffer_list_sloc0_1_0
+      003BA4 85 09 83         [24]  360 	mov	dph,(_remove_from_buffer_list_sloc0_1_0 + 1)
+      003BA7 85 0A F0         [24]  361 	mov	b,(_remove_from_buffer_list_sloc0_1_0 + 2)
+      003BAA 12 4F 02         [24]  362 	lcall	__gptrget
+      003BAD FA               [12]  363 	mov	r2,a
+      003BAE A3               [24]  364 	inc	dptr
+      003BAF 12 4F 02         [24]  365 	lcall	__gptrget
+      003BB2 FB               [12]  366 	mov	r3,a
+      003BB3 A3               [24]  367 	inc	dptr
+      003BB4 12 4F 02         [24]  368 	lcall	__gptrget
+      003BB7 FC               [12]  369 	mov	r4,a
+      003BB8 EA               [12]  370 	mov	a,r2
+      003BB9 4B               [12]  371 	orl	a,r3
+      003BBA 70 03            [24]  372 	jnz	00104$
+      003BBC F5 82            [12]  373 	mov	dpl,a
+      003BBE 22               [24]  374 	ret
+      003BBF                        375 00104$:
+                                    376 ;	src/linked_list.c:31: if (idx == 0)
+      003BBF 90 20 50         [24]  377 	mov	dptr,#_remove_from_buffer_list_PARM_2
+      003BC2 E0               [24]  378 	movx	a,@dptr
+      003BC3 F8               [12]  379 	mov	r0,a
+      003BC4 A3               [24]  380 	inc	dptr
+      003BC5 E0               [24]  381 	movx	a,@dptr
+      003BC6 F9               [12]  382 	mov	r1,a
+      003BC7 90 20 50         [24]  383 	mov	dptr,#_remove_from_buffer_list_PARM_2
+      003BCA E0               [24]  384 	movx	a,@dptr
+      003BCB F5 F0            [12]  385 	mov	b,a
+      003BCD A3               [24]  386 	inc	dptr
+      003BCE E0               [24]  387 	movx	a,@dptr
+      003BCF 45 F0            [12]  388 	orl	a,b
+      003BD1 70 42            [24]  389 	jnz	00112$
+                                    390 ;	src/linked_list.c:34: to_free = list->head;
+      003BD3 90 20 55         [24]  391 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
+      003BD6 EA               [12]  392 	mov	a,r2
+      003BD7 F0               [24]  393 	movx	@dptr,a
+      003BD8 EB               [12]  394 	mov	a,r3
+      003BD9 A3               [24]  395 	inc	dptr
+      003BDA F0               [24]  396 	movx	@dptr,a
+      003BDB EC               [12]  397 	mov	a,r4
+      003BDC A3               [24]  398 	inc	dptr
+      003BDD F0               [24]  399 	movx	@dptr,a
+                                    400 ;	src/linked_list.c:35: list->head = list->head->next;  
+      003BDE 74 08            [12]  401 	mov	a,#0x08
+      003BE0 2A               [12]  402 	add	a,r2
+      003BE1 FD               [12]  403 	mov	r5,a
+      003BE2 E4               [12]  404 	clr	a
+      003BE3 3B               [12]  405 	addc	a,r3
+      003BE4 FE               [12]  406 	mov	r6,a
+      003BE5 8C 07            [24]  407 	mov	ar7,r4
+      003BE7 8D 82            [24]  408 	mov	dpl,r5
+      003BE9 8E 83            [24]  409 	mov	dph,r6
+      003BEB 8F F0            [24]  410 	mov	b,r7
+      003BED 12 4F 02         [24]  411 	lcall	__gptrget
+      003BF0 FD               [12]  412 	mov	r5,a
+      003BF1 A3               [24]  413 	inc	dptr
+      003BF2 12 4F 02         [24]  414 	lcall	__gptrget
+      003BF5 FE               [12]  415 	mov	r6,a
+      003BF6 A3               [24]  416 	inc	dptr
+      003BF7 12 4F 02         [24]  417 	lcall	__gptrget
+      003BFA FF               [12]  418 	mov	r7,a
+      003BFB 85 08 82         [24]  419 	mov	dpl,_remove_from_buffer_list_sloc0_1_0
+      003BFE 85 09 83         [24]  420 	mov	dph,(_remove_from_buffer_list_sloc0_1_0 + 1)
+      003C01 85 0A F0         [24]  421 	mov	b,(_remove_from_buffer_list_sloc0_1_0 + 2)
+      003C04 ED               [12]  422 	mov	a,r5
+      003C05 12 42 A8         [24]  423 	lcall	__gptrput
+      003C08 A3               [24]  424 	inc	dptr
+      003C09 EE               [12]  425 	mov	a,r6
+      003C0A 12 42 A8         [24]  426 	lcall	__gptrput
+      003C0D A3               [24]  427 	inc	dptr
+      003C0E EF               [12]  428 	mov	a,r7
+      003C0F 12 42 A8         [24]  429 	lcall	__gptrput
+      003C12 02 3C DD         [24]  430 	ljmp	00113$
+      003C15                        431 00112$:
+                                    432 ;	src/linked_list.c:39: buffer_t *prev = list->head;
+      003C15 90 20 58         [24]  433 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
+      003C18 EA               [12]  434 	mov	a,r2
+      003C19 F0               [24]  435 	movx	@dptr,a
+      003C1A EB               [12]  436 	mov	a,r3
+      003C1B A3               [24]  437 	inc	dptr
+      003C1C F0               [24]  438 	movx	@dptr,a
+      003C1D EC               [12]  439 	mov	a,r4
+      003C1E A3               [24]  440 	inc	dptr
+      003C1F F0               [24]  441 	movx	@dptr,a
+                                    442 ;	src/linked_list.c:40: idx--;
+      003C20 18               [12]  443 	dec	r0
+      003C21 B8 FF 01         [24]  444 	cjne	r0,#0xff,00160$
+      003C24 19               [12]  445 	dec	r1
+      003C25                        446 00160$:
+      003C25 90 20 50         [24]  447 	mov	dptr,#_remove_from_buffer_list_PARM_2
+      003C28 E8               [12]  448 	mov	a,r0
+      003C29 F0               [24]  449 	movx	@dptr,a
+      003C2A E9               [12]  450 	mov	a,r1
+      003C2B A3               [24]  451 	inc	dptr
+      003C2C F0               [24]  452 	movx	@dptr,a
+                                    453 ;	src/linked_list.c:41: while(idx > 0 && prev->next != NULL)
+      003C2D 90 20 50         [24]  454 	mov	dptr,#_remove_from_buffer_list_PARM_2
+      003C30 E0               [24]  455 	movx	a,@dptr
+      003C31 FE               [12]  456 	mov	r6,a
+      003C32 A3               [24]  457 	inc	dptr
+      003C33 E0               [24]  458 	movx	a,@dptr
+      003C34 FF               [12]  459 	mov	r7,a
+      003C35                        460 00106$:
+      003C35 EE               [12]  461 	mov	a,r6
+      003C36 4F               [12]  462 	orl	a,r7
+      003C37 60 3C            [24]  463 	jz	00108$
+      003C39 90 20 58         [24]  464 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
+      003C3C E0               [24]  465 	movx	a,@dptr
+      003C3D FB               [12]  466 	mov	r3,a
+      003C3E A3               [24]  467 	inc	dptr
+      003C3F E0               [24]  468 	movx	a,@dptr
+      003C40 FC               [12]  469 	mov	r4,a
+      003C41 A3               [24]  470 	inc	dptr
+      003C42 E0               [24]  471 	movx	a,@dptr
+      003C43 FD               [12]  472 	mov	r5,a
+      003C44 74 08            [12]  473 	mov	a,#0x08
+      003C46 2B               [12]  474 	add	a,r3
+      003C47 FB               [12]  475 	mov	r3,a
+      003C48 E4               [12]  476 	clr	a
+      003C49 3C               [12]  477 	addc	a,r4
+      003C4A FC               [12]  478 	mov	r4,a
+      003C4B 8B 82            [24]  479 	mov	dpl,r3
+      003C4D 8C 83            [24]  480 	mov	dph,r4
+      003C4F 8D F0            [24]  481 	mov	b,r5
+      003C51 12 4F 02         [24]  482 	lcall	__gptrget
+      003C54 FB               [12]  483 	mov	r3,a
+      003C55 A3               [24]  484 	inc	dptr
+      003C56 12 4F 02         [24]  485 	lcall	__gptrget
+      003C59 FC               [12]  486 	mov	r4,a
+      003C5A A3               [24]  487 	inc	dptr
+      003C5B 12 4F 02         [24]  488 	lcall	__gptrget
+      003C5E FD               [12]  489 	mov	r5,a
+      003C5F EB               [12]  490 	mov	a,r3
+      003C60 4C               [12]  491 	orl	a,r4
+      003C61 60 12            [24]  492 	jz	00108$
+                                    493 ;	src/linked_list.c:43: prev = prev->next;
+      003C63 90 20 58         [24]  494 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
+      003C66 EB               [12]  495 	mov	a,r3
+      003C67 F0               [24]  496 	movx	@dptr,a
+      003C68 EC               [12]  497 	mov	a,r4
+      003C69 A3               [24]  498 	inc	dptr
+      003C6A F0               [24]  499 	movx	@dptr,a
+      003C6B ED               [12]  500 	mov	a,r5
+      003C6C A3               [24]  501 	inc	dptr
+      003C6D F0               [24]  502 	movx	@dptr,a
+                                    503 ;	src/linked_list.c:44: idx--;
+      003C6E 1E               [12]  504 	dec	r6
+      003C6F BE FF 01         [24]  505 	cjne	r6,#0xff,00163$
+      003C72 1F               [12]  506 	dec	r7
+      003C73                        507 00163$:
+      003C73 80 C0            [24]  508 	sjmp	00106$
+      003C75                        509 00108$:
+                                    510 ;	src/linked_list.c:47: if (idx != 0) return false;
+      003C75 EE               [12]  511 	mov	a,r6
+      003C76 4F               [12]  512 	orl	a,r7
+      003C77 60 04            [24]  513 	jz	00110$
+      003C79 75 82 00         [24]  514 	mov	dpl,#0x00
+      003C7C 22               [24]  515 	ret
+      003C7D                        516 00110$:
+                                    517 ;	src/linked_list.c:48: to_free = prev->next;
+      003C7D 90 20 58         [24]  518 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
+      003C80 E0               [24]  519 	movx	a,@dptr
+      003C81 FD               [12]  520 	mov	r5,a
+      003C82 A3               [24]  521 	inc	dptr
+      003C83 E0               [24]  522 	movx	a,@dptr
+      003C84 FE               [12]  523 	mov	r6,a
+      003C85 A3               [24]  524 	inc	dptr
+      003C86 E0               [24]  525 	movx	a,@dptr
+      003C87 FF               [12]  526 	mov	r7,a
+      003C88 74 08            [12]  527 	mov	a,#0x08
+      003C8A 2D               [12]  528 	add	a,r5
+      003C8B FD               [12]  529 	mov	r5,a
+      003C8C E4               [12]  530 	clr	a
+      003C8D 3E               [12]  531 	addc	a,r6
+      003C8E FE               [12]  532 	mov	r6,a
+      003C8F 8D 82            [24]  533 	mov	dpl,r5
+      003C91 8E 83            [24]  534 	mov	dph,r6
+      003C93 8F F0            [24]  535 	mov	b,r7
+      003C95 12 4F 02         [24]  536 	lcall	__gptrget
+      003C98 FA               [12]  537 	mov	r2,a
+      003C99 A3               [24]  538 	inc	dptr
+      003C9A 12 4F 02         [24]  539 	lcall	__gptrget
+      003C9D FB               [12]  540 	mov	r3,a
+      003C9E A3               [24]  541 	inc	dptr
+      003C9F 12 4F 02         [24]  542 	lcall	__gptrget
+      003CA2 FC               [12]  543 	mov	r4,a
+      003CA3 90 20 55         [24]  544 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
+      003CA6 EA               [12]  545 	mov	a,r2
+      003CA7 F0               [24]  546 	movx	@dptr,a
+      003CA8 EB               [12]  547 	mov	a,r3
+      003CA9 A3               [24]  548 	inc	dptr
+      003CAA F0               [24]  549 	movx	@dptr,a
+      003CAB EC               [12]  550 	mov	a,r4
+      003CAC A3               [24]  551 	inc	dptr
+      003CAD F0               [24]  552 	movx	@dptr,a
+                                    553 ;	src/linked_list.c:49: prev->next = to_free->next;
+      003CAE 74 08            [12]  554 	mov	a,#0x08
+      003CB0 2A               [12]  555 	add	a,r2
+      003CB1 FA               [12]  556 	mov	r2,a
+      003CB2 E4               [12]  557 	clr	a
+      003CB3 3B               [12]  558 	addc	a,r3
+      003CB4 FB               [12]  559 	mov	r3,a
+      003CB5 8A 82            [24]  560 	mov	dpl,r2
+      003CB7 8B 83            [24]  561 	mov	dph,r3
+      003CB9 8C F0            [24]  562 	mov	b,r4
+      003CBB 12 4F 02         [24]  563 	lcall	__gptrget
+      003CBE FA               [12]  564 	mov	r2,a
+      003CBF A3               [24]  565 	inc	dptr
+      003CC0 12 4F 02         [24]  566 	lcall	__gptrget
+      003CC3 FB               [12]  567 	mov	r3,a
+      003CC4 A3               [24]  568 	inc	dptr
+      003CC5 12 4F 02         [24]  569 	lcall	__gptrget
+      003CC8 FC               [12]  570 	mov	r4,a
+      003CC9 8D 82            [24]  571 	mov	dpl,r5
+      003CCB 8E 83            [24]  572 	mov	dph,r6
+      003CCD 8F F0            [24]  573 	mov	b,r7
+      003CCF EA               [12]  574 	mov	a,r2
+      003CD0 12 42 A8         [24]  575 	lcall	__gptrput
+      003CD3 A3               [24]  576 	inc	dptr
+      003CD4 EB               [12]  577 	mov	a,r3
+      003CD5 12 42 A8         [24]  578 	lcall	__gptrput
+      003CD8 A3               [24]  579 	inc	dptr
+      003CD9 EC               [12]  580 	mov	a,r4
+      003CDA 12 42 A8         [24]  581 	lcall	__gptrput
+      003CDD                        582 00113$:
+                                    583 ;	src/linked_list.c:52: if (to_free == NULL) return false; 
+      003CDD 90 20 55         [24]  584 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
+      003CE0 E0               [24]  585 	movx	a,@dptr
+      003CE1 FE               [12]  586 	mov	r6,a
+      003CE2 A3               [24]  587 	inc	dptr
+      003CE3 E0               [24]  588 	movx	a,@dptr
+      003CE4 FD               [12]  589 	mov	r5,a
+      003CE5 A3               [24]  590 	inc	dptr
+      003CE6 E0               [24]  591 	movx	a,@dptr
+      003CE7 FF               [12]  592 	mov	r7,a
+      003CE8 90 20 55         [24]  593 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
+      003CEB E0               [24]  594 	movx	a,@dptr
+      003CEC F5 F0            [12]  595 	mov	b,a
+      003CEE A3               [24]  596 	inc	dptr
+      003CEF E0               [24]  597 	movx	a,@dptr
+      003CF0 45 F0            [12]  598 	orl	a,b
+      003CF2 70 03            [24]  599 	jnz	00115$
+      003CF4 F5 82            [12]  600 	mov	dpl,a
+      003CF6 22               [24]  601 	ret
+      003CF7                        602 00115$:
+                                    603 ;	src/linked_list.c:53: if (to_free->buffer != NULL) 
+      003CF7 8E 82            [24]  604 	mov	dpl,r6
+      003CF9 8D 83            [24]  605 	mov	dph,r5
+      003CFB 8F F0            [24]  606 	mov	b,r7
+      003CFD 12 4F 02         [24]  607 	lcall	__gptrget
+      003D00 FE               [12]  608 	mov	r6,a
+      003D01 A3               [24]  609 	inc	dptr
+      003D02 12 4F 02         [24]  610 	lcall	__gptrget
+      003D05 FF               [12]  611 	mov	r7,a
+      003D06 4E               [12]  612 	orl	a,r6
+      003D07 60 0B            [24]  613 	jz	00117$
+                                    614 ;	src/linked_list.c:55: free(to_free->buffer);
+      003D09 7D 00            [12]  615 	mov	r5,#0x00
+      003D0B 8E 82            [24]  616 	mov	dpl,r6
+      003D0D 8F 83            [24]  617 	mov	dph,r7
+      003D0F 8D F0            [24]  618 	mov	b,r5
+      003D11 12 3F 91         [24]  619 	lcall	_free
+      003D14                        620 00117$:
+                                    621 ;	src/linked_list.c:57: free(to_free);
+      003D14 90 20 55         [24]  622 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
+      003D17 E0               [24]  623 	movx	a,@dptr
+      003D18 FD               [12]  624 	mov	r5,a
+      003D19 A3               [24]  625 	inc	dptr
+      003D1A E0               [24]  626 	movx	a,@dptr
+      003D1B FE               [12]  627 	mov	r6,a
+      003D1C A3               [24]  628 	inc	dptr
+      003D1D E0               [24]  629 	movx	a,@dptr
+      003D1E FF               [12]  630 	mov	r7,a
+      003D1F 8D 82            [24]  631 	mov	dpl,r5
+      003D21 8E 83            [24]  632 	mov	dph,r6
+      003D23 8F F0            [24]  633 	mov	b,r7
+      003D25 12 3F 91         [24]  634 	lcall	_free
+                                    635 ;	src/linked_list.c:58: return true; 
+      003D28 75 82 01         [24]  636 	mov	dpl,#0x01
+                                    637 ;	src/linked_list.c:59: }
+      003D2B 22               [24]  638 	ret
+                                    639 ;------------------------------------------------------------
+                                    640 ;Allocation info for local variables in function 'free_all_elems_from_list'
+                                    641 ;------------------------------------------------------------
+                                    642 ;sloc0                     Allocated with name '_free_all_elems_from_list_sloc0_1_0'
+                                    643 ;list                      Allocated with name '_free_all_elems_from_list_list_65536_59'
+                                    644 ;buffer_to_free            Allocated with name '_free_all_elems_from_list_buffer_to_free_65536_60'
+                                    645 ;------------------------------------------------------------
+                                    646 ;	src/linked_list.c:61: void free_all_elems_from_list(buffer_list_t *list)
+                                    647 ;	-----------------------------------------
+                                    648 ;	 function free_all_elems_from_list
+                                    649 ;	-----------------------------------------
+      003D2C                        650 _free_all_elems_from_list:
+      003D2C AF F0            [24]  651 	mov	r7,b
+      003D2E AE 83            [24]  652 	mov	r6,dph
+      003D30 E5 82            [12]  653 	mov	a,dpl
+      003D32 90 20 5B         [24]  654 	mov	dptr,#_free_all_elems_from_list_list_65536_59
+      003D35 F0               [24]  655 	movx	@dptr,a
+      003D36 EE               [12]  656 	mov	a,r6
+      003D37 A3               [24]  657 	inc	dptr
+      003D38 F0               [24]  658 	movx	@dptr,a
+      003D39 EF               [12]  659 	mov	a,r7
+      003D3A A3               [24]  660 	inc	dptr
+      003D3B F0               [24]  661 	movx	@dptr,a
+                                    662 ;	src/linked_list.c:63: buffer_t *buffer_to_free = list->head;
+      003D3C 90 20 5B         [24]  663 	mov	dptr,#_free_all_elems_from_list_list_65536_59
+      003D3F E0               [24]  664 	movx	a,@dptr
+      003D40 FD               [12]  665 	mov	r5,a
+      003D41 A3               [24]  666 	inc	dptr
+      003D42 E0               [24]  667 	movx	a,@dptr
+      003D43 FE               [12]  668 	mov	r6,a
+      003D44 A3               [24]  669 	inc	dptr
+      003D45 E0               [24]  670 	movx	a,@dptr
+      003D46 FF               [12]  671 	mov	r7,a
+      003D47 8D 82            [24]  672 	mov	dpl,r5
+      003D49 8E 83            [24]  673 	mov	dph,r6
+      003D4B 8F F0            [24]  674 	mov	b,r7
+      003D4D 12 4F 02         [24]  675 	lcall	__gptrget
+      003D50 FA               [12]  676 	mov	r2,a
+      003D51 A3               [24]  677 	inc	dptr
+      003D52 12 4F 02         [24]  678 	lcall	__gptrget
+      003D55 FB               [12]  679 	mov	r3,a
+      003D56 A3               [24]  680 	inc	dptr
+      003D57 12 4F 02         [24]  681 	lcall	__gptrget
+      003D5A FC               [12]  682 	mov	r4,a
+      003D5B 90 20 5E         [24]  683 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
+      003D5E EA               [12]  684 	mov	a,r2
+      003D5F F0               [24]  685 	movx	@dptr,a
+      003D60 EB               [12]  686 	mov	a,r3
+      003D61 A3               [24]  687 	inc	dptr
+      003D62 F0               [24]  688 	movx	@dptr,a
+      003D63 EC               [12]  689 	mov	a,r4
+      003D64 A3               [24]  690 	inc	dptr
+      003D65 F0               [24]  691 	movx	@dptr,a
+                                    692 ;	src/linked_list.c:64: while(list->head != NULL)
+      003D66                        693 00103$:
+      003D66 90 20 5B         [24]  694 	mov	dptr,#_free_all_elems_from_list_list_65536_59
+      003D69 E0               [24]  695 	movx	a,@dptr
+      003D6A FA               [12]  696 	mov	r2,a
+      003D6B A3               [24]  697 	inc	dptr
+      003D6C E0               [24]  698 	movx	a,@dptr
+      003D6D FB               [12]  699 	mov	r3,a
+      003D6E A3               [24]  700 	inc	dptr
+      003D6F E0               [24]  701 	movx	a,@dptr
+      003D70 FC               [12]  702 	mov	r4,a
+      003D71 8A 82            [24]  703 	mov	dpl,r2
+      003D73 8B 83            [24]  704 	mov	dph,r3
+      003D75 8C F0            [24]  705 	mov	b,r4
+      003D77 12 4F 02         [24]  706 	lcall	__gptrget
+      003D7A F5 0B            [12]  707 	mov	_free_all_elems_from_list_sloc0_1_0,a
+      003D7C A3               [24]  708 	inc	dptr
+      003D7D 12 4F 02         [24]  709 	lcall	__gptrget
+      003D80 F5 0C            [12]  710 	mov	(_free_all_elems_from_list_sloc0_1_0 + 1),a
+      003D82 A3               [24]  711 	inc	dptr
+      003D83 12 4F 02         [24]  712 	lcall	__gptrget
+      003D86 F5 0D            [12]  713 	mov	(_free_all_elems_from_list_sloc0_1_0 + 2),a
+      003D88 E5 0B            [12]  714 	mov	a,_free_all_elems_from_list_sloc0_1_0
+      003D8A 45 0C            [12]  715 	orl	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
+      003D8C 70 01            [24]  716 	jnz	00120$
+      003D8E 22               [24]  717 	ret
+      003D8F                        718 00120$:
+                                    719 ;	src/linked_list.c:66: list->head = list->head->next;
+      003D8F C0 05            [24]  720 	push	ar5
+      003D91 C0 06            [24]  721 	push	ar6
+      003D93 C0 07            [24]  722 	push	ar7
+      003D95 74 08            [12]  723 	mov	a,#0x08
+      003D97 25 0B            [12]  724 	add	a,_free_all_elems_from_list_sloc0_1_0
+      003D99 F8               [12]  725 	mov	r0,a
+      003D9A E4               [12]  726 	clr	a
+      003D9B 35 0C            [12]  727 	addc	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
+      003D9D F9               [12]  728 	mov	r1,a
+      003D9E AF 0D            [24]  729 	mov	r7,(_free_all_elems_from_list_sloc0_1_0 + 2)
+      003DA0 88 82            [24]  730 	mov	dpl,r0
+      003DA2 89 83            [24]  731 	mov	dph,r1
+      003DA4 8F F0            [24]  732 	mov	b,r7
+      003DA6 12 4F 02         [24]  733 	lcall	__gptrget
+      003DA9 F8               [12]  734 	mov	r0,a
+      003DAA A3               [24]  735 	inc	dptr
+      003DAB 12 4F 02         [24]  736 	lcall	__gptrget
+      003DAE F9               [12]  737 	mov	r1,a
+      003DAF A3               [24]  738 	inc	dptr
+      003DB0 12 4F 02         [24]  739 	lcall	__gptrget
+      003DB3 FF               [12]  740 	mov	r7,a
+      003DB4 8A 82            [24]  741 	mov	dpl,r2
+      003DB6 8B 83            [24]  742 	mov	dph,r3
+      003DB8 8C F0            [24]  743 	mov	b,r4
+      003DBA E8               [12]  744 	mov	a,r0
+      003DBB 12 42 A8         [24]  745 	lcall	__gptrput
+      003DBE A3               [24]  746 	inc	dptr
+      003DBF E9               [12]  747 	mov	a,r1
+      003DC0 12 42 A8         [24]  748 	lcall	__gptrput
+      003DC3 A3               [24]  749 	inc	dptr
+      003DC4 EF               [12]  750 	mov	a,r7
+      003DC5 12 42 A8         [24]  751 	lcall	__gptrput
+                                    752 ;	src/linked_list.c:67: if (buffer_to_free->buffer != NULL)
+      003DC8 90 20 5E         [24]  753 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
+      003DCB E0               [24]  754 	movx	a,@dptr
+      003DCC FD               [12]  755 	mov	r5,a
+      003DCD A3               [24]  756 	inc	dptr
+      003DCE E0               [24]  757 	movx	a,@dptr
+      003DCF FE               [12]  758 	mov	r6,a
+      003DD0 A3               [24]  759 	inc	dptr
+      003DD1 E0               [24]  760 	movx	a,@dptr
+      003DD2 FF               [12]  761 	mov	r7,a
+      003DD3 8D 82            [24]  762 	mov	dpl,r5
+      003DD5 8E 83            [24]  763 	mov	dph,r6
+      003DD7 8F F0            [24]  764 	mov	b,r7
+      003DD9 12 4F 02         [24]  765 	lcall	__gptrget
+      003DDC F5 0B            [12]  766 	mov	_free_all_elems_from_list_sloc0_1_0,a
+      003DDE A3               [24]  767 	inc	dptr
+      003DDF 12 4F 02         [24]  768 	lcall	__gptrget
+      003DE2 F5 0C            [12]  769 	mov	(_free_all_elems_from_list_sloc0_1_0 + 1),a
+      003DE4 D0 07            [24]  770 	pop	ar7
+      003DE6 D0 06            [24]  771 	pop	ar6
+      003DE8 D0 05            [24]  772 	pop	ar5
+      003DEA E5 0B            [12]  773 	mov	a,_free_all_elems_from_list_sloc0_1_0
+      003DEC 45 0C            [12]  774 	orl	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
+      003DEE 60 1B            [24]  775 	jz	00102$
+                                    776 ;	src/linked_list.c:69: free(buffer_to_free->buffer);
+      003DF0 AB 0B            [24]  777 	mov	r3,_free_all_elems_from_list_sloc0_1_0
+      003DF2 AC 0C            [24]  778 	mov	r4,(_free_all_elems_from_list_sloc0_1_0 + 1)
+      003DF4 7A 00            [12]  779 	mov	r2,#0x00
+      003DF6 8B 82            [24]  780 	mov	dpl,r3
+      003DF8 8C 83            [24]  781 	mov	dph,r4
+      003DFA 8A F0            [24]  782 	mov	b,r2
+      003DFC C0 07            [24]  783 	push	ar7
+      003DFE C0 06            [24]  784 	push	ar6
+      003E00 C0 05            [24]  785 	push	ar5
+      003E02 12 3F 91         [24]  786 	lcall	_free
+      003E05 D0 05            [24]  787 	pop	ar5
+      003E07 D0 06            [24]  788 	pop	ar6
+      003E09 D0 07            [24]  789 	pop	ar7
+      003E0B                        790 00102$:
+                                    791 ;	src/linked_list.c:71: free(buffer_to_free);
+      003E0B 90 20 5E         [24]  792 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
+      003E0E E0               [24]  793 	movx	a,@dptr
+      003E0F FA               [12]  794 	mov	r2,a
+      003E10 A3               [24]  795 	inc	dptr
+      003E11 E0               [24]  796 	movx	a,@dptr
+      003E12 FB               [12]  797 	mov	r3,a
+      003E13 A3               [24]  798 	inc	dptr
+      003E14 E0               [24]  799 	movx	a,@dptr
+      003E15 FC               [12]  800 	mov	r4,a
+      003E16 8A 82            [24]  801 	mov	dpl,r2
+      003E18 8B 83            [24]  802 	mov	dph,r3
+      003E1A 8C F0            [24]  803 	mov	b,r4
+      003E1C C0 07            [24]  804 	push	ar7
+      003E1E C0 06            [24]  805 	push	ar6
+      003E20 C0 05            [24]  806 	push	ar5
+      003E22 12 3F 91         [24]  807 	lcall	_free
+      003E25 D0 05            [24]  808 	pop	ar5
+      003E27 D0 06            [24]  809 	pop	ar6
+      003E29 D0 07            [24]  810 	pop	ar7
+                                    811 ;	src/linked_list.c:72: buffer_to_free = list->head;
+      003E2B 8D 82            [24]  812 	mov	dpl,r5
+      003E2D 8E 83            [24]  813 	mov	dph,r6
+      003E2F 8F F0            [24]  814 	mov	b,r7
+      003E31 12 4F 02         [24]  815 	lcall	__gptrget
+      003E34 FA               [12]  816 	mov	r2,a
+      003E35 A3               [24]  817 	inc	dptr
+      003E36 12 4F 02         [24]  818 	lcall	__gptrget
+      003E39 FB               [12]  819 	mov	r3,a
+      003E3A A3               [24]  820 	inc	dptr
+      003E3B 12 4F 02         [24]  821 	lcall	__gptrget
+      003E3E FC               [12]  822 	mov	r4,a
+      003E3F 90 20 5E         [24]  823 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
+      003E42 EA               [12]  824 	mov	a,r2
+      003E43 F0               [24]  825 	movx	@dptr,a
+      003E44 EB               [12]  826 	mov	a,r3
+      003E45 A3               [24]  827 	inc	dptr
+      003E46 F0               [24]  828 	movx	@dptr,a
+      003E47 EC               [12]  829 	mov	a,r4
+      003E48 A3               [24]  830 	inc	dptr
+      003E49 F0               [24]  831 	movx	@dptr,a
+                                    832 ;	src/linked_list.c:74: }
+      003E4A 02 3D 66         [24]  833 	ljmp	00103$
+                                    834 ;------------------------------------------------------------
+                                    835 ;Allocation info for local variables in function 'll_length'
+                                    836 ;------------------------------------------------------------
+                                    837 ;list                      Allocated with name '_ll_length_list_65536_63'
+                                    838 ;size                      Allocated with name '_ll_length_size_65536_64'
+                                    839 ;curr                      Allocated with name '_ll_length_curr_65536_64'
+                                    840 ;------------------------------------------------------------
+                                    841 ;	src/linked_list.c:76: size_t ll_length(buffer_list_t *list)
+                                    842 ;	-----------------------------------------
+                                    843 ;	 function ll_length
+                                    844 ;	-----------------------------------------
+      003E4D                        845 _ll_length:
+      003E4D AF F0            [24]  846 	mov	r7,b
+      003E4F AE 83            [24]  847 	mov	r6,dph
+      003E51 E5 82            [12]  848 	mov	a,dpl
+      003E53 90 20 61         [24]  849 	mov	dptr,#_ll_length_list_65536_63
+      003E56 F0               [24]  850 	movx	@dptr,a
+      003E57 EE               [12]  851 	mov	a,r6
+      003E58 A3               [24]  852 	inc	dptr
+      003E59 F0               [24]  853 	movx	@dptr,a
+      003E5A EF               [12]  854 	mov	a,r7
+      003E5B A3               [24]  855 	inc	dptr
+      003E5C F0               [24]  856 	movx	@dptr,a
+                                    857 ;	src/linked_list.c:79: buffer_t *curr = list->head;
+      003E5D 90 20 61         [24]  858 	mov	dptr,#_ll_length_list_65536_63
+      003E60 E0               [24]  859 	movx	a,@dptr
+      003E61 FD               [12]  860 	mov	r5,a
+      003E62 A3               [24]  861 	inc	dptr
+      003E63 E0               [24]  862 	movx	a,@dptr
+      003E64 FE               [12]  863 	mov	r6,a
+      003E65 A3               [24]  864 	inc	dptr
+      003E66 E0               [24]  865 	movx	a,@dptr
+      003E67 FF               [12]  866 	mov	r7,a
+      003E68 8D 82            [24]  867 	mov	dpl,r5
+      003E6A 8E 83            [24]  868 	mov	dph,r6
+      003E6C 8F F0            [24]  869 	mov	b,r7
+      003E6E 12 4F 02         [24]  870 	lcall	__gptrget
+      003E71 FD               [12]  871 	mov	r5,a
+      003E72 A3               [24]  872 	inc	dptr
+      003E73 12 4F 02         [24]  873 	lcall	__gptrget
+      003E76 FE               [12]  874 	mov	r6,a
+      003E77 A3               [24]  875 	inc	dptr
+      003E78 12 4F 02         [24]  876 	lcall	__gptrget
+      003E7B FF               [12]  877 	mov	r7,a
+      003E7C 90 20 66         [24]  878 	mov	dptr,#_ll_length_curr_65536_64
+      003E7F ED               [12]  879 	mov	a,r5
+      003E80 F0               [24]  880 	movx	@dptr,a
+      003E81 EE               [12]  881 	mov	a,r6
+      003E82 A3               [24]  882 	inc	dptr
+      003E83 F0               [24]  883 	movx	@dptr,a
+      003E84 EF               [12]  884 	mov	a,r7
+      003E85 A3               [24]  885 	inc	dptr
+      003E86 F0               [24]  886 	movx	@dptr,a
+                                    887 ;	src/linked_list.c:80: while(curr != NULL)
+      003E87 90 20 64         [24]  888 	mov	dptr,#_ll_length_size_65536_64
+      003E8A E0               [24]  889 	movx	a,@dptr
+      003E8B FE               [12]  890 	mov	r6,a
+      003E8C A3               [24]  891 	inc	dptr
+      003E8D E0               [24]  892 	movx	a,@dptr
+      003E8E FF               [12]  893 	mov	r7,a
+      003E8F                        894 00101$:
+      003E8F 90 20 66         [24]  895 	mov	dptr,#_ll_length_curr_65536_64
+      003E92 E0               [24]  896 	movx	a,@dptr
+      003E93 FB               [12]  897 	mov	r3,a
+      003E94 A3               [24]  898 	inc	dptr
+      003E95 E0               [24]  899 	movx	a,@dptr
+      003E96 FC               [12]  900 	mov	r4,a
+      003E97 A3               [24]  901 	inc	dptr
+      003E98 E0               [24]  902 	movx	a,@dptr
+      003E99 FD               [12]  903 	mov	r5,a
+      003E9A 90 20 66         [24]  904 	mov	dptr,#_ll_length_curr_65536_64
+      003E9D E0               [24]  905 	movx	a,@dptr
+      003E9E F5 F0            [12]  906 	mov	b,a
+      003EA0 A3               [24]  907 	inc	dptr
+      003EA1 E0               [24]  908 	movx	a,@dptr
+      003EA2 45 F0            [12]  909 	orl	a,b
+      003EA4 60 2D            [24]  910 	jz	00103$
+                                    911 ;	src/linked_list.c:82: size++;
+      003EA6 0E               [12]  912 	inc	r6
+      003EA7 BE 00 01         [24]  913 	cjne	r6,#0x00,00116$
+      003EAA 0F               [12]  914 	inc	r7
+      003EAB                        915 00116$:
+                                    916 ;	src/linked_list.c:83: curr = curr->next;
+      003EAB 74 08            [12]  917 	mov	a,#0x08
+      003EAD 2B               [12]  918 	add	a,r3
+      003EAE FB               [12]  919 	mov	r3,a
+      003EAF E4               [12]  920 	clr	a
+      003EB0 3C               [12]  921 	addc	a,r4
+      003EB1 FC               [12]  922 	mov	r4,a
+      003EB2 8B 82            [24]  923 	mov	dpl,r3
+      003EB4 8C 83            [24]  924 	mov	dph,r4
+      003EB6 8D F0            [24]  925 	mov	b,r5
+      003EB8 12 4F 02         [24]  926 	lcall	__gptrget
+      003EBB FB               [12]  927 	mov	r3,a
+      003EBC A3               [24]  928 	inc	dptr
+      003EBD 12 4F 02         [24]  929 	lcall	__gptrget
+      003EC0 FC               [12]  930 	mov	r4,a
+      003EC1 A3               [24]  931 	inc	dptr
+      003EC2 12 4F 02         [24]  932 	lcall	__gptrget
+      003EC5 FD               [12]  933 	mov	r5,a
+      003EC6 90 20 66         [24]  934 	mov	dptr,#_ll_length_curr_65536_64
+      003EC9 EB               [12]  935 	mov	a,r3
+      003ECA F0               [24]  936 	movx	@dptr,a
+      003ECB EC               [12]  937 	mov	a,r4
+      003ECC A3               [24]  938 	inc	dptr
+      003ECD F0               [24]  939 	movx	@dptr,a
+      003ECE ED               [12]  940 	mov	a,r5
+      003ECF A3               [24]  941 	inc	dptr
+      003ED0 F0               [24]  942 	movx	@dptr,a
+      003ED1 80 BC            [24]  943 	sjmp	00101$
+      003ED3                        944 00103$:
+                                    945 ;	src/linked_list.c:85: return size; 
+      003ED3 8E 82            [24]  946 	mov	dpl,r6
+      003ED5 8F 83            [24]  947 	mov	dph,r7
+                                    948 ;	src/linked_list.c:86: }
+      003ED7 22               [24]  949 	ret
+                                    950 ;------------------------------------------------------------
+                                    951 ;Allocation info for local variables in function 'll_get_elem'
+                                    952 ;------------------------------------------------------------
+                                    953 ;elem_num                  Allocated with name '_ll_get_elem_PARM_2'
+                                    954 ;list                      Allocated with name '_ll_get_elem_list_65536_66'
+                                    955 ;curr                      Allocated with name '_ll_get_elem_curr_65536_67'
+                                    956 ;------------------------------------------------------------
+                                    957 ;	src/linked_list.c:88: size_t ll_get_elem(buffer_list_t *list, size_t elem_num)
+                                    958 ;	-----------------------------------------
+                                    959 ;	 function ll_get_elem
+                                    960 ;	-----------------------------------------
+      003ED8                        961 _ll_get_elem:
+      003ED8 AF F0            [24]  962 	mov	r7,b
+      003EDA AE 83            [24]  963 	mov	r6,dph
+      003EDC E5 82            [12]  964 	mov	a,dpl
+      003EDE 90 20 6B         [24]  965 	mov	dptr,#_ll_get_elem_list_65536_66
+      003EE1 F0               [24]  966 	movx	@dptr,a
+      003EE2 EE               [12]  967 	mov	a,r6
+      003EE3 A3               [24]  968 	inc	dptr
+      003EE4 F0               [24]  969 	movx	@dptr,a
+      003EE5 EF               [12]  970 	mov	a,r7
+      003EE6 A3               [24]  971 	inc	dptr
+      003EE7 F0               [24]  972 	movx	@dptr,a
+                                    973 ;	src/linked_list.c:90: buffer_t *curr = list->head;
+      003EE8 90 20 6B         [24]  974 	mov	dptr,#_ll_get_elem_list_65536_66
+      003EEB E0               [24]  975 	movx	a,@dptr
+      003EEC FD               [12]  976 	mov	r5,a
+      003EED A3               [24]  977 	inc	dptr
+      003EEE E0               [24]  978 	movx	a,@dptr
+      003EEF FE               [12]  979 	mov	r6,a
+      003EF0 A3               [24]  980 	inc	dptr
+      003EF1 E0               [24]  981 	movx	a,@dptr
+      003EF2 FF               [12]  982 	mov	r7,a
+      003EF3 8D 82            [24]  983 	mov	dpl,r5
+      003EF5 8E 83            [24]  984 	mov	dph,r6
+      003EF7 8F F0            [24]  985 	mov	b,r7
+      003EF9 12 4F 02         [24]  986 	lcall	__gptrget
+      003EFC FD               [12]  987 	mov	r5,a
+      003EFD A3               [24]  988 	inc	dptr
+      003EFE 12 4F 02         [24]  989 	lcall	__gptrget
+      003F01 FE               [12]  990 	mov	r6,a
+      003F02 A3               [24]  991 	inc	dptr
+      003F03 12 4F 02         [24]  992 	lcall	__gptrget
+      003F06 FF               [12]  993 	mov	r7,a
+      003F07 90 20 6E         [24]  994 	mov	dptr,#_ll_get_elem_curr_65536_67
+      003F0A ED               [12]  995 	mov	a,r5
+      003F0B F0               [24]  996 	movx	@dptr,a
+      003F0C EE               [12]  997 	mov	a,r6
+      003F0D A3               [24]  998 	inc	dptr
+      003F0E F0               [24]  999 	movx	@dptr,a
+      003F0F EF               [12] 1000 	mov	a,r7
+      003F10 A3               [24] 1001 	inc	dptr
+      003F11 F0               [24] 1002 	movx	@dptr,a
+                                   1003 ;	src/linked_list.c:91: while(curr != NULL && elem_num > 0)
+      003F12 90 20 69         [24] 1004 	mov	dptr,#_ll_get_elem_PARM_2
+      003F15 E0               [24] 1005 	movx	a,@dptr
+      003F16 FE               [12] 1006 	mov	r6,a
+      003F17 A3               [24] 1007 	inc	dptr
+      003F18 E0               [24] 1008 	movx	a,@dptr
+      003F19 FF               [12] 1009 	mov	r7,a
+      003F1A                       1010 00102$:
+      003F1A 90 20 6E         [24] 1011 	mov	dptr,#_ll_get_elem_curr_65536_67
+      003F1D E0               [24] 1012 	movx	a,@dptr
+      003F1E FB               [12] 1013 	mov	r3,a
+      003F1F A3               [24] 1014 	inc	dptr
+      003F20 E0               [24] 1015 	movx	a,@dptr
+      003F21 FC               [12] 1016 	mov	r4,a
+      003F22 A3               [24] 1017 	inc	dptr
+      003F23 E0               [24] 1018 	movx	a,@dptr
+      003F24 FD               [12] 1019 	mov	r5,a
+      003F25 90 20 6E         [24] 1020 	mov	dptr,#_ll_get_elem_curr_65536_67
+      003F28 E0               [24] 1021 	movx	a,@dptr
+      003F29 F5 F0            [12] 1022 	mov	b,a
+      003F2B A3               [24] 1023 	inc	dptr
+      003F2C E0               [24] 1024 	movx	a,@dptr
+      003F2D 45 F0            [12] 1025 	orl	a,b
+      003F2F 60 31            [24] 1026 	jz	00104$
+      003F31 EE               [12] 1027 	mov	a,r6
+      003F32 4F               [12] 1028 	orl	a,r7
+      003F33 60 2D            [24] 1029 	jz	00104$
+                                   1030 ;	src/linked_list.c:93: curr = curr->next;
+      003F35 74 08            [12] 1031 	mov	a,#0x08
+      003F37 2B               [12] 1032 	add	a,r3
+      003F38 FB               [12] 1033 	mov	r3,a
+      003F39 E4               [12] 1034 	clr	a
+      003F3A 3C               [12] 1035 	addc	a,r4
+      003F3B FC               [12] 1036 	mov	r4,a
+      003F3C 8B 82            [24] 1037 	mov	dpl,r3
+      003F3E 8C 83            [24] 1038 	mov	dph,r4
+      003F40 8D F0            [24] 1039 	mov	b,r5
+      003F42 12 4F 02         [24] 1040 	lcall	__gptrget
+      003F45 FB               [12] 1041 	mov	r3,a
+      003F46 A3               [24] 1042 	inc	dptr
+      003F47 12 4F 02         [24] 1043 	lcall	__gptrget
+      003F4A FC               [12] 1044 	mov	r4,a
+      003F4B A3               [24] 1045 	inc	dptr
+      003F4C 12 4F 02         [24] 1046 	lcall	__gptrget
+      003F4F FD               [12] 1047 	mov	r5,a
+      003F50 90 20 6E         [24] 1048 	mov	dptr,#_ll_get_elem_curr_65536_67
+      003F53 EB               [12] 1049 	mov	a,r3
+      003F54 F0               [24] 1050 	movx	@dptr,a
+      003F55 EC               [12] 1051 	mov	a,r4
+      003F56 A3               [24] 1052 	inc	dptr
+      003F57 F0               [24] 1053 	movx	@dptr,a
+      003F58 ED               [12] 1054 	mov	a,r5
+      003F59 A3               [24] 1055 	inc	dptr
+      003F5A F0               [24] 1056 	movx	@dptr,a
+                                   1057 ;	src/linked_list.c:94: elem_num--;
+      003F5B 1E               [12] 1058 	dec	r6
+      003F5C BE FF 01         [24] 1059 	cjne	r6,#0xff,00122$
+      003F5F 1F               [12] 1060 	dec	r7
+      003F60                       1061 00122$:
+      003F60 80 B8            [24] 1062 	sjmp	00102$
+      003F62                       1063 00104$:
+                                   1064 ;	src/linked_list.c:96: return curr;
+      003F62 90 20 6E         [24] 1065 	mov	dptr,#_ll_get_elem_curr_65536_67
+      003F65 E0               [24] 1066 	movx	a,@dptr
+      003F66 FD               [12] 1067 	mov	r5,a
+      003F67 A3               [24] 1068 	inc	dptr
+      003F68 E0               [24] 1069 	movx	a,@dptr
+      003F69 FE               [12] 1070 	mov	r6,a
+      003F6A A3               [24] 1071 	inc	dptr
+      003F6B E0               [24] 1072 	movx	a,@dptr
+      003F6C FF               [12] 1073 	mov	r7,a
+      003F6D 8D 82            [24] 1074 	mov	dpl,r5
+      003F6F 8E 83            [24] 1075 	mov	dph,r6
+      003F71 8F F0            [24] 1076 	mov	b,r7
+                                   1077 ;	src/linked_list.c:97: }
+      003F73 22               [24] 1078 	ret
+                                   1079 	.area CSEG    (CODE)
+                                   1080 	.area CONST   (CODE)
+                                   1081 	.area XINIT   (CODE)
+                                   1082 	.area CABS    (ABS,CODE)

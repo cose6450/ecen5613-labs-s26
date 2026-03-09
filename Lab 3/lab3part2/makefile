@@ -10,22 +10,27 @@ SDCC_PATH = "C:\Program Files\SDCC\bin\sdcc.exe"
 BATCH_ISP_PATH = "C:\Program Files (x86)\Atmel\Flip 3.4.7\bin\batchisp.exe"
 HEADERS := $(wildcard headers/*.h)
 COM_PORT = "COM5"
+TTERM_PARAMS = "/C=5"
 CC = $(SDCC_PATH)
 
-putty:
-	putty.exe -serial $(COM_PORT) 57600
+tterm:
+	ttermpro $(TTERM_PARAMS)
+
+tterm_test:
+	call .\test\execute_tests.bat
 
 flash: user_program paulmon paulmon_extra
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation erase f memory flash blankcheck loadbuffer lib/paulmon21.hex program verify 
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer lib/extra.hex program verify
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer bin/output.hex program verify
-	putty.exe -serial $(COM_PORT) 57600
+	ttermpro $(TTERM_PARAMS) 
+# 	Note: this only works because of the initial setting in teraterm
 
 debug_flash: user_program_debug paulmon paulmon_extra
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation erase f memory flash blankcheck loadbuffer lib/paulmon21.hex program verify 
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer lib/extra.hex program verify
 	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer bin/debug_output.hex program verify
-	putty.exe -serial $(COM_PORT) 57600	
+	ttermpro $(TTERM_PARAMS)
 
 
 paulmon: lib/paulmon21.asm

@@ -1,0 +1,511 @@
+
+****************************************
+initial_test
+****************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               Welcome to PAULMON2 v2.1, by Paul Stoffregen
+
+  See PAULMON2.DOC, PAULMON2.EQU and PAULMON2.HDR for more information.
+
+
+Program Name                     Location      Type
+  List                             1000      External command
+  Single-Step                      1400      External command
+  Memory Editor (VT100)            1800      External command
+
+PAULMON2 Loc:2000 > Jump to memory location
+
+Jump to memory location (2000), or ESC to quit: 
+
+running program:
+
+
+Please enter the last two digits of your ID:50
+Please enter a valid buffer size that is divisible by 32 [64,1024]: 64
+student_number: 50
+user_buffer_size: 64
+buffer_0 starts @ X:0x003a, ends @X:0x007a, size 64
+buffer_1 starts @ X:0x007c, ends @X:0x00bc, size 64
+buffer_2 starts @ X:0x00cb, ends @X:0x010b, size 64
+buffer_3 starts @ X:0x011a, ends @X:0x015a, size 64
+buffer_4 starts @ X:0x0169, ends @X:0x0371, size 520
+buffer_5 starts @ X:0x0380, ends @X:0x0400, size 128
+Heap starts @ X:0x0038, ends @ X:0x2038, size: 904
+Enter a char: *
+****************************************
+setup_input_test
+****************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               Welcome to PAULMON2 v2.1, by Paul Stoffregen
+
+  See PAULMON2.DOC, PAULMON2.EQU and PAULMON2.HDR for more information.
+
+
+Program Name                     Location      Type
+  List                             1000      External command
+  Single-Step                      1400      External command
+  Memory Editor (VT100)            1800      External command
+
+PAULMON2 Loc:2000 > Jump to memory location
+
+Jump to memory location (2000), or ESC to quit: 
+
+running program:
+
+
+Please enter the last two digits of your ID:-1
+ Did not enter valid two digit number, please try again
+Please enter the last two digits of your ID:100
+ Did not enter valid two digit number, please try again
+Please enter the last two digits of your ID:9
+ Did not enter valid two digit number, please try again
+Please enter the last two digits of your ID:50
+Please enter a valid buffer size that is divisible by 32 [64,1024]: 63
+ User buffer size too small or error in conversion
+Please enter a valid buffer size that is divisible by 32 [64,1024]: 1025
+ User buffer size larger than maximum
+Please enter a valid buffer size that is divisible by 32 [64,1024]: 65
+ User buffer size is not divisible by 32
+Please enter a valid buffer size that is divisible by 32 [64,1024]: 1024
+student_number: 50
+user_buffer_size: 1024
+buffer_0 starts @ X:0x003a, ends @X:0x043a, size 1024
+buffer_1 starts @ X:0x043c, ends @X:0x083c, size 1024
+buffer_2 starts @ X:0x084b, ends @X:0x0c4b, size 1024
+buffer_3 starts @ X:0x0c5a, ends @X:0x105a, size 1024
+buffer_4 starts @ X:0x1069, ends @X:0x1271, size 520
+buffer_5 starts @ X:0x1280, ends @X:0x1a80, size 2048
+Heap starts @ X:0x0038, ends @ X:0x2038, size: 6664
+Enter a char: *
+****************************************
+buffered_input_test
+****************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               Welcome to PAULMON2 v2.1, by Paul Stoffregen
+
+  See PAULMON2.DOC, PAULMON2.EQU and PAULMON2.HDR for more information.
+
+
+Program Name                     Location      Type
+  List                             1000      External command
+  Single-Step                      1400      External command
+  Memory Editor (VT100)            1800      External command
+
+PAULMON2 Loc:2000 > Jump to memory location
+
+Jump to memory location (2000), or ESC to quit: 
+
+running program:
+
+
+Please enter the last two digits of your ID:50
+Please enter a valid buffer size that is divisible by 32 [64,1024]: 64
+student_number: 50
+user_buffer_size: 64
+buffer_0 starts @ X:0x003a, ends @X:0x007a, size 64
+buffer_1 starts @ X:0x007c, ends @X:0x00bc, size 64
+buffer_2 starts @ X:0x00cb, ends @X:0x010b, size 64
+buffer_3 starts @ X:0x011a, ends @X:0x015a, size 64
+buffer_4 starts @ X:0x0169, ends @X:0x0371, size 520
+buffer_5 starts @ X:0x0380, ends @X:0x0400, size 128
+Heap starts @ X:0x0038, ends @ X:0x2038, size: 904
+Enter a char: =
+Dump Admin Buffers
+------------------------------------------------
+ Buffer 0 
+----------
+003A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+004A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+005A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+006A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ Buffer 1 
+----------
+007C: 3D 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+008C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+009C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00AC: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+END COMMAND
+------------------------------------------------
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: 4
+Enter a char: a
+Enter a char: 1
+Enter a char: b
+Enter a char: 2
+Enter a char: C
+Enter a char: 3
+Enter a char: D
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: M
+Enter a char: 0
+Enter a char: N
+Enter a char: 9
+Enter a char: b
+Enter a char: 8
+Enter a char: v
+Enter a char: 7
+Enter a char: =
+Dump Admin Buffers
+------------------------------------------------
+ Buffer 0 
+----------
+003A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+004A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+005A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+006A: 61 62 43 44 61 62 43 44 61 62 43 44 61 62 43 44
+
+ Buffer 1 
+----------
+007C: 3D 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+008C: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+009C: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+00AC: 34 31 32 33 34 31 32 33 34 31 32 33 34 31 32 33
+
+END COMMAND
+------------------------------------------------
+Enter a char: ?
+HEAP REPORT
+------------------------------------------------
+buffer_0 starts @ X:0x003a, ends @X:0x007a, size 64, contains 64 alphabet chars, has 0 chars remaining
+buffer_1 starts @ X:0x007c, ends @X:0x00bc, size 64, contains 0 alphabet chars, has 0 chars remaining
+buffer_2 starts @ X:0x00cb, ends @X:0x010b, size 64, contains 0 alphabet chars, has 64 chars remaining
+buffer_3 starts @ X:0x011a, ends @X:0x015a, size 64, contains 0 alphabet chars, has 64 chars remaining
+buffer_4 starts @ X:0x0169, ends @X:0x0371, size 520, contains 0 alphabet chars, has 520 chars remaining
+buffer_5 starts @ X:0x0380, ends @X:0x0400, size 128, contains 0 alphabet chars, has 128 chars remaining
+Heap starts @ X:0x0038, ends @ X:0x2038, size: 904
+
+ Received 258 chars since last invocation of ?
+abCDabCDabCDabCDabCDabCDabCDabCD
+abCDabCDabCDabCDabCDabCDabCDabCD
+=1234123412341234123412341234123
+41234123412341234123412341234123
+É
+
+
+END COMMAND
+------------------------------------------------
+Enter a char: =
+Dump Admin Buffers
+------------------------------------------------
+ Buffer 0 
+----------
+003A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+004A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+005A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+006A: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ Buffer 1 
+----------
+007C: 3D 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+008C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+009C: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00AC: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+END COMMAND
+------------------------------------------------
+Enter a char: *

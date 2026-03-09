@@ -202,20 +202,28 @@ Symbol Table
     __gptrput                                                      ****** GX
  17 _append_to_buffer_list                                         000000 GR
   B _append_to_buffer_list_PARM_2                                  000000 GR
-  B _append_to_buffer_list_list_65536_45                           000003 R
+  B _append_to_buffer_list_list_65536_47                           000003 R
   6 _append_to_buffer_list_sloc0_1_0                               000000 R
-  B _append_to_buffer_list_tail_131072_48                          000006 R
+  B _append_to_buffer_list_tail_131072_50                          000006 R
     _free                                                          ****** GX
  17 _free_all_elems_from_list                                      000298 GR
-  B _free_all_elems_from_list_buffer_to_free_65536_58              000017 R
-  B _free_all_elems_from_list_list_65536_57                        000014 R
+  B _free_all_elems_from_list_buffer_to_free_65536_60              000017 R
+  B _free_all_elems_from_list_list_65536_59                        000014 R
   5 _free_all_elems_from_list_sloc0_1_0                            000003 R
+ 17 _ll_get_elem                                                   000444 GR
+  B _ll_get_elem_PARM_2                                            000022 GR
+  B _ll_get_elem_curr_65536_67                                     000027 R
+  B _ll_get_elem_list_65536_66                                     000024 R
+ 17 _ll_length                                                     0003B9 GR
+  B _ll_length_curr_65536_64                                       00001F R
+  B _ll_length_list_65536_63                                       00001A R
+  B _ll_length_size_65536_64                                       00001D R
  17 _remove_from_buffer_list                                       0000E6 GR
   B _remove_from_buffer_list_PARM_2                                000009 GR
-  B _remove_from_buffer_list_list_65536_50                         00000B R
-  B _remove_from_buffer_list_prev_131073_54                        000011 R
+  B _remove_from_buffer_list_list_65536_52                         00000B R
+  B _remove_from_buffer_list_prev_131073_56                        000011 R
   5 _remove_from_buffer_list_sloc0_1_0                             000000 R
-  B _remove_from_buffer_list_to_free_65537_52                      00000E R
+  B _remove_from_buffer_list_to_free_65537_54                      00000E R
     a                                                           =  0000E0 L
     a.0                                                         =  0000E0 L
     a.1                                                         =  0000E1 L
@@ -230,6 +238,11 @@ Symbol Table
     acc.0                                                       =  0000E0 L
     acc.1                                                       =  0000E1 L
     acc.2                                                       =  0000E2 L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 5.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
     acc.3                                                       =  0000E3 L
     acc.4                                                       =  0000E4 L
     acc.5                                                       =  0000E5 L
@@ -238,11 +251,6 @@ Symbol Table
     ar0                                                         =  000000 
     ar1                                                         =  000001 
     ar2                                                         =  000002 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 5.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
     ar3                                                         =  000003 
     ar4                                                         =  000004 
     ar5                                                         =  000005 
@@ -290,6 +298,11 @@ Symbol Table
     ip.2                                                        =  0000BA L
     ip.3                                                        =  0000BB L
     ip.4                                                        =  0000BC L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 6.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
     ip.5                                                        =  0000BD L
     it0                                                         =  000088 L
     it1                                                         =  00008A L
@@ -298,11 +311,6 @@ Symbol Table
     p0                                                          =  000080 L
     p0.0                                                        =  000080 L
     p0.1                                                        =  000081 L
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 6.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
     p0.2                                                        =  000082 L
     p0.3                                                        =  000083 L
     p0.4                                                        =  000084 L
@@ -350,6 +358,11 @@ Symbol Table
     pt0                                                         =  0000B9 L
     pt1                                                         =  0000BB L
     pt2                                                         =  0000BD L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 7.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
     px0                                                         =  0000B8 L
     px1                                                         =  0000BA L
     rb8                                                         =  00009A L
@@ -358,11 +371,6 @@ Symbol Table
     rclk                                                        =  0000CD L
     ren                                                         =  00009C L
     ri                                                          =  000098 L
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 7.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
     rs0                                                         =  0000D3 L
     rs1                                                         =  0000D4 L
     rxd                                                         =  0000B0 L
@@ -410,14 +418,18 @@ Symbol Table
     tl0                                                         =  00008A L
     tl1                                                         =  00008B L
     tl2                                                         =  0000CC L
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 8.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
     tmod                                                        =  000089 L
     tr0                                                         =  00008C L
     tr1                                                         =  00008E L
     tr2                                                         =  0000CA L
     txd                                                         =  0000B1 L
 
-
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 8.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Intel 8051), page 9.
 Hexadecimal [24-Bits]
 
 Area Table
@@ -433,7 +445,7 @@ Area Table
    8 IABS                                       size      0   flags    8
    9 BSEG                                       size      0   flags   80
    A PSEG                                       size      0   flags   50
-   B XSEG                                       size     1A   flags   40
+   B XSEG                                       size     2A   flags   40
    C XABS                                       size      0   flags   48
    D XISEG                                      size      0   flags   40
    E HOME                                       size      0   flags   20
@@ -445,7 +457,7 @@ Area Table
   14 GSINIT5                                    size      0   flags   20
   15 GSINIT                                     size      0   flags   20
   16 GSFINAL                                    size      0   flags   20
-  17 CSEG                                       size    3B9   flags   20
+  17 CSEG                                       size    4E0   flags   20
   18 CONST                                      size      0   flags   20
   19 XINIT                                      size      0   flags   20
   1A CABS                                       size      0   flags   28

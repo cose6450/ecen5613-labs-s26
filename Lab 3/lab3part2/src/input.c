@@ -5,10 +5,11 @@
 #include <stdio.h>
 
 #define DELETE ((char) 0x7F)
+#define BACKSPACE ('\b')
 
 char string_input_buffer[BUFFER_SZ];
 
-size_t character_count = 0; 
+size_t character_count; 
 
 const char *get_input_buffer() {
     return string_input_buffer; 
@@ -22,16 +23,26 @@ void get_string()
     do {
         received_char = getchar(); 
         putchar(received_char);
-        // printf("\r\n%02X", received_char);
+
+        //tera term specific - make backspace visibly delete the character
+        //tera term backspace just moves the cursor over
+        //visibly delet by putting a space on the screen
+        //then backspace back to where the "space" is
+        if (received_char == BACKSPACE)
+        {
+            putchar(' ');
+            putchar('\b');
+        }
         if (received_char != '\r' 
             && received_char != '\n'
             && received_char != '\0'
-            && received_char != DELETE)
+            && received_char != DELETE
+            && received_char != BACKSPACE)
            {
             *current_buffer_loc= received_char;
             current_buffer_loc++;
            }
-        else if(received_char == DELETE)
+        else if(received_char == DELETE || received_char == BACKSPACE)
         {
             if (current_buffer_loc != string_input_buffer)
             {
@@ -43,7 +54,7 @@ void get_string()
     } while(received_char != '\r'
         && received_char != '\n' 
         && received_char != '\0'
-        && (current_buffer_loc < (string_input_buffer+BUFFER_SZ)));
+        && (current_buffer_loc < (string_input_buffer+BUFFER_SZ-1)));
     *current_buffer_loc = '\0';
 }
 

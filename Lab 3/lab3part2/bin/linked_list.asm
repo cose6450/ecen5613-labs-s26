@@ -9,11 +9,14 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _free
+	.globl _ll_get_elem_PARM_2
 	.globl _remove_from_buffer_list_PARM_2
 	.globl _append_to_buffer_list_PARM_2
 	.globl _append_to_buffer_list
 	.globl _remove_from_buffer_list
 	.globl _free_all_elems_from_list
+	.globl _ll_length
+	.globl _ll_get_elem
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -66,21 +69,33 @@ _append_to_buffer_list_sloc0_1_0:
 	.area XSEG    (XDATA)
 _append_to_buffer_list_PARM_2:
 	.ds 3
-_append_to_buffer_list_list_65536_45:
+_append_to_buffer_list_list_65536_47:
 	.ds 3
-_append_to_buffer_list_tail_131072_48:
+_append_to_buffer_list_tail_131072_50:
 	.ds 3
 _remove_from_buffer_list_PARM_2:
 	.ds 2
-_remove_from_buffer_list_list_65536_50:
+_remove_from_buffer_list_list_65536_52:
 	.ds 3
-_remove_from_buffer_list_to_free_65537_52:
+_remove_from_buffer_list_to_free_65537_54:
 	.ds 3
-_remove_from_buffer_list_prev_131073_54:
+_remove_from_buffer_list_prev_131073_56:
 	.ds 3
-_free_all_elems_from_list_list_65536_57:
+_free_all_elems_from_list_list_65536_59:
 	.ds 3
-_free_all_elems_from_list_buffer_to_free_65536_58:
+_free_all_elems_from_list_buffer_to_free_65536_60:
+	.ds 3
+_ll_length_list_65536_63:
+	.ds 3
+_ll_length_size_65536_64:
+	.ds 2
+_ll_length_curr_65536_64:
+	.ds 3
+_ll_get_elem_PARM_2:
+	.ds 2
+_ll_get_elem_list_65536_66:
+	.ds 3
+_ll_get_elem_curr_65536_67:
 	.ds 3
 ;--------------------------------------------------------
 ; absolute external ram data
@@ -120,8 +135,8 @@ _free_all_elems_from_list_buffer_to_free_65536_58:
 ;Allocation info for local variables in function 'append_to_buffer_list'
 ;------------------------------------------------------------
 ;buffer                    Allocated with name '_append_to_buffer_list_PARM_2'
-;list                      Allocated with name '_append_to_buffer_list_list_65536_45'
-;tail                      Allocated with name '_append_to_buffer_list_tail_131072_48'
+;list                      Allocated with name '_append_to_buffer_list_list_65536_47'
+;tail                      Allocated with name '_append_to_buffer_list_tail_131072_50'
 ;sloc0                     Allocated with name '_append_to_buffer_list_sloc0_1_0'
 ;------------------------------------------------------------
 ;	src/linked_list.c:5: bool append_to_buffer_list(buffer_list_t *list, buffer_t *buffer)
@@ -140,7 +155,7 @@ _append_to_buffer_list:
 	mov	r7,b
 	mov	r6,dph
 	mov	a,dpl
-	mov	dptr,#_append_to_buffer_list_list_65536_45
+	mov	dptr,#_append_to_buffer_list_list_65536_47
 	movx	@dptr,a
 	mov	a,r6
 	inc	dptr
@@ -149,7 +164,7 @@ _append_to_buffer_list:
 	inc	dptr
 	movx	@dptr,a
 ;	src/linked_list.c:7: if (list->head == NULL) 
-	mov	dptr,#_append_to_buffer_list_list_65536_45
+	mov	dptr,#_append_to_buffer_list_list_65536_47
 	movx	a,@dptr
 	mov	_append_to_buffer_list_sloc0_1_0,a
 	inc	dptr
@@ -196,7 +211,7 @@ _append_to_buffer_list:
 	sjmp	00106$
 00105$:
 ;	src/linked_list.c:13: buffer_t *tail = list->head;
-	mov	dptr,#_append_to_buffer_list_tail_131072_48
+	mov	dptr,#_append_to_buffer_list_tail_131072_50
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -207,7 +222,7 @@ _append_to_buffer_list:
 	movx	@dptr,a
 ;	src/linked_list.c:14: while(tail->next != NULL)
 00101$:
-	mov	dptr,#_append_to_buffer_list_tail_131072_48
+	mov	dptr,#_append_to_buffer_list_tail_131072_50
 	movx	a,@dptr
 	mov	r5,a
 	inc	dptr
@@ -237,7 +252,7 @@ _append_to_buffer_list:
 	orl	a,r3
 	jz	00103$
 ;	src/linked_list.c:16: tail = tail->next;
-	mov	dptr,#_append_to_buffer_list_tail_131072_48
+	mov	dptr,#_append_to_buffer_list_tail_131072_50
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -304,9 +319,9 @@ _append_to_buffer_list:
 ;------------------------------------------------------------
 ;sloc0                     Allocated with name '_remove_from_buffer_list_sloc0_1_0'
 ;idx                       Allocated with name '_remove_from_buffer_list_PARM_2'
-;list                      Allocated with name '_remove_from_buffer_list_list_65536_50'
-;to_free                   Allocated with name '_remove_from_buffer_list_to_free_65537_52'
-;prev                      Allocated with name '_remove_from_buffer_list_prev_131073_54'
+;list                      Allocated with name '_remove_from_buffer_list_list_65536_52'
+;to_free                   Allocated with name '_remove_from_buffer_list_to_free_65537_54'
+;prev                      Allocated with name '_remove_from_buffer_list_prev_131073_56'
 ;------------------------------------------------------------
 ;	src/linked_list.c:25: bool remove_from_buffer_list(buffer_list_t *list, size_t idx)
 ;	-----------------------------------------
@@ -316,7 +331,7 @@ _remove_from_buffer_list:
 	mov	r7,b
 	mov	r6,dph
 	mov	a,dpl
-	mov	dptr,#_remove_from_buffer_list_list_65536_50
+	mov	dptr,#_remove_from_buffer_list_list_65536_52
 	movx	@dptr,a
 	mov	a,r6
 	inc	dptr
@@ -325,7 +340,7 @@ _remove_from_buffer_list:
 	inc	dptr
 	movx	@dptr,a
 ;	src/linked_list.c:27: if (list == NULL) return false;
-	mov	dptr,#_remove_from_buffer_list_list_65536_50
+	mov	dptr,#_remove_from_buffer_list_list_65536_52
 	movx	a,@dptr
 	mov	_remove_from_buffer_list_sloc0_1_0,a
 	inc	dptr
@@ -373,7 +388,7 @@ _remove_from_buffer_list:
 	orl	a,b
 	jnz	00112$
 ;	src/linked_list.c:34: to_free = list->head;
-	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
+	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -415,7 +430,7 @@ _remove_from_buffer_list:
 	ljmp	00113$
 00112$:
 ;	src/linked_list.c:39: buffer_t *prev = list->head;
-	mov	dptr,#_remove_from_buffer_list_prev_131073_54
+	mov	dptr,#_remove_from_buffer_list_prev_131073_56
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -446,7 +461,7 @@ _remove_from_buffer_list:
 	mov	a,r6
 	orl	a,r7
 	jz	00108$
-	mov	dptr,#_remove_from_buffer_list_prev_131073_54
+	mov	dptr,#_remove_from_buffer_list_prev_131073_56
 	movx	a,@dptr
 	mov	r3,a
 	inc	dptr
@@ -476,7 +491,7 @@ _remove_from_buffer_list:
 	orl	a,r4
 	jz	00108$
 ;	src/linked_list.c:43: prev = prev->next;
-	mov	dptr,#_remove_from_buffer_list_prev_131073_54
+	mov	dptr,#_remove_from_buffer_list_prev_131073_56
 	mov	a,r3
 	movx	@dptr,a
 	mov	a,r4
@@ -500,7 +515,7 @@ _remove_from_buffer_list:
 	ret
 00110$:
 ;	src/linked_list.c:48: to_free = prev->next;
-	mov	dptr,#_remove_from_buffer_list_prev_131073_54
+	mov	dptr,#_remove_from_buffer_list_prev_131073_56
 	movx	a,@dptr
 	mov	r5,a
 	inc	dptr
@@ -526,7 +541,7 @@ _remove_from_buffer_list:
 	inc	dptr
 	lcall	__gptrget
 	mov	r4,a
-	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
+	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -566,7 +581,7 @@ _remove_from_buffer_list:
 	lcall	__gptrput
 00113$:
 ;	src/linked_list.c:52: if (to_free == NULL) return false; 
-	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
+	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
 	movx	a,@dptr
 	mov	r6,a
 	inc	dptr
@@ -575,7 +590,7 @@ _remove_from_buffer_list:
 	inc	dptr
 	movx	a,@dptr
 	mov	r7,a
-	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
+	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
 	movx	a,@dptr
 	mov	b,a
 	inc	dptr
@@ -604,7 +619,7 @@ _remove_from_buffer_list:
 	lcall	_free
 00117$:
 ;	src/linked_list.c:57: free(to_free);
-	mov	dptr,#_remove_from_buffer_list_to_free_65537_52
+	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
 	movx	a,@dptr
 	mov	r5,a
 	inc	dptr
@@ -625,8 +640,8 @@ _remove_from_buffer_list:
 ;Allocation info for local variables in function 'free_all_elems_from_list'
 ;------------------------------------------------------------
 ;sloc0                     Allocated with name '_free_all_elems_from_list_sloc0_1_0'
-;list                      Allocated with name '_free_all_elems_from_list_list_65536_57'
-;buffer_to_free            Allocated with name '_free_all_elems_from_list_buffer_to_free_65536_58'
+;list                      Allocated with name '_free_all_elems_from_list_list_65536_59'
+;buffer_to_free            Allocated with name '_free_all_elems_from_list_buffer_to_free_65536_60'
 ;------------------------------------------------------------
 ;	src/linked_list.c:61: void free_all_elems_from_list(buffer_list_t *list)
 ;	-----------------------------------------
@@ -636,7 +651,7 @@ _free_all_elems_from_list:
 	mov	r7,b
 	mov	r6,dph
 	mov	a,dpl
-	mov	dptr,#_free_all_elems_from_list_list_65536_57
+	mov	dptr,#_free_all_elems_from_list_list_65536_59
 	movx	@dptr,a
 	mov	a,r6
 	inc	dptr
@@ -645,7 +660,7 @@ _free_all_elems_from_list:
 	inc	dptr
 	movx	@dptr,a
 ;	src/linked_list.c:63: buffer_t *buffer_to_free = list->head;
-	mov	dptr,#_free_all_elems_from_list_list_65536_57
+	mov	dptr,#_free_all_elems_from_list_list_65536_59
 	movx	a,@dptr
 	mov	r5,a
 	inc	dptr
@@ -665,7 +680,7 @@ _free_all_elems_from_list:
 	inc	dptr
 	lcall	__gptrget
 	mov	r4,a
-	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
+	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -676,7 +691,7 @@ _free_all_elems_from_list:
 	movx	@dptr,a
 ;	src/linked_list.c:64: while(list->head != NULL)
 00103$:
-	mov	dptr,#_free_all_elems_from_list_list_65536_57
+	mov	dptr,#_free_all_elems_from_list_list_65536_59
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
@@ -735,7 +750,7 @@ _free_all_elems_from_list:
 	mov	a,r7
 	lcall	__gptrput
 ;	src/linked_list.c:67: if (buffer_to_free->buffer != NULL)
-	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
+	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
 	movx	a,@dptr
 	mov	r5,a
 	inc	dptr
@@ -774,7 +789,7 @@ _free_all_elems_from_list:
 	pop	ar7
 00102$:
 ;	src/linked_list.c:71: free(buffer_to_free);
-	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
+	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
 	movx	a,@dptr
 	mov	r2,a
 	inc	dptr
@@ -805,7 +820,7 @@ _free_all_elems_from_list:
 	inc	dptr
 	lcall	__gptrget
 	mov	r4,a
-	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_58
+	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
 	mov	a,r2
 	movx	@dptr,a
 	mov	a,r3
@@ -816,6 +831,251 @@ _free_all_elems_from_list:
 	movx	@dptr,a
 ;	src/linked_list.c:74: }
 	ljmp	00103$
+;------------------------------------------------------------
+;Allocation info for local variables in function 'll_length'
+;------------------------------------------------------------
+;list                      Allocated with name '_ll_length_list_65536_63'
+;size                      Allocated with name '_ll_length_size_65536_64'
+;curr                      Allocated with name '_ll_length_curr_65536_64'
+;------------------------------------------------------------
+;	src/linked_list.c:76: size_t ll_length(buffer_list_t *list)
+;	-----------------------------------------
+;	 function ll_length
+;	-----------------------------------------
+_ll_length:
+	mov	r7,b
+	mov	r6,dph
+	mov	a,dpl
+	mov	dptr,#_ll_length_list_65536_63
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/linked_list.c:79: buffer_t *curr = list->head;
+	mov	dptr,#_ll_length_list_65536_63
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r5,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	dptr,#_ll_length_curr_65536_64
+	mov	a,r5
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/linked_list.c:80: while(curr != NULL)
+	mov	dptr,#_ll_length_size_65536_64
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+00101$:
+	mov	dptr,#_ll_length_curr_65536_64
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	mov	dptr,#_ll_length_curr_65536_64
+	movx	a,@dptr
+	mov	b,a
+	inc	dptr
+	movx	a,@dptr
+	orl	a,b
+	jz	00103$
+;	src/linked_list.c:82: size++;
+	inc	r6
+	cjne	r6,#0x00,00116$
+	inc	r7
+00116$:
+;	src/linked_list.c:83: curr = curr->next;
+	mov	a,#0x08
+	add	a,r3
+	mov	r3,a
+	clr	a
+	addc	a,r4
+	mov	r4,a
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
+	lcall	__gptrget
+	mov	r3,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r4,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r5,a
+	mov	dptr,#_ll_length_curr_65536_64
+	mov	a,r3
+	movx	@dptr,a
+	mov	a,r4
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r5
+	inc	dptr
+	movx	@dptr,a
+	sjmp	00101$
+00103$:
+;	src/linked_list.c:85: return size; 
+	mov	dpl,r6
+	mov	dph,r7
+;	src/linked_list.c:86: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'll_get_elem'
+;------------------------------------------------------------
+;elem_num                  Allocated with name '_ll_get_elem_PARM_2'
+;list                      Allocated with name '_ll_get_elem_list_65536_66'
+;curr                      Allocated with name '_ll_get_elem_curr_65536_67'
+;------------------------------------------------------------
+;	src/linked_list.c:88: size_t ll_get_elem(buffer_list_t *list, size_t elem_num)
+;	-----------------------------------------
+;	 function ll_get_elem
+;	-----------------------------------------
+_ll_get_elem:
+	mov	r7,b
+	mov	r6,dph
+	mov	a,dpl
+	mov	dptr,#_ll_get_elem_list_65536_66
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/linked_list.c:90: buffer_t *curr = list->head;
+	mov	dptr,#_ll_get_elem_list_65536_66
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	lcall	__gptrget
+	mov	r5,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r6,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r7,a
+	mov	dptr,#_ll_get_elem_curr_65536_67
+	mov	a,r5
+	movx	@dptr,a
+	mov	a,r6
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/linked_list.c:91: while(curr != NULL && elem_num > 0)
+	mov	dptr,#_ll_get_elem_PARM_2
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+00102$:
+	mov	dptr,#_ll_get_elem_curr_65536_67
+	movx	a,@dptr
+	mov	r3,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	mov	dptr,#_ll_get_elem_curr_65536_67
+	movx	a,@dptr
+	mov	b,a
+	inc	dptr
+	movx	a,@dptr
+	orl	a,b
+	jz	00104$
+	mov	a,r6
+	orl	a,r7
+	jz	00104$
+;	src/linked_list.c:93: curr = curr->next;
+	mov	a,#0x08
+	add	a,r3
+	mov	r3,a
+	clr	a
+	addc	a,r4
+	mov	r4,a
+	mov	dpl,r3
+	mov	dph,r4
+	mov	b,r5
+	lcall	__gptrget
+	mov	r3,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r4,a
+	inc	dptr
+	lcall	__gptrget
+	mov	r5,a
+	mov	dptr,#_ll_get_elem_curr_65536_67
+	mov	a,r3
+	movx	@dptr,a
+	mov	a,r4
+	inc	dptr
+	movx	@dptr,a
+	mov	a,r5
+	inc	dptr
+	movx	@dptr,a
+;	src/linked_list.c:94: elem_num--;
+	dec	r6
+	cjne	r6,#0xff,00122$
+	dec	r7
+00122$:
+	sjmp	00102$
+00104$:
+;	src/linked_list.c:96: return curr;
+	mov	dptr,#_ll_get_elem_curr_65536_67
+	movx	a,@dptr
+	mov	r5,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+;	src/linked_list.c:97: }
+	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)

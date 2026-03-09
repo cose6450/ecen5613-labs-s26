@@ -1,0 +1,5 @@
+Terminal Buffer Program Regression Tests
+****************************************
+basic_test: passed
+setup_input_test: passed
+buffered_input_test: passed

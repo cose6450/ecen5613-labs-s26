@@ -1,0 +1,294 @@
+;basic test that attempts to initialize the heap with small initial values
+;student_number = 50
+;buffer_sz = 64
+;
+
+
+connect '/C=5 /CDELAYPERCHAR=15'
+;setup path
+gettime test_time "%Y%m%d-%H%M%S"
+sprintf2 testoutputfile "%s\test\logs\%s-test-messages.txt" params[2] test_time
+sprintf2 logfile "%s\test\logs\%s-test-output.log" params[2] test_time
+fileopen testoutputhandle testoutputfile 1
+filewriteln testoutputhandle "Terminal Buffer Program Regression Tests"
+SEPERATOR_LINE = "****************************************"
+filewriteln testoutputhandle SEPERATOR_LINE
+logopen logfile 1 0 
+timeout = 5
+call initial_test
+call setup_input_test
+call buffered_input_test
+closett
+end
+
+:initial_test
+logwrite #$0A
+logwrite SEPERATOR_LINE
+logwrite #$0A
+logwrite "initial_test"
+logwrite #$0A
+logwrite SEPERATOR_LINE
+
+sendln
+wait 'PAULMON2 Loc:2000 >'
+sendln 'j'
+wait 'Jump to memory location (2000), or ESC to quit:'
+wait 'Please enter the last two digits of your ID:'
+sendln '50'
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+sendln '64'
+
+;just verify the heap size is 904 (64 *4 + (50+2) * 10 + 64 * 2)
+waitregex 'Heap .* size: ([0-9]+)'
+if result == 0 then
+    filewriteln testoutputhandle 'basic_test: failed -> timed out waiting for heap sz'
+    setexitcode -1
+    end
+endif
+str2int heapsz groupmatchstr1
+if heapsz == 904 then
+    setexitcode 0
+    filewriteln testoutputhandle 'basic_test: passed'
+else
+    filewriteln testoutputhandle 'basic_test: failed -> heap size was not as expected'
+    setexitcode -1
+    end
+endif
+
+;reset the device
+send '*'
+pause 3
+return
+
+
+
+
+
+
+
+
+;determine if the program will handle initial inputs
+;successfully
+:setup_input_test
+logwrite #$0A
+logwrite SEPERATOR_LINE
+logwrite #$0A
+logwrite "setup_input_test"
+logwrite #$0A
+logwrite SEPERATOR_LINE
+sendln
+wait 'PAULMON2 Loc:2000 >'
+sendln 'j'
+wait 'Jump to memory location (2000), or ESC to quit:'
+wait 'Please enter the last two digits of your ID:'
+sendln '-1'
+waitregex "(Did not enter valid two digit number, please try again)"
+
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> entering -1 caused invalid output'
+    setexitcode -1
+    end
+endif
+strcompare groupmatchstr1 "Did not enter valid two digit number, please try again"
+if result != 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> need to account for negative numbers'
+    setexitcode -1
+    end
+endif
+
+
+wait 'Please enter the last two digits of your ID:'
+sendln '100'
+waitregex "(Did not enter valid two digit number, please try again)"
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> entering three digit number caused invalid output'
+    setexitcode -1
+    end
+endif
+
+strcompare groupmatchstr1 "Did not enter valid two digit number, please try again"
+if result != 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> need to account for numbers greater than 99'
+    setexitcode -1
+    end
+endif
+
+wait 'Please enter the last two digits of your ID:'
+sendln '9'
+waitregex "(Did not enter valid two digit number, please try again)"
+
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> entering one digit number caused invalid output'
+    setexitcode -1
+    end
+endif
+
+strcompare groupmatchstr1 "Did not enter valid two digit number, please try again"
+if result != 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed to account for numbers less than 10' 
+    setexitcode -1
+    end
+endif
+
+sendln '50' ; send a valid input id
+
+;test the buffer 
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> failed to take in valid student id' 
+    setexitcode -1
+    end
+endif 
+
+sendln '63'
+wait 'User buffer size too small or error in conversion'
+
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> failure to deal with too small of a buffer' 
+    setexitcode -1
+    end
+endif
+
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> failure to setup another prompt on failure' 
+    setexitcode -1
+    end
+endif
+
+sendln '1025'
+
+wait 'User buffer size larger than maximum'
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> sending too large a value did not result in expected error message' 
+    setexitcode -1
+    end
+endif
+
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+sendln '65'
+wait 'User buffer size is not divisible by 32'
+
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> failure to deal with numbers not divisible by 32' 
+    setexitcode -1
+    end
+endif
+
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+sendln '1024'
+
+waitregex 'Heap .* size: ([0-9]+)'
+if result == 0 then
+    filewriteln testoutputhandle 'setup_input_test: failed -> timed out waiting for heap sz'
+    setexitcode -1
+    end
+endif
+str2int heapsz groupmatchstr1
+if heapsz == 6664 then
+    setexitcode 0
+    filewriteln testoutputhandle 'setup_input_test: passed'
+else
+    filewriteln testoutputhandle 'setup_input_test: failed -> heap size was not as expected'
+    setexitcode -1
+    end
+endif
+
+;reset the device
+send '*'
+pause 3
+return
+
+
+;test to see if the inputs to buffer_0 and buffer_1 work
+
+:buffered_input_test
+test_name = "buffered_input_test"
+call log_test_hander
+sendln
+wait 'PAULMON2 Loc:2000 >'
+sendln 'j'
+wait 'Jump to memory location (2000), or ESC to quit:'
+wait 'Please enter the last two digits of your ID:'
+sendln '50'
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+sendln '64'
+wait 'Enter a char:'
+send '='
+
+sprintf2 test_file "%s\test\buffered_input_first_char_test.txt" params[2]
+test_reason = "failed to handle initial character"
+call compare_against_file
+
+;send the characters that will fill the buffer
+send 'a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D4a1b2C3D'
+
+;send invalid characters - chars that should not end up in either buffer
+
+send 'M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7M0N9b8v7'
+
+wait 'Enter a char: '
+send '='
+
+sprintf2 test_file "%s\test\buffered_input_filled_buffer_test.txt" params[2]
+test_reason = "failed to handle filling the buffer properly"
+call compare_against_file
+send '?'
+
+sprintf2 test_file "%s\test\buffered_input_first_qmark.txt" params[2]
+test_reason = "failed to handle qmark output properly"
+call compare_against_file
+send '='
+
+sprintf2 test_file "%s\test\buffered_input_first_char_test.txt" params[2]
+test_reason = "failed to handle reset to initial character"
+call compare_against_file
+
+
+filewriteln testoutputhandle 'buffered_input_test: passed'
+
+;reset the device
+send '*'
+pause 3
+return
+
+:test_buffered_data_movement
+test_name = "test_buffered_data_movement"
+call log_test_hander
+sendln
+wait 'PAULMON2 Loc:2000 >'
+sendln 'j'
+wait 'Jump to memory location (2000), or ESC to quit:'
+wait 'Please enter the last two digits of your ID:'
+sendln '50'
+wait 'Please enter a valid buffer size that is divisible by 32 [64,1024]:'
+sendln '64'
+wait 'Enter a char:'
+
+
+
+
+:log_test_hander
+logwrite #$0A
+logwrite SEPERATOR_LINE
+logwrite #$0A
+logwrite test_name
+logwrite #$0A
+logwrite SEPERATOR_LINE
+return
+
+:compare_against_file
+fileopen testfilehandle test_file 0
+filereadln testfilehandle line
+while result == 0
+    wait line
+    if result == 0 then
+        sprintf2 logline '%s : failed -> %s' test_name test_reason
+        filewriteln testoutputhandle logline
+        setexitcode -1
+        end
+    endif
+    filereadln testfilehandle line
+endwhile
+return

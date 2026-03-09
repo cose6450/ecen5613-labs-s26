@@ -63,7 +63,7 @@ extern __xdata char __sdcc_heap[HEAP_SIZE];
 #define USER_BUFFER_MAX (1024)
 #define USER_BUFFER_ALIGNMENT (32)
 #define BUFFER_ALWAYS_HELD_COUNT (2)
-#define INTIAL_DYNAMIC_BUFFER_COUNT (4)
+#define INTIAL_DYNAMIC_BUFFER_COUNT (2)
 #define MODULE_32(x) ((x) & (31))
 #define MAX_STUDENT_NUMBER (99)
 #define BUFFER_SZ_TOO_BIG ("\r\nBuffer Size too big, please pick a smaller buffer size")
@@ -72,8 +72,8 @@ extern __xdata char __sdcc_heap[HEAP_SIZE];
 #define OFF (false)
 #define MAX_USER_DETERMINED_BUFFER_SZ (600)
 #define MIN_USER_DETERMINED_BUFFER_SZ (200)
-
-
+#define TWO_DIGIT_LEN (2)
+#define MIN_DYNAMIC_BUFFER_NUM (2)
 
 
 
@@ -118,6 +118,11 @@ buffer_t *alloc_new_buffer(size_t size)
     return header; 
 }
 
+bool is_number(char c)
+{
+    return c >= '0' && c <= '9';
+}
+
 
 void initialize_buffers()
 {
@@ -127,10 +132,21 @@ void initialize_buffers()
     {
         printf("\r\nPlease enter the last two digits of your ID:");
         get_string();
+        if (strlen(get_input_buffer()) != TWO_DIGIT_LEN 
+            || !is_number(*get_input_buffer())
+            || !is_number(*(get_input_buffer()+1)))
+        {
+            printf("\r\n Did not enter valid two digit number, please try again");
+            continue;
+        }
         student_number = atoi(get_input_buffer());
         if (!(student_number < 0 || student_number > MAX_STUDENT_NUMBER))
         {
             break;
+        }
+        else 
+        {
+            printf("\r\nAtoi error: number invalid or out of range, please try again");
         }
     }
 
@@ -146,8 +162,6 @@ void initialize_buffers()
         {
 
             static_buffers[i].buffer = malloc(user_buffer_size);
-            
-            printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
             if(static_buffers[i].buffer == NULL)
             {
                 free_all_buffers();
@@ -157,7 +171,6 @@ void initialize_buffers()
             } else{
                 static_buffers[i].size = (size_t) user_buffer_size;
                 initialize_default_elements(&static_buffers[i]);
-                printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
             }
         }
 
@@ -177,8 +190,10 @@ void initialize_buffers()
                 append_to_buffer_list(&dynamic_buffers_list, new_buffer);
             }
         }
+        //free buffer 2
+        remove_from_buffer_list(&dynamic_buffers_list, 2); 
         
-        buffer_t *buffer_4 = alloc_new_buffer((size_t) 10 * (student_number + 2));
+        buffer_t *buffer_4 = alloc_new_buffer((size_t) (10 * (student_number + 2)));
 
         if (buffer_4 == NULL)
         {
@@ -186,6 +201,10 @@ void initialize_buffers()
             printf(BUFFER_SZ_TOO_BIG);
             max_user_input = user_buffer_size-1;
             continue;
+        }
+        else
+        {
+            append_to_buffer_list(&dynamic_buffers_list, buffer_4);
         }
 
         buffer_t *buffer_5 = alloc_new_buffer((size_t) 2 * user_buffer_size);
@@ -195,6 +214,10 @@ void initialize_buffers()
             printf(BUFFER_SZ_TOO_BIG);
             max_user_input = user_buffer_size-1;
             continue;
+        }
+        else
+        {
+            append_to_buffer_list(&dynamic_buffers_list, buffer_5); 
         }
         break;
         get_the_buffer_sz:;
@@ -207,7 +230,6 @@ void initialize_buffers()
     int i = 0;
     for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
     {
-        printf("\r\n static_buffers[%d].buffer %p", i, static_buffers[i].buffer);
         if(static_buffers[i].buffer != NULL) {
             printf("\r\nbuffer_%d starts @ %p, ends @%p, size %zu", i, static_buffers[i].buffer, static_buffers[i].buffer + static_buffers[i].size, static_buffers[i].size);
             total_heap_sz += static_buffers[i].size; 
@@ -225,6 +247,7 @@ void initialize_buffers()
         curr = curr->next;
     }
     printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
+    reset_char_count();
 }
 
 void store_in_buffer(buffer_t *buffer, char c)
@@ -240,17 +263,23 @@ void store_in_buffer(buffer_t *buffer, char c)
     }
 }
 
+void print_dashed_line()
+{
+    printf("\r\n------------------------------------------------");
+}
+
 void command_header(char *command_string)
 {
-    printf("\r\n        %s", command_string);
-    printf("\r\n------------------------------");   
+    print_dashed_line();
+    printf("\r\n%s", command_string);
+    print_dashed_line();
 }
 
 
 
 void heap_report()
 {
-    command_header("HEAP REPORT");
+    command_header("Heap Report");
     size_t total_heap_sz = 0;
     int i = 0; 
     for(i = 0; i < BUFFER_ALWAYS_HELD_COUNT; i++)
@@ -280,7 +309,7 @@ void heap_report()
             total_heap_sz += curr->size; 
         }
         i++;
-        curr->next;
+        curr = curr->next;
     }
     printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
     printf("\r\n");
@@ -291,14 +320,27 @@ void heap_report()
 size_t get_user_buffer_sz(size_t maximum_sz)
 {
     size_t user_buffer_size = 0;
-    do {
+    while(true) {
         printf("\r\nPlease enter a valid buffer size that is divisible by 32 [64,%zu]: ", maximum_sz);
         get_string();
         user_buffer_size = (size_t) atoi(get_input_buffer()); //TODO: replace with own implementation of atoi that respects the size_t
-    } while ((user_buffer_size > maximum_sz)
-            || (user_buffer_size < USER_BUFFER_MIN)
-            || (MODULE_32(user_buffer_size) != 0));
-    return user_buffer_size;
+        if (user_buffer_size > maximum_sz)
+        {
+            printf("\r\n User buffer size larger than maximum");
+        } 
+        else if (user_buffer_size < USER_BUFFER_MIN)
+        {
+            printf("\r\n User buffer size too small or error in conversion");
+        }
+        else if (MODULE_32(user_buffer_size) != 0)
+        {
+            printf("\r\n User buffer size is not divisible by 32");
+        }
+        else
+        {
+            return user_buffer_size;
+        }
+    }
 }
 
 
@@ -331,7 +373,7 @@ void qmark_command_handler()
     {
         size_t curr_buffer_char = 0;
         char curr_char = static_buffers[i].buffer[0];
-        while(curr_char != '\0')
+        while(curr_char != '\0' && curr_buffer_char < static_buffers[i].size)
         {
             if (MODULE_32(curr_output_char) == 0)
             {
@@ -395,11 +437,13 @@ void percent_command_handler()
 
 void dollar_sign_command_handler()
 {
+    command_header("Copy buffer_0 into buffer_3");
     P1_0 = ON;
     if (dynamic_buffers_list.head == NULL
         || dynamic_buffers_list.head->next == NULL) 
     { //handle the buffer not being allocated
         P1_0 = OFF;
+        printf("\r\n buffer_3 not allocated; exiting");
         return; 
     }
     buffer_t* buffer_3 = dynamic_buffers_list.head->next;
@@ -408,10 +452,12 @@ void dollar_sign_command_handler()
     buffer_3->alphabet_chars = static_buffers[0].alphabet_chars;
     buffer_3->curr_available_char = static_buffers[0].curr_available_char;
     P1_0 = OFF; 
+    printf("\r\n Done");
 }
 
 void hashtag_command_handler()
 {
+    command_header("Convert buffer_3 chars to lowercase");
     P1_0 = ON;
     if (dynamic_buffers_list.head == NULL
         || dynamic_buffers_list.head->next == NULL) 
@@ -430,11 +476,13 @@ void hashtag_command_handler()
         }
     }
     P1_0 = OFF;
+    printf("\r\n Done");
 }
 
 
 void plus_command_handler() 
 {
+    command_header("\r\n Alloc Buffer");
     int size = 0; 
     while (true) {
         printf("\r\nPlease enter a size for the new buffer, [200,600]: ");
@@ -460,6 +508,7 @@ void plus_command_handler()
 
 void minus_command_handler() 
 {
+    command_header("Free Buffer");
     printf("\r\nPlease enter the number of the buffer you would like to free: ");
     get_string(); 
     int buffer_num = atoi(get_input_buffer()); 
@@ -487,6 +536,54 @@ void minus_command_handler()
     }
 
 }
+
+//reset the device
+void star_command_handler()
+{
+    printf("\r\nResetting device");
+    WDTRST = 0x1E;
+    WDTRST = 0xE1; //start watchdog timer
+    for(;;); //wait for reset
+}
+
+void ampersand_command_handler()
+{
+    command_header("\r\n Dump Buffer");
+    size_t length = ll_length(&dynamic_buffers_list);
+    printf("\r\nEnter a valid buffer # [2-%zu]: ", length + MIN_DYNAMIC_BUFFER_NUM - 1);
+    get_string();
+    int selected_buffer = atoi(get_input_buffer());
+    if (selected_buffer < MIN_DYNAMIC_BUFFER_NUM || selected_buffer >= (MIN_DYNAMIC_BUFFER_NUM + length))
+    {
+        printf("\r\nInvalid buffer number; returning to prompt");
+        return;
+    }
+
+    buffer_t *buffer = ll_get_elem(&dynamic_buffers_list, (size_t) (selected_buffer - 2));
+
+    if (buffer == NULL)
+    {
+        printf("\r\nLL error; returning to prompt");
+        return;
+    }
+
+    printf("\r\n Buffer %d", selected_buffer);
+    printf("\r\n----------");
+    for(char *address = buffer->buffer; address < (buffer->buffer + buffer->size); address++)
+    {   
+        if (MODULE_32(address-buffer->buffer) == 0)
+        {
+            printf("\r\n%04X:", (unsigned int) address);
+        }
+        printf(" %02hhX", (unsigned char) *address);
+            
+    }
+    printf("\r\n");
+
+
+}
+
+
 
 void main()
 {
@@ -534,6 +631,16 @@ void main()
             case '-':
                 minus_command_handler();
                 break;
+            case '*':
+                star_command_handler();
+                break;
+            case '&':
+                ampersand_command_handler();
+                break;
+            default:
+                continue; //no command, don't print the end command line
         }
+        printf("\r\nEND COMMAND");
+        print_dashed_line();
     }
 }
