@@ -1,37 +1,10 @@
 /*
  * Author Nalin Saxena & Colin Sergi
- * ECEN 5613 - Fall 2026 - Prof. McClure
+ * ECEN 5613 - Spring 2026 - Prof. McClure
  * University of Colorado Boulder
  * Date Created 2/21/26
  *  --------------------------------------------------------------------------------
- *
- * Necessary preconditions-
- * 1. Paulmon should be running first to make use of this code (Serial peripheral initialization is handled via paulmon2).
- * 2. Necessary hardware changes have to be made to use SRAM as external data storage device.
- *
- * Building and flashing instructions-
- *
- * 1. Simply run "make" on your cli and use flip to flash the resulting output.hex file on your board
- * 2. Use Paulmon2 to jump to location 2000
- *
- * The following test program/starter code introduces many important concepts with the SDCC compiler
- * We begin by testing our heap memory and malloc configuration, by allocating a fixed number
- * of elements (COUNT_ELEMENTS_MALLOC) and storing ascii character starting from 'a' and we echo it
- * back over serial.
- *
- * Error message is printed if malloc operation fails and the code flow jumps to the
- * timer isr test.
- *
- * For the timer ISR test section of this code, we utilize TIMER0 in Mode 1 and we generate a
- * base timer interrupt of approximately 50000μs. It is a good practice to keep ISR functions short and
- * hence this ISR just signals required operation to be done via global flags.The main function actually does the
- * job of "acting" on those flags if required.
- *
- * SDCC User Manual - https://sdcc.sourceforge.net/doc/sdccman.pdf
- * A guide to make files- https://www.youtube.com/watch?v=_r7i5X0rXJk&t=226s
- *
- * SDCC version - 4.2.0
- * make version- GNU Make version 3.77
+ *  A file to implement a terminal program allocating and freeing buffers
    ---------------------------------------------------------------------------------*/
 
 #include "my_serial.h"
@@ -53,7 +26,7 @@ setting all 1024 of internal xram
 */
 int _sdcc_external_startup()
 {
-    // AUXR |= 0X0C;
+    // AUXR |= 0X0C; implemented in paulmon
     return 0;
 }
 
@@ -74,24 +47,28 @@ extern __xdata char __sdcc_heap[HEAP_SIZE];
 #define MIN_USER_DETERMINED_BUFFER_SZ (200)
 #define TWO_DIGIT_LEN (2)
 #define MIN_DYNAMIC_BUFFER_NUM (2)
+#define WATCH_DOG_FIRST_VALUE (0x1E)
+#define WATCH_DOG_SECOND_VALUE (0xE1)
 
 
 
 
 buffer_t static_buffers[BUFFER_ALWAYS_HELD_COUNT];
-buffer_list_t dynamic_buffers_list = {NULL};
+buffer_list_t dynamic_buffers_list = {NULL}; //N.B. SDCC doesn't respect static initializers :(
 
 #define NUM_BUFFERS_TO_BE_ALLOCATED_TO_USER_SZ (4)
 void free_all_buffers();
 size_t get_user_buffer_sz(size_t max_sz);
-
+/**
+ * is_alphabet_char - is this character an alphabetical character
+ */
 bool is_alphabet_char(char c)
 {
     return (c <= 'Z' && c >= 'A')
             || (c <= 'z' && c >= 'a');
 }
 
-void initialize_default_elements(buffer_t *buffer)
+static void initialize_default_elements(buffer_t *buffer)
 {
     buffer->alphabet_chars = 0;
     buffer->curr_available_char = 0;
@@ -100,6 +77,9 @@ void initialize_default_elements(buffer_t *buffer)
     memset(buffer->buffer, 0x00, buffer->size);
 }
 
+/**
+ * alloc_new_buffer - Allocate a buffer with default values
+ */
 buffer_t *alloc_new_buffer(size_t size)
 {
     buffer_t *header = malloc(sizeof(buffer_t));
@@ -118,12 +98,17 @@ buffer_t *alloc_new_buffer(size_t size)
     return header; 
 }
 
+/**
+ * is_number - Is the character numeric in base 10 form
+ */
 bool is_number(char c)
 {
     return c >= '0' && c <= '9';
 }
 
-
+/**
+ * initialize_buffers - A routine to initialize all of the buffers
+ */
 void initialize_buffers()
 {
     dynamic_buffers_list.head = NULL;
@@ -249,7 +234,9 @@ void initialize_buffers()
     printf("\r\nHeap starts @ %p, ends @ %p, size: %zu", __sdcc_heap, __sdcc_heap + HEAP_SIZE, total_heap_sz);
     reset_char_count();
 }
-
+/**
+ *store_in_buffer - Store a char into a buffer SAFELY 
+ */
 void store_in_buffer(buffer_t *buffer, char c)
 {
     if (buffer->curr_available_char < buffer->size)
@@ -263,11 +250,13 @@ void store_in_buffer(buffer_t *buffer, char c)
     }
 }
 
-void print_dashed_line()
+static void print_dashed_line()
 {
     printf("\r\n------------------------------------------------");
 }
-
+/**
+ * command_header - Print the header to a function
+ */
 void command_header(char *command_string)
 {
     print_dashed_line();
@@ -276,7 +265,9 @@ void command_header(char *command_string)
 }
 
 
-
+/***
+ * Heap Report - give a report on the buffers held and their meta data
+ */
 void heap_report()
 {
     command_header("Heap Report");
@@ -316,7 +307,9 @@ void heap_report()
 }
 
 
-
+/**
+ * Gets the default buffer size - user buffer size
+ */
 size_t get_user_buffer_sz(size_t maximum_sz)
 {
     size_t user_buffer_size = 0;
@@ -343,7 +336,9 @@ size_t get_user_buffer_sz(size_t maximum_sz)
     }
 }
 
-
+/**
+ * Frees all of the buffers
+ */
 void free_all_buffers()
 {
     printf("\r\n Freeing ALL BUFFERS");
@@ -360,7 +355,10 @@ void free_all_buffers()
 }
 
 
-
+/**
+ * Qmark command handler - Dump & clear the admin buffers, as well as a count
+ * of how many chars have been inputed since last qmark
+ */
 void qmark_command_handler()
 {
     heap_report();
@@ -394,6 +392,9 @@ void qmark_command_handler()
     printf("\r\n");
 }
 
+/**
+ * Enter command handler - Dump (but not clear) the admin buffers
+ */
 void enter_command_handler()
 {
     command_header("Dump Admin Buffers");
@@ -413,6 +414,9 @@ void enter_command_handler()
     }
 }
 
+/**
+ * Percent commandler - Clear all buffers
+ */
 void percent_command_handler()
 {
     command_header("Clear Buffers");
@@ -436,6 +440,9 @@ void percent_command_handler()
     }
 }
 
+/**
+ * Dollar sign command handler - copy buffer_0 into buffer_3 if buffer_3 exists
+ */
 void dollar_sign_command_handler()
 {
     command_header("Copy buffer_0 into buffer_3");
@@ -456,6 +463,9 @@ void dollar_sign_command_handler()
     printf("\r\n Done");
 }
 
+/**
+ * Hashtag command handler - Convert all chars in buffer3 to lowercase
+ */
 void hashtag_command_handler()
 {
     command_header("Convert buffer_3 chars to lowercase");
@@ -480,7 +490,9 @@ void hashtag_command_handler()
     printf("\r\n Done");
 }
 
-
+/**
+ * Plus command handler - if possible, alloc a buffer
+ */
 void plus_command_handler() 
 {
     command_header("\r\n Alloc Buffer");
@@ -507,6 +519,9 @@ void plus_command_handler()
     
 }
 
+/**
+ * Minus command handler - free a valid buffer
+ */
 void minus_command_handler() 
 {
     command_header("Free Buffer");
@@ -549,15 +564,20 @@ void minus_command_handler()
 
 }
 
-//reset the device
+/**
+ * Star command handler - use the watch dog to reset the device
+ */
 void star_command_handler()
 {
     printf("\r\nResetting device");
-    WDTRST = 0x1E;
-    WDTRST = 0xE1; //start watchdog timer
+    WDTRST = WATCH_DOG_FIRST_VALUE;
+    WDTRST = WATCH_DOG_SECOND_VALUE; //start watchdog timer
     for(;;); //wait for reset
 }
 
+/**
+ * Ampersand command handler - dump a buffer in hex to the terminal
+ */
 void ampersand_command_handler()
 {
     command_header("\r\n Dump Buffer");
@@ -604,8 +624,8 @@ void main()
     
     for(;;)
     {
-        DEBUG_PORT(MAIN_COUNTER_ADDRESS, c++);
         printf("\r\nEnter a char: ");
+        DEBUG_PORT(MAIN_COUNTER_ADDRESS, c++); //log number of inputted characters so far
         char received_char = get_next_input_char();
         if (is_alphabet_char(received_char))
         {

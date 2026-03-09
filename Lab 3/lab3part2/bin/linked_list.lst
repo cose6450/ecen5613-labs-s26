@@ -139,7 +139,7 @@
                                     139 ;tail                      Allocated with name '_append_to_buffer_list_tail_131072_50'
                                     140 ;sloc0                     Allocated with name '_append_to_buffer_list_sloc0_1_0'
                                     141 ;------------------------------------------------------------
-                                    142 ;	src/linked_list.c:5: bool append_to_buffer_list(buffer_list_t *list, buffer_t *buffer)
+                                    142 ;	src/linked_list.c:14: bool append_to_buffer_list(buffer_list_t *list, buffer_t *buffer)
                                     143 ;	-----------------------------------------
                                     144 ;	 function append_to_buffer_list
                                     145 ;	-----------------------------------------
@@ -163,7 +163,7 @@
       00000D EF               [12]  163 	mov	a,r7
       00000E A3               [24]  164 	inc	dptr
       00000F F0               [24]  165 	movx	@dptr,a
-                                    166 ;	src/linked_list.c:7: if (list->head == NULL) 
+                                    166 ;	src/linked_list.c:16: if (list->head == NULL) 
       000010 90r00r03         [24]  167 	mov	dptr,#_append_to_buffer_list_list_65536_47
       000013 E0               [24]  168 	movx	a,@dptr
       000014 F5*00            [12]  169 	mov	_append_to_buffer_list_sloc0_1_0,a
@@ -187,7 +187,7 @@
       000035 EA               [12]  187 	mov	a,r2
       000036 4B               [12]  188 	orl	a,r3
       000037 70 24            [24]  189 	jnz	00105$
-                                    190 ;	src/linked_list.c:9: list->head = buffer; 
+                                    190 ;	src/linked_list.c:18: list->head = buffer; 
       000039 90r00r00         [24]  191 	mov	dptr,#_append_to_buffer_list_PARM_2
       00003C E0               [24]  192 	movx	a,@dptr
       00003D F8               [12]  193 	mov	r0,a
@@ -210,7 +210,7 @@
       000058 12r00r00         [24]  210 	lcall	__gptrput
       00005B 80 61            [24]  211 	sjmp	00106$
       00005D                        212 00105$:
-                                    213 ;	src/linked_list.c:13: buffer_t *tail = list->head;
+                                    213 ;	src/linked_list.c:22: buffer_t *tail = list->head;
       00005D 90r00r06         [24]  214 	mov	dptr,#_append_to_buffer_list_tail_131072_50
       000060 EA               [12]  215 	mov	a,r2
       000061 F0               [24]  216 	movx	@dptr,a
@@ -220,7 +220,7 @@
       000065 EC               [12]  220 	mov	a,r4
       000066 A3               [24]  221 	inc	dptr
       000067 F0               [24]  222 	movx	@dptr,a
-                                    223 ;	src/linked_list.c:14: while(tail->next != NULL)
+                                    223 ;	src/linked_list.c:23: while(tail->next != NULL)
       000068                        224 00101$:
       000068 90r00r06         [24]  225 	mov	dptr,#_append_to_buffer_list_tail_131072_50
       00006B E0               [24]  226 	movx	a,@dptr
@@ -251,7 +251,7 @@
       00008E EA               [12]  251 	mov	a,r2
       00008F 4B               [12]  252 	orl	a,r3
       000090 60 0D            [24]  253 	jz	00103$
-                                    254 ;	src/linked_list.c:16: tail = tail->next;
+                                    254 ;	src/linked_list.c:25: tail = tail->next;
       000092 90r00r06         [24]  255 	mov	dptr,#_append_to_buffer_list_tail_131072_50
       000095 EA               [12]  256 	mov	a,r2
       000096 F0               [24]  257 	movx	@dptr,a
@@ -263,7 +263,7 @@
       00009C F0               [24]  263 	movx	@dptr,a
       00009D 80 C9            [24]  264 	sjmp	00101$
       00009F                        265 00103$:
-                                    266 ;	src/linked_list.c:18: tail->next = buffer;
+                                    266 ;	src/linked_list.c:27: tail->next = buffer;
       00009F 90r00r00         [24]  267 	mov	dptr,#_append_to_buffer_list_PARM_2
       0000A2 E0               [24]  268 	movx	a,@dptr
       0000A3 FA               [12]  269 	mov	r2,a
@@ -285,7 +285,7 @@
       0000BA EC               [12]  285 	mov	a,r4
       0000BB 12r00r00         [24]  286 	lcall	__gptrput
       0000BE                        287 00106$:
-                                    288 ;	src/linked_list.c:20: buffer->next = NULL; 
+                                    288 ;	src/linked_list.c:29: buffer->next = NULL; 
       0000BE 90r00r00         [24]  289 	mov	dptr,#_append_to_buffer_list_PARM_2
       0000C1 E0               [24]  290 	movx	a,@dptr
       0000C2 FD               [12]  291 	mov	r5,a
@@ -310,9 +310,9 @@
       0000DB 12r00r00         [24]  310 	lcall	__gptrput
       0000DE A3               [24]  311 	inc	dptr
       0000DF 12r00r00         [24]  312 	lcall	__gptrput
-                                    313 ;	src/linked_list.c:21: return true;
+                                    313 ;	src/linked_list.c:30: return true;
       0000E2 75 82 01         [24]  314 	mov	dpl,#0x01
-                                    315 ;	src/linked_list.c:22: }
+                                    315 ;	src/linked_list.c:31: }
       0000E5 22               [24]  316 	ret
                                     317 ;------------------------------------------------------------
                                     318 ;Allocation info for local variables in function 'remove_from_buffer_list'
@@ -323,7 +323,7 @@
                                     323 ;to_free                   Allocated with name '_remove_from_buffer_list_to_free_65537_54'
                                     324 ;prev                      Allocated with name '_remove_from_buffer_list_prev_131073_56'
                                     325 ;------------------------------------------------------------
-                                    326 ;	src/linked_list.c:25: bool remove_from_buffer_list(buffer_list_t *list, size_t idx)
+                                    326 ;	src/linked_list.c:34: bool remove_from_buffer_list(buffer_list_t *list, size_t idx)
                                     327 ;	-----------------------------------------
                                     328 ;	 function remove_from_buffer_list
                                     329 ;	-----------------------------------------
@@ -339,7 +339,7 @@
       0000F3 EF               [12]  339 	mov	a,r7
       0000F4 A3               [24]  340 	inc	dptr
       0000F5 F0               [24]  341 	movx	@dptr,a
-                                    342 ;	src/linked_list.c:27: if (list == NULL) return false;
+                                    342 ;	src/linked_list.c:36: if (list == NULL) return false;
       0000F6 90r00r0B         [24]  343 	mov	dptr,#_remove_from_buffer_list_list_65536_52
       0000F9 E0               [24]  344 	movx	a,@dptr
       0000FA F5*00            [12]  345 	mov	_remove_from_buffer_list_sloc0_1_0,a
@@ -355,7 +355,7 @@
       00010A F5 82            [12]  355 	mov	dpl,a
       00010C 22               [24]  356 	ret
       00010D                        357 00102$:
-                                    358 ;	src/linked_list.c:28: if (list->head == NULL) return false;
+                                    358 ;	src/linked_list.c:37: if (list->head == NULL) return false;
       00010D 85*00 82         [24]  359 	mov	dpl,_remove_from_buffer_list_sloc0_1_0
       000110 85*01 83         [24]  360 	mov	dph,(_remove_from_buffer_list_sloc0_1_0 + 1)
       000113 85*02 F0         [24]  361 	mov	b,(_remove_from_buffer_list_sloc0_1_0 + 2)
@@ -373,7 +373,7 @@
       000128 F5 82            [12]  373 	mov	dpl,a
       00012A 22               [24]  374 	ret
       00012B                        375 00104$:
-                                    376 ;	src/linked_list.c:31: if (idx == 0)
+                                    376 ;	src/linked_list.c:40: if (idx == 0)
       00012B 90r00r09         [24]  377 	mov	dptr,#_remove_from_buffer_list_PARM_2
       00012E E0               [24]  378 	movx	a,@dptr
       00012F F8               [12]  379 	mov	r0,a
@@ -387,7 +387,7 @@
       00013A E0               [24]  387 	movx	a,@dptr
       00013B 45 F0            [12]  388 	orl	a,b
       00013D 70 42            [24]  389 	jnz	00112$
-                                    390 ;	src/linked_list.c:34: to_free = list->head;
+                                    390 ;	src/linked_list.c:43: to_free = list->head;
       00013F 90r00r0E         [24]  391 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
       000142 EA               [12]  392 	mov	a,r2
       000143 F0               [24]  393 	movx	@dptr,a
@@ -397,7 +397,7 @@
       000147 EC               [12]  397 	mov	a,r4
       000148 A3               [24]  398 	inc	dptr
       000149 F0               [24]  399 	movx	@dptr,a
-                                    400 ;	src/linked_list.c:35: list->head = list->head->next;  
+                                    400 ;	src/linked_list.c:44: list->head = list->head->next;  
       00014A 74 08            [12]  401 	mov	a,#0x08
       00014C 2A               [12]  402 	add	a,r2
       00014D FD               [12]  403 	mov	r5,a
@@ -429,7 +429,7 @@
       00017B 12r00r00         [24]  429 	lcall	__gptrput
       00017E 02r02r49         [24]  430 	ljmp	00113$
       000181                        431 00112$:
-                                    432 ;	src/linked_list.c:39: buffer_t *prev = list->head;
+                                    432 ;	src/linked_list.c:48: buffer_t *prev = list->head;
       000181 90r00r11         [24]  433 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
       000184 EA               [12]  434 	mov	a,r2
       000185 F0               [24]  435 	movx	@dptr,a
@@ -439,7 +439,7 @@
       000189 EC               [12]  439 	mov	a,r4
       00018A A3               [24]  440 	inc	dptr
       00018B F0               [24]  441 	movx	@dptr,a
-                                    442 ;	src/linked_list.c:40: idx--;
+                                    442 ;	src/linked_list.c:49: idx--;
       00018C 18               [12]  443 	dec	r0
       00018D B8 FF 01         [24]  444 	cjne	r0,#0xff,00160$
       000190 19               [12]  445 	dec	r1
@@ -450,7 +450,7 @@
       000196 E9               [12]  450 	mov	a,r1
       000197 A3               [24]  451 	inc	dptr
       000198 F0               [24]  452 	movx	@dptr,a
-                                    453 ;	src/linked_list.c:41: while(idx > 0 && prev->next != NULL)
+                                    453 ;	src/linked_list.c:50: while(idx > 0 && prev->next != NULL)
       000199 90r00r09         [24]  454 	mov	dptr,#_remove_from_buffer_list_PARM_2
       00019C E0               [24]  455 	movx	a,@dptr
       00019D FE               [12]  456 	mov	r6,a
@@ -490,7 +490,7 @@
       0001CB EB               [12]  490 	mov	a,r3
       0001CC 4C               [12]  491 	orl	a,r4
       0001CD 60 12            [24]  492 	jz	00108$
-                                    493 ;	src/linked_list.c:43: prev = prev->next;
+                                    493 ;	src/linked_list.c:52: prev = prev->next;
       0001CF 90r00r11         [24]  494 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
       0001D2 EB               [12]  495 	mov	a,r3
       0001D3 F0               [24]  496 	movx	@dptr,a
@@ -500,21 +500,21 @@
       0001D7 ED               [12]  500 	mov	a,r5
       0001D8 A3               [24]  501 	inc	dptr
       0001D9 F0               [24]  502 	movx	@dptr,a
-                                    503 ;	src/linked_list.c:44: idx--;
+                                    503 ;	src/linked_list.c:53: idx--;
       0001DA 1E               [12]  504 	dec	r6
       0001DB BE FF 01         [24]  505 	cjne	r6,#0xff,00163$
       0001DE 1F               [12]  506 	dec	r7
       0001DF                        507 00163$:
       0001DF 80 C0            [24]  508 	sjmp	00106$
       0001E1                        509 00108$:
-                                    510 ;	src/linked_list.c:47: if (idx != 0) return false;
+                                    510 ;	src/linked_list.c:56: if (idx != 0) return false;
       0001E1 EE               [12]  511 	mov	a,r6
       0001E2 4F               [12]  512 	orl	a,r7
       0001E3 60 04            [24]  513 	jz	00110$
       0001E5 75 82 00         [24]  514 	mov	dpl,#0x00
       0001E8 22               [24]  515 	ret
       0001E9                        516 00110$:
-                                    517 ;	src/linked_list.c:48: to_free = prev->next;
+                                    517 ;	src/linked_list.c:57: to_free = prev->next;
       0001E9 90r00r11         [24]  518 	mov	dptr,#_remove_from_buffer_list_prev_131073_56
       0001EC E0               [24]  519 	movx	a,@dptr
       0001ED FD               [12]  520 	mov	r5,a
@@ -550,7 +550,7 @@
       000217 EC               [12]  550 	mov	a,r4
       000218 A3               [24]  551 	inc	dptr
       000219 F0               [24]  552 	movx	@dptr,a
-                                    553 ;	src/linked_list.c:49: prev->next = to_free->next;
+                                    553 ;	src/linked_list.c:58: prev->next = to_free->next;
       00021A 74 08            [12]  554 	mov	a,#0x08
       00021C 2A               [12]  555 	add	a,r2
       00021D FA               [12]  556 	mov	r2,a
@@ -580,7 +580,7 @@
       000245 EC               [12]  580 	mov	a,r4
       000246 12r00r00         [24]  581 	lcall	__gptrput
       000249                        582 00113$:
-                                    583 ;	src/linked_list.c:52: if (to_free == NULL) return false; 
+                                    583 ;	src/linked_list.c:61: if (to_free == NULL) return false; 
       000249 90r00r0E         [24]  584 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
       00024C E0               [24]  585 	movx	a,@dptr
       00024D FE               [12]  586 	mov	r6,a
@@ -600,7 +600,7 @@
       000260 F5 82            [12]  600 	mov	dpl,a
       000262 22               [24]  601 	ret
       000263                        602 00115$:
-                                    603 ;	src/linked_list.c:53: if (to_free->buffer != NULL) 
+                                    603 ;	src/linked_list.c:62: if (to_free->buffer != NULL) 
       000263 8E 82            [24]  604 	mov	dpl,r6
       000265 8D 83            [24]  605 	mov	dph,r5
       000267 8F F0            [24]  606 	mov	b,r7
@@ -611,14 +611,14 @@
       000271 FF               [12]  611 	mov	r7,a
       000272 4E               [12]  612 	orl	a,r6
       000273 60 0B            [24]  613 	jz	00117$
-                                    614 ;	src/linked_list.c:55: free(to_free->buffer);
+                                    614 ;	src/linked_list.c:64: free(to_free->buffer);
       000275 7D 00            [12]  615 	mov	r5,#0x00
       000277 8E 82            [24]  616 	mov	dpl,r6
       000279 8F 83            [24]  617 	mov	dph,r7
       00027B 8D F0            [24]  618 	mov	b,r5
       00027D 12r00r00         [24]  619 	lcall	_free
       000280                        620 00117$:
-                                    621 ;	src/linked_list.c:57: free(to_free);
+                                    621 ;	src/linked_list.c:66: free(to_free);
       000280 90r00r0E         [24]  622 	mov	dptr,#_remove_from_buffer_list_to_free_65537_54
       000283 E0               [24]  623 	movx	a,@dptr
       000284 FD               [12]  624 	mov	r5,a
@@ -632,9 +632,9 @@
       00028D 8E 83            [24]  632 	mov	dph,r6
       00028F 8F F0            [24]  633 	mov	b,r7
       000291 12r00r00         [24]  634 	lcall	_free
-                                    635 ;	src/linked_list.c:58: return true; 
+                                    635 ;	src/linked_list.c:67: return true; 
       000294 75 82 01         [24]  636 	mov	dpl,#0x01
-                                    637 ;	src/linked_list.c:59: }
+                                    637 ;	src/linked_list.c:68: }
       000297 22               [24]  638 	ret
                                     639 ;------------------------------------------------------------
                                     640 ;Allocation info for local variables in function 'free_all_elems_from_list'
@@ -643,7 +643,7 @@
                                     643 ;list                      Allocated with name '_free_all_elems_from_list_list_65536_59'
                                     644 ;buffer_to_free            Allocated with name '_free_all_elems_from_list_buffer_to_free_65536_60'
                                     645 ;------------------------------------------------------------
-                                    646 ;	src/linked_list.c:61: void free_all_elems_from_list(buffer_list_t *list)
+                                    646 ;	src/linked_list.c:70: void free_all_elems_from_list(buffer_list_t *list)
                                     647 ;	-----------------------------------------
                                     648 ;	 function free_all_elems_from_list
                                     649 ;	-----------------------------------------
@@ -659,7 +659,7 @@
       0002A5 EF               [12]  659 	mov	a,r7
       0002A6 A3               [24]  660 	inc	dptr
       0002A7 F0               [24]  661 	movx	@dptr,a
-                                    662 ;	src/linked_list.c:63: buffer_t *buffer_to_free = list->head;
+                                    662 ;	src/linked_list.c:72: buffer_t *buffer_to_free = list->head;
       0002A8 90r00r14         [24]  663 	mov	dptr,#_free_all_elems_from_list_list_65536_59
       0002AB E0               [24]  664 	movx	a,@dptr
       0002AC FD               [12]  665 	mov	r5,a
@@ -689,7 +689,7 @@
       0002CF EC               [12]  689 	mov	a,r4
       0002D0 A3               [24]  690 	inc	dptr
       0002D1 F0               [24]  691 	movx	@dptr,a
-                                    692 ;	src/linked_list.c:64: while(list->head != NULL)
+                                    692 ;	src/linked_list.c:73: while(list->head != NULL)
       0002D2                        693 00103$:
       0002D2 90r00r14         [24]  694 	mov	dptr,#_free_all_elems_from_list_list_65536_59
       0002D5 E0               [24]  695 	movx	a,@dptr
@@ -716,7 +716,7 @@
       0002F8 70 01            [24]  716 	jnz	00120$
       0002FA 22               [24]  717 	ret
       0002FB                        718 00120$:
-                                    719 ;	src/linked_list.c:66: list->head = list->head->next;
+                                    719 ;	src/linked_list.c:75: list->head = list->head->next;
       0002FB C0 05            [24]  720 	push	ar5
       0002FD C0 06            [24]  721 	push	ar6
       0002FF C0 07            [24]  722 	push	ar7
@@ -749,7 +749,7 @@
       00032F A3               [24]  749 	inc	dptr
       000330 EF               [12]  750 	mov	a,r7
       000331 12r00r00         [24]  751 	lcall	__gptrput
-                                    752 ;	src/linked_list.c:67: if (buffer_to_free->buffer != NULL)
+                                    752 ;	src/linked_list.c:76: if (buffer_to_free->buffer != NULL)
       000334 90r00r17         [24]  753 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
       000337 E0               [24]  754 	movx	a,@dptr
       000338 FD               [12]  755 	mov	r5,a
@@ -773,7 +773,7 @@
       000356 E5*03            [12]  773 	mov	a,_free_all_elems_from_list_sloc0_1_0
       000358 45*04            [12]  774 	orl	a,(_free_all_elems_from_list_sloc0_1_0 + 1)
       00035A 60 1B            [24]  775 	jz	00102$
-                                    776 ;	src/linked_list.c:69: free(buffer_to_free->buffer);
+                                    776 ;	src/linked_list.c:78: free(buffer_to_free->buffer);
       00035C AB*03            [24]  777 	mov	r3,_free_all_elems_from_list_sloc0_1_0
       00035E AC*04            [24]  778 	mov	r4,(_free_all_elems_from_list_sloc0_1_0 + 1)
       000360 7A 00            [12]  779 	mov	r2,#0x00
@@ -788,7 +788,7 @@
       000373 D0 06            [24]  788 	pop	ar6
       000375 D0 07            [24]  789 	pop	ar7
       000377                        790 00102$:
-                                    791 ;	src/linked_list.c:71: free(buffer_to_free);
+                                    791 ;	src/linked_list.c:80: free(buffer_to_free);
       000377 90r00r17         [24]  792 	mov	dptr,#_free_all_elems_from_list_buffer_to_free_65536_60
       00037A E0               [24]  793 	movx	a,@dptr
       00037B FA               [12]  794 	mov	r2,a
@@ -808,7 +808,7 @@
       000391 D0 05            [24]  808 	pop	ar5
       000393 D0 06            [24]  809 	pop	ar6
       000395 D0 07            [24]  810 	pop	ar7
-                                    811 ;	src/linked_list.c:72: buffer_to_free = list->head;
+                                    811 ;	src/linked_list.c:81: buffer_to_free = list->head;
       000397 8D 82            [24]  812 	mov	dpl,r5
       000399 8E 83            [24]  813 	mov	dph,r6
       00039B 8F F0            [24]  814 	mov	b,r7
@@ -829,7 +829,7 @@
       0003B3 EC               [12]  829 	mov	a,r4
       0003B4 A3               [24]  830 	inc	dptr
       0003B5 F0               [24]  831 	movx	@dptr,a
-                                    832 ;	src/linked_list.c:74: }
+                                    832 ;	src/linked_list.c:83: }
       0003B6 02r02rD2         [24]  833 	ljmp	00103$
                                     834 ;------------------------------------------------------------
                                     835 ;Allocation info for local variables in function 'll_length'
@@ -838,7 +838,7 @@
                                     838 ;size                      Allocated with name '_ll_length_size_65536_64'
                                     839 ;curr                      Allocated with name '_ll_length_curr_65536_64'
                                     840 ;------------------------------------------------------------
-                                    841 ;	src/linked_list.c:76: size_t ll_length(buffer_list_t *list)
+                                    841 ;	src/linked_list.c:85: size_t ll_length(buffer_list_t *list)
                                     842 ;	-----------------------------------------
                                     843 ;	 function ll_length
                                     844 ;	-----------------------------------------
@@ -854,7 +854,7 @@
       0003C6 EF               [12]  854 	mov	a,r7
       0003C7 A3               [24]  855 	inc	dptr
       0003C8 F0               [24]  856 	movx	@dptr,a
-                                    857 ;	src/linked_list.c:79: buffer_t *curr = list->head;
+                                    857 ;	src/linked_list.c:88: buffer_t *curr = list->head;
       0003C9 90r00r1A         [24]  858 	mov	dptr,#_ll_length_list_65536_63
       0003CC E0               [24]  859 	movx	a,@dptr
       0003CD FD               [12]  860 	mov	r5,a
@@ -884,7 +884,7 @@
       0003F0 EF               [12]  884 	mov	a,r7
       0003F1 A3               [24]  885 	inc	dptr
       0003F2 F0               [24]  886 	movx	@dptr,a
-                                    887 ;	src/linked_list.c:80: while(curr != NULL)
+                                    887 ;	src/linked_list.c:89: while(curr != NULL)
       0003F3 90r00r1D         [24]  888 	mov	dptr,#_ll_length_size_65536_64
       0003F6 E0               [24]  889 	movx	a,@dptr
       0003F7 FE               [12]  890 	mov	r6,a
@@ -908,12 +908,12 @@
       00040D E0               [24]  908 	movx	a,@dptr
       00040E 45 F0            [12]  909 	orl	a,b
       000410 60 2D            [24]  910 	jz	00103$
-                                    911 ;	src/linked_list.c:82: size++;
+                                    911 ;	src/linked_list.c:91: size++;
       000412 0E               [12]  912 	inc	r6
       000413 BE 00 01         [24]  913 	cjne	r6,#0x00,00116$
       000416 0F               [12]  914 	inc	r7
       000417                        915 00116$:
-                                    916 ;	src/linked_list.c:83: curr = curr->next;
+                                    916 ;	src/linked_list.c:92: curr = curr->next;
       000417 74 08            [12]  917 	mov	a,#0x08
       000419 2B               [12]  918 	add	a,r3
       00041A FB               [12]  919 	mov	r3,a
@@ -942,10 +942,10 @@
       00043C F0               [24]  942 	movx	@dptr,a
       00043D 80 BC            [24]  943 	sjmp	00101$
       00043F                        944 00103$:
-                                    945 ;	src/linked_list.c:85: return size; 
+                                    945 ;	src/linked_list.c:94: return size; 
       00043F 8E 82            [24]  946 	mov	dpl,r6
       000441 8F 83            [24]  947 	mov	dph,r7
-                                    948 ;	src/linked_list.c:86: }
+                                    948 ;	src/linked_list.c:95: }
       000443 22               [24]  949 	ret
                                     950 ;------------------------------------------------------------
                                     951 ;Allocation info for local variables in function 'll_get_elem'
@@ -954,7 +954,7 @@
                                     954 ;list                      Allocated with name '_ll_get_elem_list_65536_66'
                                     955 ;curr                      Allocated with name '_ll_get_elem_curr_65536_67'
                                     956 ;------------------------------------------------------------
-                                    957 ;	src/linked_list.c:88: buffer_t* ll_get_elem(buffer_list_t *list, size_t elem_num)
+                                    957 ;	src/linked_list.c:97: buffer_t* ll_get_elem(buffer_list_t *list, size_t elem_num)
                                     958 ;	-----------------------------------------
                                     959 ;	 function ll_get_elem
                                     960 ;	-----------------------------------------
@@ -970,7 +970,7 @@
       000451 EF               [12]  970 	mov	a,r7
       000452 A3               [24]  971 	inc	dptr
       000453 F0               [24]  972 	movx	@dptr,a
-                                    973 ;	src/linked_list.c:90: buffer_t *curr = list->head;
+                                    973 ;	src/linked_list.c:99: buffer_t *curr = list->head;
       000454 90r00r24         [24]  974 	mov	dptr,#_ll_get_elem_list_65536_66
       000457 E0               [24]  975 	movx	a,@dptr
       000458 FD               [12]  976 	mov	r5,a
@@ -1000,7 +1000,7 @@
       00047B EF               [12] 1000 	mov	a,r7
       00047C A3               [24] 1001 	inc	dptr
       00047D F0               [24] 1002 	movx	@dptr,a
-                                   1003 ;	src/linked_list.c:91: while(curr != NULL && elem_num > 0)
+                                   1003 ;	src/linked_list.c:100: while(curr != NULL && elem_num > 0)
       00047E 90r00r22         [24] 1004 	mov	dptr,#_ll_get_elem_PARM_2
       000481 E0               [24] 1005 	movx	a,@dptr
       000482 FE               [12] 1006 	mov	r6,a
@@ -1027,7 +1027,7 @@
       00049D EE               [12] 1027 	mov	a,r6
       00049E 4F               [12] 1028 	orl	a,r7
       00049F 60 2D            [24] 1029 	jz	00104$
-                                   1030 ;	src/linked_list.c:93: curr = curr->next;
+                                   1030 ;	src/linked_list.c:102: curr = curr->next;
       0004A1 74 08            [12] 1031 	mov	a,#0x08
       0004A3 2B               [12] 1032 	add	a,r3
       0004A4 FB               [12] 1033 	mov	r3,a
@@ -1054,14 +1054,14 @@
       0004C4 ED               [12] 1054 	mov	a,r5
       0004C5 A3               [24] 1055 	inc	dptr
       0004C6 F0               [24] 1056 	movx	@dptr,a
-                                   1057 ;	src/linked_list.c:94: elem_num--;
+                                   1057 ;	src/linked_list.c:103: elem_num--;
       0004C7 1E               [12] 1058 	dec	r6
       0004C8 BE FF 01         [24] 1059 	cjne	r6,#0xff,00122$
       0004CB 1F               [12] 1060 	dec	r7
       0004CC                       1061 00122$:
       0004CC 80 B8            [24] 1062 	sjmp	00102$
       0004CE                       1063 00104$:
-                                   1064 ;	src/linked_list.c:96: return curr;
+                                   1064 ;	src/linked_list.c:105: return curr;
       0004CE 90r00r27         [24] 1065 	mov	dptr,#_ll_get_elem_curr_65536_67
       0004D1 E0               [24] 1066 	movx	a,@dptr
       0004D2 FD               [12] 1067 	mov	r5,a
@@ -1074,7 +1074,7 @@
       0004D9 8D 82            [24] 1074 	mov	dpl,r5
       0004DB 8E 83            [24] 1075 	mov	dph,r6
       0004DD 8F F0            [24] 1076 	mov	b,r7
-                                   1077 ;	src/linked_list.c:97: }
+                                   1077 ;	src/linked_list.c:106: }
       0004DF 22               [24] 1078 	ret
                                    1079 	.area CSEG    (CODE)
                                    1080 	.area CONST   (CODE)

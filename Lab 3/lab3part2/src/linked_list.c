@@ -1,3 +1,12 @@
+/*
+ *  Colin Sergi
+ * ECEN 5613 - Spring 2026 - Prof. McClure
+ * University of Colorado Boulder
+ * Date Created 2/21/26
+ *  --------------------------------------------------------------------------------
+ *  A file to implement a linked list that contains various buffers
+   ---------------------------------------------------------------------------------*/
+
 #include "linked_list.h"
 #include <stdlib.h>
 #include <stdio.h>

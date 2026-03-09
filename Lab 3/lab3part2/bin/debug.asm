@@ -97,7 +97,7 @@ _dataout_address_65536_2:
 ;out                       Allocated with name '_dataout_PARM_2'
 ;address                   Allocated with name '_dataout_address_65536_2'
 ;------------------------------------------------------------
-;	src/debug.c:3: void dataout(__xdata volatile char *address, unsigned char out)
+;	src/debug.c:12: void dataout(__xdata volatile char *address, unsigned char out)
 ;	-----------------------------------------
 ;	 function dataout
 ;	-----------------------------------------
@@ -117,7 +117,7 @@ _dataout:
 	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-;	src/debug.c:5: *address = out; 
+;	src/debug.c:14: *address = out; 
 	mov	dptr,#_dataout_address_65536_2
 	movx	a,@dptr
 	mov	r6,a
@@ -129,7 +129,7 @@ _dataout:
 	mov	dpl,r6
 	mov	dph,r7
 	movx	@dptr,a
-;	src/debug.c:6: }
+;	src/debug.c:15: }
 	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

@@ -277,7 +277,7 @@ if result == 0 then
     end
 endif
 sendln '3'
-test_file = "test_buffered_data_movement_initial_copy.txt"
+test_file = "\test\test_buffered_data_movement_initial_copy.txt"
 test_reason = "failed to copy initial buffer"
 call compare_against_file
 send ?
@@ -293,7 +293,7 @@ wait 'Enter a char:'
 send '&'
 wait 'Enter a valid buffer # [2-5]:'
 sendln '3'
-test_file = "test_buffered_data_movement_after_clear.txt"
+test_file = "\test\test_buffered_data_movement_after_clear.txt"
 test_reason = "did not receive clear buffer after doing a clear"
 call compare_against_file
 

@@ -97,11 +97,11 @@
                                      97 ;out                       Allocated with name '_dataout_PARM_2'
                                      98 ;address                   Allocated with name '_dataout_address_65536_2'
                                      99 ;------------------------------------------------------------
-                                    100 ;	src/debug.c:3: void dataout(__xdata volatile char *address, unsigned char out)
+                                    100 ;	src/debug.c:12: void dataout(__xdata volatile char *address, unsigned char out)
                                     101 ;	-----------------------------------------
                                     102 ;	 function dataout
                                     103 ;	-----------------------------------------
-      003FF4                        104 _dataout:
+      00400E                        104 _dataout:
                            000007   105 	ar7 = 0x07
                            000006   106 	ar6 = 0x06
                            000005   107 	ar5 = 0x05
@@ -110,27 +110,27 @@
                            000002   110 	ar2 = 0x02
                            000001   111 	ar1 = 0x01
                            000000   112 	ar0 = 0x00
-      003FF4 AF 83            [24]  113 	mov	r7,dph
-      003FF6 E5 82            [12]  114 	mov	a,dpl
-      003FF8 90 20 75         [24]  115 	mov	dptr,#_dataout_address_65536_2
-      003FFB F0               [24]  116 	movx	@dptr,a
-      003FFC EF               [12]  117 	mov	a,r7
-      003FFD A3               [24]  118 	inc	dptr
-      003FFE F0               [24]  119 	movx	@dptr,a
-                                    120 ;	src/debug.c:5: *address = out; 
-      003FFF 90 20 75         [24]  121 	mov	dptr,#_dataout_address_65536_2
-      004002 E0               [24]  122 	movx	a,@dptr
-      004003 FE               [12]  123 	mov	r6,a
-      004004 A3               [24]  124 	inc	dptr
-      004005 E0               [24]  125 	movx	a,@dptr
-      004006 FF               [12]  126 	mov	r7,a
-      004007 90 20 74         [24]  127 	mov	dptr,#_dataout_PARM_2
-      00400A E0               [24]  128 	movx	a,@dptr
-      00400B 8E 82            [24]  129 	mov	dpl,r6
-      00400D 8F 83            [24]  130 	mov	dph,r7
-      00400F F0               [24]  131 	movx	@dptr,a
-                                    132 ;	src/debug.c:6: }
-      004010 22               [24]  133 	ret
+      00400E AF 83            [24]  113 	mov	r7,dph
+      004010 E5 82            [12]  114 	mov	a,dpl
+      004012 90 20 75         [24]  115 	mov	dptr,#_dataout_address_65536_2
+      004015 F0               [24]  116 	movx	@dptr,a
+      004016 EF               [12]  117 	mov	a,r7
+      004017 A3               [24]  118 	inc	dptr
+      004018 F0               [24]  119 	movx	@dptr,a
+                                    120 ;	src/debug.c:14: *address = out; 
+      004019 90 20 75         [24]  121 	mov	dptr,#_dataout_address_65536_2
+      00401C E0               [24]  122 	movx	a,@dptr
+      00401D FE               [12]  123 	mov	r6,a
+      00401E A3               [24]  124 	inc	dptr
+      00401F E0               [24]  125 	movx	a,@dptr
+      004020 FF               [12]  126 	mov	r7,a
+      004021 90 20 74         [24]  127 	mov	dptr,#_dataout_PARM_2
+      004024 E0               [24]  128 	movx	a,@dptr
+      004025 8E 82            [24]  129 	mov	dpl,r6
+      004027 8F 83            [24]  130 	mov	dph,r7
+      004029 F0               [24]  131 	movx	@dptr,a
+                                    132 ;	src/debug.c:15: }
+      00402A 22               [24]  133 	ret
                                     134 	.area CSEG    (CODE)
                                     135 	.area CONST   (CODE)
                                     136 	.area XINIT   (CODE)

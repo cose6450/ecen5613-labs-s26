@@ -1,3 +1,11 @@
+/*
+ *  Colin Sergi
+ * ECEN 5613 - Spring 2026 - Prof. McClure
+ * University of Colorado Boulder
+ * Date Created 2/21/26
+ *  --------------------------------------------------------------------------------
+ *  A file to implement various funcitons to get input into a program
+   ---------------------------------------------------------------------------------*/
 
 #include "input.h"
 #include "string.h"
