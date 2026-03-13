@@ -2,15 +2,13 @@
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 4.2.0 #13081 (MINGW64)
 ;--------------------------------------------------------
-	.module input
+	.module my_serial
 	.optsdcc -mmcs51 --model-large
 	
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
-	.globl _putchar
-	.globl _getchar
-	.globl _memset
+	.globl _kick_the_dog
 	.globl _P5_7
 	.globl _P5_6
 	.globl _P5_5
@@ -207,13 +205,8 @@
 	.globl _DPL
 	.globl _SP
 	.globl _P0
-	.globl _character_count
-	.globl _string_input_buffer
-	.globl _get_input_buffer
-	.globl _get_string
-	.globl _get_next_input_char
-	.globl _get_char_count
-	.globl _reset_char_count
+	.globl _putchar
+	.globl _getchar
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -445,8 +438,6 @@ _P5_7	=	0x00ef
 ; bit data
 ;--------------------------------------------------------
 	.area BSEG    (BIT)
-_get_string_sloc0_1_0:
-	.ds 1
 ;--------------------------------------------------------
 ; paged external ram data
 ;--------------------------------------------------------
@@ -455,12 +446,8 @@ _get_string_sloc0_1_0:
 ; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
-_string_input_buffer::
-	.ds 10
-_character_count::
+_putchar_c_65536_3:
 	.ds 2
-_get_string_current_buffer_loc_65537_48:
-	.ds 3
 ;--------------------------------------------------------
 ; absolute external ram data
 ;--------------------------------------------------------
@@ -496,13 +483,15 @@ _get_string_current_buffer_loc_65537_48:
 ;--------------------------------------------------------
 	.area CSEG    (CODE)
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'get_input_buffer'
+;Allocation info for local variables in function 'putchar'
 ;------------------------------------------------------------
-;	src/input.c:22: const char *get_input_buffer() {
+;c                         Allocated with name '_putchar_c_65536_3'
+;------------------------------------------------------------
+;	src/my_serial.c:14: int putchar(int c)
 ;	-----------------------------------------
-;	 function get_input_buffer
+;	 function putchar
 ;	-----------------------------------------
-_get_input_buffer:
+_putchar:
 	ar7 = 0x07
 	ar6 = 0x06
 	ar5 = 0x05
@@ -511,307 +500,55 @@ _get_input_buffer:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	src/input.c:23: return string_input_buffer; 
-	mov	dptr,#_string_input_buffer
-	mov	b,#0x00
-;	src/input.c:24: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'get_string'
-;------------------------------------------------------------
-;received_char             Allocated with name '_get_string_received_char_65537_48'
-;current_buffer_loc        Allocated with name '_get_string_current_buffer_loc_65537_48'
-;------------------------------------------------------------
-;	src/input.c:26: void get_string()
-;	-----------------------------------------
-;	 function get_string
-;	-----------------------------------------
-_get_string:
-;	src/input.c:28: memset(string_input_buffer, '\0', BUFFER_SZ);
-	mov	dptr,#_memset_PARM_2
-	clr	a
-	movx	@dptr,a
-	mov	dptr,#_memset_PARM_3
-	mov	a,#0x0a
-	movx	@dptr,a
-	clr	a
-	inc	dptr
-	movx	@dptr,a
-	mov	dptr,#_string_input_buffer
-	mov	b,#0x00
-	lcall	_memset
-;	src/input.c:30: char *current_buffer_loc = string_input_buffer;
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	mov	a,#_string_input_buffer
-	movx	@dptr,a
-	mov	a,#(_string_input_buffer >> 8)
-	inc	dptr
-	movx	@dptr,a
-	clr	a
-	inc	dptr
-	movx	@dptr,a
-;	src/input.c:31: do {
-00118$:
-;	src/input.c:32: received_char = getchar(); 
-	lcall	_getchar
-	mov	r6,dpl
-;	src/input.c:33: putchar(received_char);
-	mov	ar5,r6
-	mov	r7,#0x00
-	mov	dpl,r5
-	mov	dph,r7
-	push	ar6
-	lcall	_putchar
-	pop	ar6
-;	src/input.c:39: if (received_char == BACKSPACE)
-	clr	a
-	cjne	r6,#0x08,00171$
-	inc	a
-00171$:
-	mov	r7,a
-	jz	00102$
-;	src/input.c:41: putchar(' ');
-	mov	dptr,#0x0020
-	push	ar7
-	push	ar6
-	lcall	_putchar
-;	src/input.c:42: putchar('\b');
-	mov	dptr,#0x0008
-	lcall	_putchar
-	pop	ar6
-	pop	ar7
-00102$:
-;	src/input.c:45: && received_char != '\n'
-	cjne	r6,#0x0d,00174$
-	setb	c
-	sjmp	00175$
-00174$:
-	clr	c
-00175$:
-	mov	_get_string_sloc0_1_0,c
-	jc	00109$
-;	src/input.c:46: && received_char != '\0'
-	cjne	r6,#0x0a,00177$
-	sjmp	00109$
-00177$:
-	mov	a,r6
-	jz	00109$
-;	src/input.c:48: && received_char != BACKSPACE)
-	cjne	r6,#0x7f,00179$
-	sjmp	00109$
-00179$:
-	cjne	r6,#0x08,00180$
-	sjmp	00109$
-00180$:
-;	src/input.c:50: *current_buffer_loc= received_char;
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	movx	a,@dptr
-	mov	r3,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r4,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r5,a
-	mov	dpl,r3
-	mov	dph,r4
-	mov	b,r5
-	mov	a,r6
-	lcall	__gptrput
-;	src/input.c:51: current_buffer_loc++;
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	mov	a,#0x01
-	add	a,r3
-	movx	@dptr,a
-	clr	a
-	addc	a,r4
-	inc	dptr
-	movx	@dptr,a
-	mov	a,r5
-	inc	dptr
-	movx	@dptr,a
-	sjmp	00119$
-00109$:
-;	src/input.c:53: else if(received_char == DELETE || received_char == BACKSPACE)
-	cjne	r6,#0x7f,00181$
-	sjmp	00105$
-00181$:
-	mov	a,r7
-	jz	00119$
-00105$:
-;	src/input.c:55: if (current_buffer_loc != string_input_buffer)
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	movx	a,@dptr
-	mov	r4,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r5,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r7,a
-	mov	a,#_string_input_buffer
-	push	acc
-	mov	a,#(_string_input_buffer >> 8)
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r7
-	lcall	___gptr_cmp
-	dec	sp
-	dec	sp
-	dec	sp
-	jz	00104$
-;	src/input.c:57: current_buffer_loc--;
-	dec	r4
-	cjne	r4,#0xff,00184$
-	dec	r5
-00184$:
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	mov	a,r4
-	movx	@dptr,a
-	mov	a,r5
-	inc	dptr
+	mov	r7,dph
+	mov	a,dpl
+	mov	dptr,#_putchar_c_65536_3
 	movx	@dptr,a
 	mov	a,r7
 	inc	dptr
 	movx	@dptr,a
-00104$:
-;	src/input.c:59: *current_buffer_loc = '\0';
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	movx	a,@dptr
-	mov	r4,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r5,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r7,a
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r7
-	clr	a
-	lcall	__gptrput
-00119$:
-;	src/input.c:63: && received_char != '\n' 
-	jb	_get_string_sloc0_1_0,00120$
-;	src/input.c:64: && received_char != '\0'
-	cjne	r6,#0x0a,00186$
-	sjmp	00120$
-00186$:
-	mov	a,r6
-	jz	00120$
-;	src/input.c:65: && (current_buffer_loc < (string_input_buffer+BUFFER_SZ-1)));
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	movx	a,@dptr
-	mov	r5,a
-	inc	dptr
+;	src/my_serial.c:16: while (!TI);     // wait for TI to get set previous transmission completed
+00101$:
+;	src/my_serial.c:17: TI = 0;   // clear TI flag
+;	assignBit
+	jbc	_TI,00114$
+	sjmp	00101$
+00114$:
+;	src/my_serial.c:18: SBUF = c; // load serial port with transmit value
+	mov	dptr,#_putchar_c_65536_3
 	movx	a,@dptr
 	mov	r6,a
 	inc	dptr
 	movx	a,@dptr
 	mov	r7,a
-	mov	a,#(_string_input_buffer + 0x0009)
-	push	acc
-	mov	a,#((_string_input_buffer + 0x0009) >> 8)
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl,r5
-	mov	dph,r6
-	mov	b,r7
-	lcall	___gptr_cmp
-	dec	sp
-	dec	sp
-	dec	sp
-	jnc	00188$
-	ljmp	00118$
-00188$:
-00120$:
-;	src/input.c:66: *current_buffer_loc = '\0';
-	mov	dptr,#_get_string_current_buffer_loc_65537_48
-	movx	a,@dptr
-	mov	r5,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r6,a
-	inc	dptr
-	movx	a,@dptr
-	mov	r7,a
-	mov	dpl,r5
-	mov	dph,r6
-	mov	b,r7
-	clr	a
-;	src/input.c:67: }
-	ljmp	__gptrput
-;------------------------------------------------------------
-;Allocation info for local variables in function 'get_next_input_char'
-;------------------------------------------------------------
-;c                         Allocated with name '_get_next_input_char_c_65536_54'
-;------------------------------------------------------------
-;	src/input.c:69: char get_next_input_char()
-;	-----------------------------------------
-;	 function get_next_input_char
-;	-----------------------------------------
-_get_next_input_char:
-;	src/input.c:71: char c = getchar();
-	lcall	_getchar
-	mov	r6,dpl
-;	src/input.c:72: putchar(c);
-	mov	ar5,r6
-	mov	r7,#0x00
-	mov	dpl,r5
+	mov	_SBUF,r6
+;	src/my_serial.c:19: return c;
+	mov	dpl,r6
 	mov	dph,r7
-	push	ar6
-	lcall	_putchar
-	pop	ar6
-;	src/input.c:73: character_count++;
-	mov	dptr,#_character_count
-	movx	a,@dptr
-	add	a,#0x01
-	movx	@dptr,a
-	inc	dptr
-	movx	a,@dptr
-	addc	a,#0x00
-	movx	@dptr,a
-;	src/input.c:74: return c; 
-	mov	dpl,r6
-;	src/input.c:75: }
+;	src/my_serial.c:20: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'get_char_count'
+;Allocation info for local variables in function 'getchar'
 ;------------------------------------------------------------
-;	src/input.c:77: size_t get_char_count()
+;	src/my_serial.c:22: int getchar(void)
 ;	-----------------------------------------
-;	 function get_char_count
+;	 function getchar
 ;	-----------------------------------------
-_get_char_count:
-;	src/input.c:79: return character_count;
-	mov	dptr,#_character_count
-	movx	a,@dptr
-	mov	r6,a
-	inc	dptr
-	movx	a,@dptr
-;	src/input.c:80: }
+_getchar:
+;	src/my_serial.c:25: while (!RI);        // wait for RI to get set data is received
+00101$:
+	jnb	_RI,00101$
+;	src/my_serial.c:26: kick_the_dog();
+	lcall	_kick_the_dog
+;	src/my_serial.c:27: RI = 0;      // clear RI flag
+;	assignBit
+	clr	_RI
+;	src/my_serial.c:28: return SBUF; // return character from SBUF
+	mov	r6,_SBUF
+	mov	r7,#0x00
 	mov	dpl,r6
-	mov	dph,a
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'reset_char_count'
-;------------------------------------------------------------
-;	src/input.c:82: void reset_char_count()
-;	-----------------------------------------
-;	 function reset_char_count
-;	-----------------------------------------
-_reset_char_count:
-;	src/input.c:84: character_count = 0; 
-	mov	dptr,#_character_count
-	clr	a
-	movx	@dptr,a
-	inc	dptr
-	movx	@dptr,a
-;	src/input.c:85: }
+	mov	dph,r7
+;	src/my_serial.c:29: }
 	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
