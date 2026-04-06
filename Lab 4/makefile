@@ -16,9 +16,6 @@ CC = $(SDCC_PATH)
 tterm:
 	ttermpro $(TTERM_PARAMS)
 
-tterm_test:
-	call .\test\execute_tests.bat
-
 flash: user_program paulmon paulmon_extra
 #	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation erase f memory flash blankcheck loadbuffer lib/paulmon21.hex program verify 
 #	$(BATCH_ISP_PATH) -device at89c51rc2 -hardware RS232 -port $(COM_PORT) -baudrate 57600 -operation memory flash loadbuffer lib/extra.hex program verify

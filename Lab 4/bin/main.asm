@@ -9,6 +9,7 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
+	.globl _x_command_handler
 	.globl _print_dashed_line
 	.globl _r_command_handler
 	.globl _w_command_handler
@@ -470,6 +471,12 @@ _r_command_handler_address_65537_94:
 	.ds 2
 _r_command_handler_byte_65538_97:
 	.ds 1
+_x_command_handler_start_address_65537_102:
+	.ds 2
+_x_command_handler_end_address_65538_105:
+	.ds 2
+_x_command_handler_byte_327682_112:
+	.ds 2
 ;--------------------------------------------------------
 ; absolute external ram data
 ;--------------------------------------------------------
@@ -589,24 +596,7 @@ _w_command_handler:
 ;	src/main.c:44: return;
 	ret
 00102$:
-;	src/main.c:46: printf("\r\n%x", address); 
-	mov	dptr,#_w_command_handler_address_65537_85
-	movx	a,@dptr
-	push	acc
-	inc	dptr
-	movx	a,@dptr
-	push	acc
-	mov	a,#___str_2
-	push	acc
-	mov	a,#(___str_2 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	mov	a,sp
-	add	a,#0xfb
-	mov	sp,a
-;	src/main.c:47: if(address < 0 || address > 0x7FF)
+;	src/main.c:46: if(address < 0 || address > 0x7FF)
 	mov	dptr,#_w_command_handler_address_65537_85
 	movx	a,@dptr
 	mov	r6,a
@@ -623,7 +613,21 @@ _w_command_handler:
 	subb	a,b
 	jnc	00104$
 00103$:
-;	src/main.c:49: printf("\r\n Failed to enter an address within range, please try again");
+;	src/main.c:48: printf("\r\n Failed to enter an address within range, please try again");
+	mov	a,#___str_2
+	push	acc
+	mov	a,#(___str_2 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:49: return;
+	ret
+00104$:
+;	src/main.c:51: printf("\r\nEnter a byte to write [0, FF]: ");
 	mov	a,#___str_3
 	push	acc
 	mov	a,#(___str_3 >> 8)
@@ -634,33 +638,19 @@ _w_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:50: return;
-	ret
-00104$:
-;	src/main.c:52: printf("\r\nEnter a byte to write [0, FF]: ");
-	mov	a,#___str_4
-	push	acc
-	mov	a,#(___str_4 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	src/main.c:53: int byte = 0;
+;	src/main.c:52: int byte = 0;
 	mov	dptr,#_w_command_handler_byte_65538_88
 	clr	a
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:54: if (0 > get_hex_value(&byte))
+;	src/main.c:53: if (0 > get_hex_value(&byte))
 	mov	dptr,#_w_command_handler_byte_65538_88
 	mov	b,#0x00
 	lcall	_get_hex_value
 	mov	a,dph
 	jnb	acc.7,00107$
-;	src/main.c:56: printf("\r\n Failed to enter a hex integer, please try again");
+;	src/main.c:55: printf("\r\n Failed to enter a hex integer, please try again");
 	mov	a,#___str_1
 	push	acc
 	mov	a,#(___str_1 >> 8)
@@ -671,10 +661,10 @@ _w_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:57: return;
+;	src/main.c:56: return;
 	ret
 00107$:
-;	src/main.c:59: if(byte < 0 || byte > 0xFF)
+;	src/main.c:58: if(byte < 0 || byte > 0xFF)
 	mov	dptr,#_w_command_handler_byte_65538_88
 	movx	a,@dptr
 	mov	r6,a
@@ -691,10 +681,10 @@ _w_command_handler:
 	subb	a,b
 	jnc	00109$
 00108$:
-;	src/main.c:61: printf("\r\n Failed to enter a value that's byte size, please try again");
-	mov	a,#___str_5
+;	src/main.c:60: printf("\r\n Failed to enter a value that's byte size, please try again");
+	mov	a,#___str_4
 	push	acc
-	mov	a,#(___str_5 >> 8)
+	mov	a,#(___str_4 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -702,10 +692,10 @@ _w_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:62: return;
+;	src/main.c:61: return;
 	ret
 00109$:
-;	src/main.c:64: if (0 != eepromwritebyte(address, (uint8_t)byte))
+;	src/main.c:63: if (0 != eepromwritebyte(address, (uint8_t)byte))
 	mov	dptr,#_w_command_handler_address_65537_85
 	movx	a,@dptr
 	mov	r4,a
@@ -722,7 +712,20 @@ _w_command_handler:
 	mov	b,dph
 	orl	a,b
 	jz	00112$
-;	src/main.c:66: printf("\r\nFailed to write to the eeprom");
+;	src/main.c:65: printf("\r\nFailed to write to the eeprom");
+	mov	a,#___str_5
+	push	acc
+	mov	a,#(___str_5 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+	ret
+00112$:
+;	src/main.c:69: printf("\r\n Success: wrote to the eeprom");
 	mov	a,#___str_6
 	push	acc
 	mov	a,#(___str_6 >> 8)
@@ -733,9 +736,20 @@ _w_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
+;	src/main.c:71: }
 	ret
-00112$:
-;	src/main.c:70: printf("\r\n Success: wrote to the eeprom");
+;------------------------------------------------------------
+;Allocation info for local variables in function 'r_command_handler'
+;------------------------------------------------------------
+;address                   Allocated with name '_r_command_handler_address_65537_94'
+;byte                      Allocated with name '_r_command_handler_byte_65538_97'
+;------------------------------------------------------------
+;	src/main.c:74: void r_command_handler()
+;	-----------------------------------------
+;	 function r_command_handler
+;	-----------------------------------------
+_r_command_handler:
+;	src/main.c:76: printf("\r\nEnter an EEPROM address to read from in hex [0,7FF]: ");
 	mov	a,#___str_7
 	push	acc
 	mov	a,#(___str_7 >> 8)
@@ -746,43 +760,19 @@ _w_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:72: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'r_command_handler'
-;------------------------------------------------------------
-;address                   Allocated with name '_r_command_handler_address_65537_94'
-;byte                      Allocated with name '_r_command_handler_byte_65538_97'
-;------------------------------------------------------------
-;	src/main.c:75: void r_command_handler()
-;	-----------------------------------------
-;	 function r_command_handler
-;	-----------------------------------------
-_r_command_handler:
-;	src/main.c:77: printf("\r\nEnter an EEPROM address to read from in hex [0,7FF]: ");
-	mov	a,#___str_8
-	push	acc
-	mov	a,#(___str_8 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	src/main.c:78: int address = 0;
+;	src/main.c:77: int address = 0;
 	mov	dptr,#_r_command_handler_address_65537_94
 	clr	a
 	movx	@dptr,a
 	inc	dptr
 	movx	@dptr,a
-;	src/main.c:79: if (0 > get_hex_value(&address))
+;	src/main.c:78: if (0 > get_hex_value(&address))
 	mov	dptr,#_r_command_handler_address_65537_94
 	mov	b,#0x00
 	lcall	_get_hex_value
 	mov	a,dph
 	jnb	acc.7,00102$
-;	src/main.c:81: printf("\r\n Failed to enter a hex integer, please try again");
+;	src/main.c:80: printf("\r\n Failed to enter a hex integer, please try again");
 	mov	a,#___str_1
 	push	acc
 	mov	a,#(___str_1 >> 8)
@@ -793,10 +783,10 @@ _r_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:82: return;
+;	src/main.c:81: return;
 	ret
 00102$:
-;	src/main.c:84: if(address < 0 || address > 0x7FF)
+;	src/main.c:83: if(address < 0 || address > 0x7FF)
 	mov	dptr,#_r_command_handler_address_65537_94
 	movx	a,@dptr
 	mov	r6,a
@@ -813,10 +803,10 @@ _r_command_handler:
 	subb	a,b
 	jnc	00104$
 00103$:
-;	src/main.c:86: printf("\r\n Failed to enter an address within range, please try again");
-	mov	a,#___str_3
+;	src/main.c:85: printf("\r\n Failed to enter an address within range, please try again");
+	mov	a,#___str_2
 	push	acc
-	mov	a,#(___str_3 >> 8)
+	mov	a,#(___str_2 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -824,10 +814,10 @@ _r_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:87: return;
+;	src/main.c:86: return;
 	ret
 00104$:
-;	src/main.c:90: if (0 != eepromreadbyte(address, &byte))
+;	src/main.c:89: if (0 != eepromreadbyte(address, &byte))
 	mov	dptr,#_eepromreadbyte_PARM_2
 	mov	a,#_r_command_handler_byte_65538_97
 	movx	@dptr,a
@@ -844,10 +834,10 @@ _r_command_handler:
 	mov	b,dph
 	orl	a,b
 	jz	00107$
-;	src/main.c:92: printf("\r\nFailed to read from the eeprom");
-	mov	a,#___str_9
+;	src/main.c:91: printf("\r\nFailed to read from the eeprom");
+	mov	a,#___str_8
 	push	acc
-	mov	a,#(___str_9 >> 8)
+	mov	a,#(___str_8 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -857,16 +847,16 @@ _r_command_handler:
 	dec	sp
 	ret
 00107$:
-;	src/main.c:96: printf("\r\n Success: read 0x%hhx from the eeprom", byte);
+;	src/main.c:95: printf("\r\n Success: read 0x%hhx from the eeprom", byte);
 	mov	dptr,#_r_command_handler_byte_65538_97
 	movx	a,@dptr
 	mov	r7,a
 	mov	r6,#0x00
 	push	ar7
 	push	ar6
-	mov	a,#___str_10
+	mov	a,#___str_9
 	push	acc
-	mov	a,#(___str_10 >> 8)
+	mov	a,#(___str_9 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -874,17 +864,44 @@ _r_command_handler:
 	mov	a,sp
 	add	a,#0xfb
 	mov	sp,a
-;	src/main.c:98: }
+;	src/main.c:97: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'print_dashed_line'
 ;------------------------------------------------------------
-;	src/main.c:100: void print_dashed_line()
+;	src/main.c:99: void print_dashed_line()
 ;	-----------------------------------------
 ;	 function print_dashed_line
 ;	-----------------------------------------
 _print_dashed_line:
-;	src/main.c:102: printf("\r\n---------------------------------------------------");
+;	src/main.c:101: printf("\r\n---------------------------------------------------");
+	mov	a,#___str_10
+	push	acc
+	mov	a,#(___str_10 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:102: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'x_command_handler'
+;------------------------------------------------------------
+;start_address             Allocated with name '_x_command_handler_start_address_65537_102'
+;end_address               Allocated with name '_x_command_handler_end_address_65538_105'
+;row_start                 Allocated with name '_x_command_handler_row_start_131074_109'
+;i                         Allocated with name '_x_command_handler_i_262146_111'
+;byte                      Allocated with name '_x_command_handler_byte_327682_112'
+;------------------------------------------------------------
+;	src/main.c:104: void x_command_handler()
+;	-----------------------------------------
+;	 function x_command_handler
+;	-----------------------------------------
+_x_command_handler:
+;	src/main.c:106: printf("\r\nEnter a valid starting hex address [0, 7FF]: ");
 	mov	a,#___str_11
 	push	acc
 	mov	a,#(___str_11 >> 8)
@@ -895,22 +912,64 @@ _print_dashed_line:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:103: }
+;	src/main.c:107: int start_address = 0;
+	mov	dptr,#_x_command_handler_start_address_65537_102
+	clr	a
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:108: if (0 > get_hex_value(&start_address))
+	mov	dptr,#_x_command_handler_start_address_65537_102
+	mov	b,#0x00
+	lcall	_get_hex_value
+	mov	a,dph
+	jnb	acc.7,00102$
+;	src/main.c:110: printf("\r\n Failed to enter a hex integer, please try again");
+	mov	a,#___str_1
+	push	acc
+	mov	a,#(___str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:111: return;
 	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'main'
-;------------------------------------------------------------
-;received_char             Allocated with name '_main_received_char_196609_104'
-;------------------------------------------------------------
-;	src/main.c:107: void main()
-;	-----------------------------------------
-;	 function main
-;	-----------------------------------------
-_main:
-;	src/main.c:109: eeprom_init();
-	lcall	_eeprom_init
-00108$:
-;	src/main.c:112: printf("\r\nEnter a command char (? for help): ");
+00102$:
+;	src/main.c:113: if(start_address < 0 || start_address > 0x7FF)
+	mov	dptr,#_x_command_handler_start_address_65537_102
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	jb	acc.7,00103$
+	clr	c
+	mov	a,#0xff
+	subb	a,r6
+	mov	a,#(0x07 ^ 0x80)
+	mov	b,r7
+	xrl	b,#0x80
+	subb	a,b
+	jnc	00104$
+00103$:
+;	src/main.c:115: printf("\r\n Failed to enter an address within range, please try again");
+	mov	a,#___str_2
+	push	acc
+	mov	a,#(___str_2 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:116: return;
+	ret
+00104$:
+;	src/main.c:119: printf("\r\nEnter a valid ending hex address [0,7FF]");
 	mov	a,#___str_12
 	push	acc
 	mov	a,#(___str_12 >> 8)
@@ -921,29 +980,80 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:113: char received_char = getchar();
-	lcall	_getchar
-	mov	r6,dpl
-;	src/main.c:114: putchar(received_char);
-	mov	ar5,r6
-	mov	r7,#0x00
-	mov	dpl,r5
-	mov	dph,r7
-	push	ar6
-	lcall	_putchar
-	pop	ar6
-;	src/main.c:115: switch(received_char)
-	cjne	r6,#0x3f,00127$
-	sjmp	00101$
-00127$:
-	cjne	r6,#0x72,00128$
-	sjmp	00103$
-00128$:
-;	src/main.c:117: case '?':
-	cjne	r6,#0x77,00104$
-	sjmp	00102$
-00101$:
-;	src/main.c:118: printf("\r\nw - write a byte");
+;	src/main.c:120: int end_address = 0;
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	clr	a
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:121: if (0 > get_hex_value(&end_address))
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	mov	b,#0x00
+	lcall	_get_hex_value
+	mov	a,dph
+	jnb	acc.7,00107$
+;	src/main.c:123: printf("\r\n Failed to enter a hex integer, please try again");
+	mov	a,#___str_1
+	push	acc
+	mov	a,#(___str_1 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:124: return;
+	ret
+00107$:
+;	src/main.c:126: if(end_address < 0 || end_address > 0x7FF)
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	jb	acc.7,00108$
+	clr	c
+	mov	a,#0xff
+	subb	a,r6
+	mov	a,#(0x07 ^ 0x80)
+	mov	b,r7
+	xrl	b,#0x80
+	subb	a,b
+	jnc	00109$
+00108$:
+;	src/main.c:128: printf("\r\n Failed to enter an address within range, please try again");
+	mov	a,#___str_2
+	push	acc
+	mov	a,#(___str_2 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:129: return;
+	ret
+00109$:
+;	src/main.c:132: if (start_address > end_address)
+	mov	dptr,#_x_command_handler_start_address_65537_102
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	clr	c
+	mov	a,r6
+	subb	a,r4
+	mov	a,r7
+	xrl	a,#0x80
+	mov	b,r5
+	xrl	b,#0x80
+	subb	a,b
+	jnc	00112$
+;	src/main.c:134: printf("\r\n start_address is greater than end address; please try again");
 	mov	a,#___str_13
 	push	acc
 	mov	a,#(___str_13 >> 8)
@@ -954,7 +1064,70 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:119: printf("\r\nr - read a byte");
+;	src/main.c:135: return; 
+	ret
+00112$:
+;	src/main.c:138: start_address &= ~(0xF);
+	mov	dptr,#_x_command_handler_start_address_65537_102
+	mov	a,#0xf0
+	anl	a,r4
+	movx	@dptr,a
+	mov	a,r5
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:139: end_address &= ~(0xF);
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	mov	a,#0xf0
+	anl	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:140: end_address += 0x10;
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	mov	a,#0x10
+	add	a,r6
+	movx	@dptr,a
+	clr	a
+	addc	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:143: for(int row_start = start_address; row_start < end_address; row_start+=16)
+	mov	dptr,#_x_command_handler_start_address_65537_102
+	movx	a,@dptr
+	mov	r6,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r7,a
+00121$:
+	mov	dptr,#_x_command_handler_end_address_65538_105
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	clr	c
+	mov	a,r6
+	subb	a,r4
+	mov	a,r7
+	xrl	a,#0x80
+	mov	b,r5
+	xrl	b,#0x80
+	subb	a,b
+	jc	00172$
+	ret
+00172$:
+;	src/main.c:145: printf("\r\n%03X: ", row_start);
+	push	ar7
+	push	ar6
+	push	ar6
+	push	ar7
 	mov	a,#___str_14
 	push	acc
 	mov	a,#(___str_14 >> 8)
@@ -962,10 +1135,68 @@ _main:
 	mov	a,#0x80
 	push	acc
 	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	src/main.c:120: printf("\r\n");
+	mov	a,sp
+	add	a,#0xfb
+	mov	sp,a
+	pop	ar6
+	pop	ar7
+;	src/main.c:146: for(int i = 0; i < 16; i++)
+	mov	ar4,r6
+	mov	ar5,r7
+	mov	r2,#0x00
+	mov	r3,#0x00
+00118$:
+	clr	c
+	mov	a,r2
+	subb	a,#0x10
+	mov	a,r3
+	xrl	a,#0x80
+	subb	a,#0x80
+	jc	00173$
+	ljmp	00122$
+00173$:
+;	src/main.c:148: int byte = 0;
+	mov	dptr,#_x_command_handler_byte_327682_112
+	clr	a
+	movx	@dptr,a
+	inc	dptr
+	movx	@dptr,a
+;	src/main.c:149: if(0 != eepromreadbyte(row_start + i, &byte))
+	mov	a,r2
+	add	a,r4
+	mov	r0,a
+	mov	a,r3
+	addc	a,r5
+	mov	r1,a
+	mov	dptr,#_eepromreadbyte_PARM_2
+	mov	a,#_x_command_handler_byte_327682_112
+	movx	@dptr,a
+	mov	a,#(_x_command_handler_byte_327682_112 >> 8)
+	inc	dptr
+	movx	@dptr,a
+	clr	a
+	inc	dptr
+	movx	@dptr,a
+	mov	dpl,r0
+	mov	dph,r1
+	push	ar7
+	push	ar6
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	lcall	_eepromreadbyte
+	mov	a,dpl
+	mov	b,dph
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+	pop	ar6
+	pop	ar7
+	orl	a,b
+	jz	00114$
+;	src/main.c:151: printf("\r\n Failed to read byte from eeprom, ending command \r\n");
 	mov	a,#___str_15
 	push	acc
 	mov	a,#(___str_15 >> 8)
@@ -976,23 +1207,22 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:121: break;
-;	src/main.c:122: case 'w':
-	sjmp	00105$
-00102$:
-;	src/main.c:123: w_command_handler();
-	lcall	_w_command_handler
-;	src/main.c:124: break;
-;	src/main.c:125: case 'r':
-	sjmp	00105$
-00103$:
-;	src/main.c:126: r_command_handler();
-	lcall	_r_command_handler
-;	src/main.c:127: break;
-;	src/main.c:128: default:
-	sjmp	00105$
-00104$:
-;	src/main.c:129: printf("\r\nUnrecognized command, please enter a valid command char");
+;	src/main.c:152: return;
+	ret
+00114$:
+;	src/main.c:154: printf("%02X ", byte);
+	push	ar7
+	push	ar6
+	push	ar5
+	push	ar4
+	push	ar3
+	push	ar2
+	mov	dptr,#_x_command_handler_byte_327682_112
+	movx	a,@dptr
+	push	acc
+	inc	dptr
+	movx	a,@dptr
+	push	acc
 	mov	a,#___str_16
 	push	acc
 	mov	a,#(___str_16 >> 8)
@@ -1000,14 +1230,45 @@ _main:
 	mov	a,#0x80
 	push	acc
 	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	src/main.c:130: continue; //no command, don't print the end command line
-	ljmp	00108$
-;	src/main.c:131: }
-00105$:
-;	src/main.c:132: printf("\r\nEND COMMAND");
+	mov	a,sp
+	add	a,#0xfb
+	mov	sp,a
+	pop	ar2
+	pop	ar3
+	pop	ar4
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	src/main.c:146: for(int i = 0; i < 16; i++)
+	inc	r2
+	cjne	r2,#0x00,00175$
+	inc	r3
+00175$:
+	ljmp	00118$
+00122$:
+;	src/main.c:143: for(int row_start = start_address; row_start < end_address; row_start+=16)
+	mov	a,#0x10
+	add	a,r6
+	mov	r6,a
+	clr	a
+	addc	a,r7
+	mov	r7,a
+;	src/main.c:157: }
+	ljmp	00121$
+;------------------------------------------------------------
+;Allocation info for local variables in function 'main'
+;------------------------------------------------------------
+;received_char             Allocated with name '_main_received_char_196609_117'
+;------------------------------------------------------------
+;	src/main.c:161: void main()
+;	-----------------------------------------
+;	 function main
+;	-----------------------------------------
+_main:
+;	src/main.c:163: eeprom_init();
+	lcall	_eeprom_init
+00109$:
+;	src/main.c:166: printf("\r\nEnter a command char (? for help): ");
 	mov	a,#___str_17
 	push	acc
 	mov	a,#(___str_17 >> 8)
@@ -1018,10 +1279,116 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:133: print_dashed_line();
+;	src/main.c:167: char received_char = getchar();
+	lcall	_getchar
+	mov	r6,dpl
+;	src/main.c:168: putchar(received_char);
+	mov	ar5,r6
+	mov	r7,#0x00
+	mov	dpl,r5
+	mov	dph,r7
+	push	ar6
+	lcall	_putchar
+	pop	ar6
+;	src/main.c:169: switch(received_char)
+	cjne	r6,#0x3f,00132$
+	sjmp	00101$
+00132$:
+	cjne	r6,#0x72,00133$
+	sjmp	00103$
+00133$:
+	cjne	r6,#0x77,00134$
+	sjmp	00102$
+00134$:
+;	src/main.c:171: case '?':
+	cjne	r6,#0x78,00105$
+	sjmp	00104$
+00101$:
+;	src/main.c:172: printf("\r\nw - write a byte");
+	mov	a,#___str_18
+	push	acc
+	mov	a,#(___str_18 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:173: printf("\r\nr - read a byte");
+	mov	a,#___str_19
+	push	acc
+	mov	a,#(___str_19 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:174: printf("\r\nx - hex dump");
+	mov	a,#___str_20
+	push	acc
+	mov	a,#(___str_20 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:175: break;
+;	src/main.c:176: case 'w':
+	sjmp	00106$
+00102$:
+;	src/main.c:177: w_command_handler();
+	lcall	_w_command_handler
+;	src/main.c:178: break;
+;	src/main.c:179: case 'r':
+	sjmp	00106$
+00103$:
+;	src/main.c:180: r_command_handler();
+	lcall	_r_command_handler
+;	src/main.c:181: break;
+;	src/main.c:182: case 'x':
+	sjmp	00106$
+00104$:
+;	src/main.c:183: x_command_handler();
+	lcall	_x_command_handler
+;	src/main.c:184: break;
+;	src/main.c:185: default:
+	sjmp	00106$
+00105$:
+;	src/main.c:186: printf("\r\nUnrecognized command, please enter a valid command char");
+	mov	a,#___str_21
+	push	acc
+	mov	a,#(___str_21 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:187: continue; //no command, don't print the end command line
+	ljmp	00109$
+;	src/main.c:188: }
+00106$:
+;	src/main.c:189: printf("\r\nEND COMMAND");
+	mov	a,#___str_22
+	push	acc
+	mov	a,#(___str_22 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:190: print_dashed_line();
 	lcall	_print_dashed_line
-;	src/main.c:135: }
-	ljmp	00108$
+;	src/main.c:192: }
+	ljmp	00109$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)
@@ -1042,108 +1409,144 @@ ___str_1:
 ___str_2:
 	.db 0x0d
 	.db 0x0a
-	.ascii "%x"
+	.ascii " Failed to enter an address within range, please try again"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_3:
 	.db 0x0d
 	.db 0x0a
-	.ascii " Failed to enter an address within range, please try again"
+	.ascii "Enter a byte to write [0, FF]: "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_4:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Enter a byte to write [0, FF]: "
+	.ascii " Failed to enter a value that's byte size, please try again"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_5:
 	.db 0x0d
 	.db 0x0a
-	.ascii " Failed to enter a value that's byte size, please try again"
+	.ascii "Failed to write to the eeprom"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_6:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Failed to write to the eeprom"
+	.ascii " Success: wrote to the eeprom"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_7:
 	.db 0x0d
 	.db 0x0a
-	.ascii " Success: wrote to the eeprom"
+	.ascii "Enter an EEPROM address to read from in hex [0,7FF]: "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_8:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Enter an EEPROM address to read from in hex [0,7FF]: "
+	.ascii "Failed to read from the eeprom"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_9:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Failed to read from the eeprom"
+	.ascii " Success: read 0x%hhx from the eeprom"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_10:
 	.db 0x0d
 	.db 0x0a
-	.ascii " Success: read 0x%hhx from the eeprom"
+	.ascii "---------------------------------------------------"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_11:
 	.db 0x0d
 	.db 0x0a
-	.ascii "---------------------------------------------------"
+	.ascii "Enter a valid starting hex address [0, 7FF]: "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_12:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Enter a command char (? for help): "
+	.ascii "Enter a valid ending hex address [0,7FF]"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_13:
 	.db 0x0d
 	.db 0x0a
-	.ascii "w - write a byte"
+	.ascii " start_address is greater than end address; please try again"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_14:
 	.db 0x0d
 	.db 0x0a
-	.ascii "r - read a byte"
+	.ascii "%03X: "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_15:
 	.db 0x0d
 	.db 0x0a
+	.ascii " Failed to read byte from eeprom, ending command "
+	.db 0x0d
+	.db 0x0a
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_16:
+	.ascii "%02X "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_17:
+	.db 0x0d
+	.db 0x0a
+	.ascii "Enter a command char (? for help): "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_18:
+	.db 0x0d
+	.db 0x0a
+	.ascii "w - write a byte"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_19:
+	.db 0x0d
+	.db 0x0a
+	.ascii "r - read a byte"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_20:
+	.db 0x0d
+	.db 0x0a
+	.ascii "x - hex dump"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_21:
 	.db 0x0d
 	.db 0x0a
 	.ascii "Unrecognized command, please enter a valid command char"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-___str_17:
+___str_22:
 	.db 0x0d
 	.db 0x0a
 	.ascii "END COMMAND"

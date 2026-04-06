@@ -53,8 +53,8 @@
                                      53 ; external ram data
                                      54 ;--------------------------------------------------------
                                      55 	.area XSEG    (XDATA)
-      00000A                         56 ___sdcc_heap::
-      00000A                         57 	.ds 8192
+      000010                         56 ___sdcc_heap::
+      000010                         57 	.ds 8192
                                      58 ;--------------------------------------------------------
                                      59 ; absolute external ram data
                                      60 ;--------------------------------------------------------
@@ -91,7 +91,7 @@
                                      91 	.area CSEG    (CODE)
                                      92 	.area CSEG    (CODE)
                                      93 	.area CONST   (CODE)
-      003EEA                         94 ___sdcc_heap_size:
-      003EEA 00 20                   95 	.byte #0x00, #0x20	; 8192
+      0041E7                         94 ___sdcc_heap_size:
+      0041E7 00 20                   95 	.byte #0x00, #0x20	; 8192
                                      96 	.area XINIT   (CODE)
                                      97 	.area CABS    (ABS,CODE)

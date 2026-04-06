@@ -53,10 +53,10 @@
                                      53 ; external ram data
                                      54 ;--------------------------------------------------------
                                      55 	.area XSEG    (XDATA)
-      00204C                         56 _dataout_PARM_2:
-      00204C                         57 	.ds 1
-      00204D                         58 _dataout_address_65536_2:
-      00204D                         59 	.ds 2
+      002052                         56 _dataout_PARM_2:
+      002052                         57 	.ds 1
+      002053                         58 _dataout_address_65536_2:
+      002053                         59 	.ds 2
                                      60 ;--------------------------------------------------------
                                      61 ; absolute external ram data
                                      62 ;--------------------------------------------------------
@@ -101,7 +101,7 @@
                                     101 ;	-----------------------------------------
                                     102 ;	 function dataout
                                     103 ;	-----------------------------------------
-      002B3B                        104 _dataout:
+      002D52                        104 _dataout:
                            000007   105 	ar7 = 0x07
                            000006   106 	ar6 = 0x06
                            000005   107 	ar5 = 0x05
@@ -110,27 +110,27 @@
                            000002   110 	ar2 = 0x02
                            000001   111 	ar1 = 0x01
                            000000   112 	ar0 = 0x00
-      002B3B AF 83            [24]  113 	mov	r7,dph
-      002B3D E5 82            [12]  114 	mov	a,dpl
-      002B3F 90 20 4D         [24]  115 	mov	dptr,#_dataout_address_65536_2
-      002B42 F0               [24]  116 	movx	@dptr,a
-      002B43 EF               [12]  117 	mov	a,r7
-      002B44 A3               [24]  118 	inc	dptr
-      002B45 F0               [24]  119 	movx	@dptr,a
+      002D52 AF 83            [24]  113 	mov	r7,dph
+      002D54 E5 82            [12]  114 	mov	a,dpl
+      002D56 90 20 53         [24]  115 	mov	dptr,#_dataout_address_65536_2
+      002D59 F0               [24]  116 	movx	@dptr,a
+      002D5A EF               [12]  117 	mov	a,r7
+      002D5B A3               [24]  118 	inc	dptr
+      002D5C F0               [24]  119 	movx	@dptr,a
                                     120 ;	src/debug.c:14: *address = out; 
-      002B46 90 20 4D         [24]  121 	mov	dptr,#_dataout_address_65536_2
-      002B49 E0               [24]  122 	movx	a,@dptr
-      002B4A FE               [12]  123 	mov	r6,a
-      002B4B A3               [24]  124 	inc	dptr
-      002B4C E0               [24]  125 	movx	a,@dptr
-      002B4D FF               [12]  126 	mov	r7,a
-      002B4E 90 20 4C         [24]  127 	mov	dptr,#_dataout_PARM_2
-      002B51 E0               [24]  128 	movx	a,@dptr
-      002B52 8E 82            [24]  129 	mov	dpl,r6
-      002B54 8F 83            [24]  130 	mov	dph,r7
-      002B56 F0               [24]  131 	movx	@dptr,a
+      002D5D 90 20 53         [24]  121 	mov	dptr,#_dataout_address_65536_2
+      002D60 E0               [24]  122 	movx	a,@dptr
+      002D61 FE               [12]  123 	mov	r6,a
+      002D62 A3               [24]  124 	inc	dptr
+      002D63 E0               [24]  125 	movx	a,@dptr
+      002D64 FF               [12]  126 	mov	r7,a
+      002D65 90 20 52         [24]  127 	mov	dptr,#_dataout_PARM_2
+      002D68 E0               [24]  128 	movx	a,@dptr
+      002D69 8E 82            [24]  129 	mov	dpl,r6
+      002D6B 8F 83            [24]  130 	mov	dph,r7
+      002D6D F0               [24]  131 	movx	@dptr,a
                                     132 ;	src/debug.c:15: }
-      002B57 22               [24]  133 	ret
+      002D6E 22               [24]  133 	ret
                                     134 	.area CSEG    (CODE)
                                     135 	.area CONST   (CODE)
                                     136 	.area XINIT   (CODE)

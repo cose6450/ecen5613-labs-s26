@@ -101,6 +101,61 @@ void print_dashed_line()
     printf("\r\n---------------------------------------------------");
 }
 
+void x_command_handler()
+{
+    printf("\r\nEnter a valid starting hex address [0, 7FF]: ");
+    int start_address = 0;
+    if (0 > get_hex_value(&start_address))
+    {
+        printf("\r\n Failed to enter a hex integer, please try again");
+        return;
+    }
+    if(start_address < 0 || start_address > 0x7FF)
+    {
+        printf("\r\n Failed to enter an address within range, please try again");
+        return;
+    }
+
+    printf("\r\nEnter a valid ending hex address [0,7FF]: ");
+    int end_address = 0;
+    if (0 > get_hex_value(&end_address))
+    {
+        printf("\r\n Failed to enter a hex integer, please try again");
+        return;
+    }
+    if(end_address < 0 || end_address > 0x7FF)
+    {
+        printf("\r\n Failed to enter an address within range, please try again");
+        return;
+    }
+
+    if (start_address > end_address)
+    {
+        printf("\r\n start_address is greater than end address; please try again");
+        return; 
+    }
+
+    start_address &= ~(0xF);
+    end_address &= ~(0xF);
+    end_address += 0x10;
+
+
+    for(int row_start = start_address; row_start < end_address; row_start+=16)
+    {
+        printf("\r\n%03X: ", row_start);
+        for(int i = 0; i < 16; i++)
+        {
+            int byte = 0;
+            if(0 != eepromreadbyte(row_start + i, &byte))
+            {
+                printf("\r\n Failed to read byte from eeprom, ending command \r\n");
+                return;
+            }
+            printf("%02X ", byte);
+        }
+    }
+}
+
 
 
 void main()
@@ -116,13 +171,16 @@ void main()
             case '?':
                 printf("\r\nw - write a byte");
                 printf("\r\nr - read a byte");
-                printf("\r\n");
+                printf("\r\nx - hex dump");
                 break;
             case 'w':
                 w_command_handler();
                 break;
             case 'r':
                 r_command_handler();
+                break;
+            case 'x':
+                x_command_handler();
                 break;
             default:
                 printf("\r\nUnrecognized command, please enter a valid command char");

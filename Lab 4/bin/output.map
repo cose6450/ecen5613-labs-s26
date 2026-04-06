@@ -67,8 +67,8 @@ CABS                                00000000    00000000 =           0. bytes (A
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   00000100  l_IRAM                          
-C:   000002A6  l_CONST                         
-C:   00001BC1  l_CSEG                          
+C:   0000038C  l_CONST                         
+C:   00001DD8  l_CSEG                          
 C:   00002000  s_HOME                          
 C:   00002034  s_GSINIT0                       
 C:   00002037  s_GSINIT1                       
@@ -79,10 +79,10 @@ C:   0000208D  s_GSFINAL
 C:   0000208D  s_GSINIT                        
 C:   0000208D  s_GSINIT5                       
 C:   00002090  s_CSEG                          
-C:   000020B4  l_XSEG                          
-C:   000020B5  s_XISEG                         
-C:   00003C51  s_CONST                         
-C:   00003EF7  s_XINIT                         
+C:   000020BA  l_XSEG                          
+C:   000020BB  s_XISEG                         
+C:   00003E68  s_CONST                         
+C:   000041F4  s_XINIT                         
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -375,32 +375,32 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-XSEG                                00000001    000020B4 =        8372. bytes (REL,CON,XDATA)
+XSEG                                00000001    000020BA =        8378. bytes (REL,CON,XDATA)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-D:   0000000A  ___sdcc_heap                       _heap
-D:   0000200A  _string_input_buffer               input
-D:   00002014  _character_count                   input
-D:   00002022  _append_to_buffer_list_PARM_2      linked_list
-D:   0000202B  _remove_from_buffer_list_PARM_2    linked_list
-D:   00002044  _ll_get_elem_PARM_2                linked_list
-D:   0000204C  _dataout_PARM_2                    debug
-D:   00002054  _i2c_write_PARM_2                  eeprom
-D:   00002057  _i2c_write_PARM_3                  eeprom
-D:   0000205A  _i2c_read_PARM_2                   eeprom
-D:   0000205D  _i2c_read_PARM_3                   eeprom
-D:   0000205F  _eepromwritebyte_PARM_2            eeprom
-D:   00002062  _eepromreadbyte_PARM_2             eeprom
-D:   00002070  _memset_PARM_2                     _memset
-D:   00002071  _memset_PARM_3                     _memset
-D:   00002073  __gptrput_PARM_2                   _gptrput
-D:   00002074  _vprintf_PARM_2                    vprintf
-D:   00002089  __print_format_PARM_2              printf_large
-D:   0000208C  __print_format_PARM_3              printf_large
-D:   0000208F  __print_format_PARM_4              printf_large
-D:   000020AB  __mulint_PARM_2                    _mulint
-D:   000020AD  ___sdcc_heap_free                  malloc
+D:   00000010  ___sdcc_heap                       _heap
+D:   00002010  _string_input_buffer               input
+D:   0000201A  _character_count                   input
+D:   00002028  _append_to_buffer_list_PARM_2      linked_list
+D:   00002031  _remove_from_buffer_list_PARM_2    linked_list
+D:   0000204A  _ll_get_elem_PARM_2                linked_list
+D:   00002052  _dataout_PARM_2                    debug
+D:   0000205A  _i2c_write_PARM_2                  eeprom
+D:   0000205D  _i2c_write_PARM_3                  eeprom
+D:   00002060  _i2c_read_PARM_2                   eeprom
+D:   00002063  _i2c_read_PARM_3                   eeprom
+D:   00002065  _eepromwritebyte_PARM_2            eeprom
+D:   00002068  _eepromreadbyte_PARM_2             eeprom
+D:   00002076  _memset_PARM_2                     _memset
+D:   00002077  _memset_PARM_3                     _memset
+D:   00002079  __gptrput_PARM_2                   _gptrput
+D:   0000207A  _vprintf_PARM_2                    vprintf
+D:   0000208F  __print_format_PARM_2              printf_large
+D:   00002092  __print_format_PARM_3              printf_large
+D:   00002095  __print_format_PARM_4              printf_large
+D:   000020B1  __mulint_PARM_2                    _mulint
+D:   000020B3  ___sdcc_heap_free                  malloc
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 13.
 Hexadecimal  [32-Bits]
@@ -471,56 +471,58 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                00002090    00001BC1 =        7105. bytes (REL,CON,CODE)
+CSEG                                00002090    00001DD8 =        7640. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   00002090  __sdcc_external_startup            main
 C:   00002094  _w_command_handler                 main
-C:   000021DC  _r_command_handler                 main
-C:   000022A0  _print_dashed_line                 main
-C:   000022B6  _main                              main
-C:   0000236F  _putchar                           my_serial
-C:   0000238E  _getchar                           my_serial
-C:   0000239C  _get_input_buffer                  input
-C:   000023A3  _get_string                        input
-C:   000024D7  _get_next_input_char               input
-C:   000024FA  _get_hex_value                     input
-C:   00002647  _get_char_count                    input
-C:   00002653  _reset_char_count                  input
-C:   0000265B  _append_to_buffer_list             linked_list
-C:   00002741  _remove_from_buffer_list           linked_list
-C:   000028F3  _free_all_elems_from_list          linked_list
-C:   00002A14  _ll_length                         linked_list
-C:   00002A9F  _ll_get_elem                       linked_list
-C:   00002B3B  _dataout                           debug
-C:   00002B58  _i2c_init                          eeprom
-C:   00002C1B  _i2c_write                         eeprom
-C:   00002CBF  _i2c_read                          eeprom
-C:   00002D2B  _eeprom_init                       eeprom
-C:   00002D2E  _eepromwritebyte                   eeprom
-C:   00002DAF  _eepromreadbyte                    eeprom
-C:   00002E5C  _free                              free
-C:   00002FB3  _memset                            _memset
-C:   00002FDB  __gptrput                          _gptrput
-C:   00003005  _vprintf                           vprintf
-C:   00003044  _printf                            vprintf
-C:   0000314A  __print_format                     printf_large
-C:   00003A58  _strlen                            _strlen
-C:   00003A70  __mulint                           _mulint
-C:   00003A90  ___sdcc_heap_init                  malloc
-C:   00003ACC  _malloc                            malloc
-C:   00003C35  __gptrget                          _gptrget
+C:   000021BD  _r_command_handler                 main
+C:   00002281  _print_dashed_line                 main
+C:   00002297  _x_command_handler                 main
+C:   000024C3  _main                              main
+C:   00002586  _putchar                           my_serial
+C:   000025A5  _getchar                           my_serial
+C:   000025B3  _get_input_buffer                  input
+C:   000025BA  _get_string                        input
+C:   000026EE  _get_next_input_char               input
+C:   00002711  _get_hex_value                     input
+C:   0000285E  _get_char_count                    input
+C:   0000286A  _reset_char_count                  input
+C:   00002872  _append_to_buffer_list             linked_list
+C:   00002958  _remove_from_buffer_list           linked_list
+C:   00002B0A  _free_all_elems_from_list          linked_list
+C:   00002C2B  _ll_length                         linked_list
+C:   00002CB6  _ll_get_elem                       linked_list
+C:   00002D52  _dataout                           debug
+C:   00002D6F  _i2c_init                          eeprom
+C:   00002E32  _i2c_write                         eeprom
+C:   00002ED6  _i2c_read                          eeprom
+C:   00002F42  _eeprom_init                       eeprom
+C:   00002F45  _eepromwritebyte                   eeprom
+C:   00002FC6  _eepromreadbyte                    eeprom
+C:   00003073  _free                              free
+C:   000031CA  _memset                            _memset
+C:   000031F2  __gptrput                          _gptrput
+C:   0000321C  _vprintf                           vprintf
+C:   0000325B  _printf                            vprintf
+C:   00003361  __print_format                     printf_large
+C:   00003C6F  _strlen                            _strlen
+C:   00003C87  __mulint                           _mulint
+C:   00003CA7  ___sdcc_heap_init                  malloc
+C:   00003CE3  _malloc                            malloc
+C:   00003E4C  __gptrget                          _gptrget
+
 ASxxxx Linker V03.00 + NoICE + sdld,  page 20.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               00003C51    000002A6 =         678. bytes (REL,CON,CODE)
+CONST                               00003E68    0000038C =         908. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   00003EEA  ___sdcc_heap_size                  _heap
+C:   000041E7  ___sdcc_heap_size                  _heap
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 21.
 

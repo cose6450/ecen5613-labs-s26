@@ -457,38 +457,38 @@
                                     457 ; external ram data
                                     458 ;--------------------------------------------------------
                                     459 	.area XSEG    (XDATA)
-      00204F                        460 _i2c_byte_out_b_65536_5:
-      00204F                        461 	.ds 1
-      002050                        462 _i2c_byte_in_last_65536_9:
-      002050                        463 	.ds 1
-      002051                        464 _i2c_byte_in_b_65536_10:
-      002051                        465 	.ds 1
-      002052                        466 _i2c_begin_PARM_2:
-      002052                        467 	.ds 1
-      002053                        468 _i2c_begin_addr_65536_14:
-      002053                        469 	.ds 1
-      002054                        470 _i2c_write_PARM_2:
-      002054                        471 	.ds 3
-      002057                        472 _i2c_write_PARM_3:
-      002057                        473 	.ds 1
-      002058                        474 _i2c_write_addr_65536_16:
-      002058                        475 	.ds 1
-      002059                        476 _i2c_write_rc_65536_17:
-      002059                        477 	.ds 1
-      00205A                        478 _i2c_read_PARM_2:
-      00205A                        479 	.ds 3
-      00205D                        480 _i2c_read_PARM_3:
-      00205D                        481 	.ds 1
-      00205E                        482 _i2c_read_addr_65536_21:
-      00205E                        483 	.ds 1
-      00205F                        484 _eepromwritebyte_PARM_2:
-      00205F                        485 	.ds 1
-      002060                        486 _eepromwritebyte_addr_65536_26:
-      002060                        487 	.ds 2
-      002062                        488 _eepromreadbyte_PARM_2:
-      002062                        489 	.ds 3
-      002065                        490 _eepromreadbyte_addr_65536_33:
-      002065                        491 	.ds 2
+      002055                        460 _i2c_byte_out_b_65536_5:
+      002055                        461 	.ds 1
+      002056                        462 _i2c_byte_in_last_65536_9:
+      002056                        463 	.ds 1
+      002057                        464 _i2c_byte_in_b_65536_10:
+      002057                        465 	.ds 1
+      002058                        466 _i2c_begin_PARM_2:
+      002058                        467 	.ds 1
+      002059                        468 _i2c_begin_addr_65536_14:
+      002059                        469 	.ds 1
+      00205A                        470 _i2c_write_PARM_2:
+      00205A                        471 	.ds 3
+      00205D                        472 _i2c_write_PARM_3:
+      00205D                        473 	.ds 1
+      00205E                        474 _i2c_write_addr_65536_16:
+      00205E                        475 	.ds 1
+      00205F                        476 _i2c_write_rc_65536_17:
+      00205F                        477 	.ds 1
+      002060                        478 _i2c_read_PARM_2:
+      002060                        479 	.ds 3
+      002063                        480 _i2c_read_PARM_3:
+      002063                        481 	.ds 1
+      002064                        482 _i2c_read_addr_65536_21:
+      002064                        483 	.ds 1
+      002065                        484 _eepromwritebyte_PARM_2:
+      002065                        485 	.ds 1
+      002066                        486 _eepromwritebyte_addr_65536_26:
+      002066                        487 	.ds 2
+      002068                        488 _eepromreadbyte_PARM_2:
+      002068                        489 	.ds 3
+      00206B                        490 _eepromreadbyte_addr_65536_33:
+      00206B                        491 	.ds 2
                                     492 ;--------------------------------------------------------
                                     493 ; absolute external ram data
                                     494 ;--------------------------------------------------------
@@ -530,7 +530,7 @@
                                     530 ;	-----------------------------------------
                                     531 ;	 function i2c_init
                                     532 ;	-----------------------------------------
-      002B58                        533 _i2c_init:
+      002D6F                        533 _i2c_init:
                            000007   534 	ar7 = 0x07
                            000006   535 	ar6 = 0x06
                            000005   536 	ar5 = 0x05
@@ -541,12 +541,12 @@
                            000000   541 	ar0 = 0x00
                                     542 ;	src/eeprom.c:35: SDA_HIGH();
                                     543 ;	assignBit
-      002B58 D2 97            [12]  544 	setb	_P1_7
+      002D6F D2 97            [12]  544 	setb	_P1_7
                                     545 ;	src/eeprom.c:36: SCL_HIGH();
                                     546 ;	assignBit
-      002B5A D2 96            [12]  547 	setb	_P1_6
+      002D71 D2 96            [12]  547 	setb	_P1_6
                                     548 ;	src/eeprom.c:37: }
-      002B5C 22               [24]  549 	ret
+      002D73 22               [24]  549 	ret
                                     550 ;------------------------------------------------------------
                                     551 ;Allocation info for local variables in function 'i2c_byte_out'
                                     552 ;------------------------------------------------------------
@@ -557,72 +557,72 @@
                                     557 ;	-----------------------------------------
                                     558 ;	 function i2c_byte_out
                                     559 ;	-----------------------------------------
-      002B5D                        560 _i2c_byte_out:
-      002B5D E5 82            [12]  561 	mov	a,dpl
-      002B5F 90 20 4F         [24]  562 	mov	dptr,#_i2c_byte_out_b_65536_5
-      002B62 F0               [24]  563 	movx	@dptr,a
+      002D74                        560 _i2c_byte_out:
+      002D74 E5 82            [12]  561 	mov	a,dpl
+      002D76 90 20 55         [24]  562 	mov	dptr,#_i2c_byte_out_b_65536_5
+      002D79 F0               [24]  563 	movx	@dptr,a
                                     564 ;	src/eeprom.c:55: for (i = 0; i < 8; i++) {
-      002B63 7F 00            [12]  565 	mov	r7,#0x00
-      002B65                        566 00102$:
+      002D7A 7F 00            [12]  565 	mov	r7,#0x00
+      002D7C                        566 00102$:
                                     567 ;	src/eeprom.c:56: (b & 0x80)? SDA_HIGH(): SDA_LOW();
-      002B65 90 20 4F         [24]  568 	mov	dptr,#_i2c_byte_out_b_65536_5
-      002B68 E0               [24]  569 	movx	a,@dptr
-      002B69 30 E7 06         [24]  570 	jnb	acc.7,00106$
+      002D7C 90 20 55         [24]  568 	mov	dptr,#_i2c_byte_out_b_65536_5
+      002D7F E0               [24]  569 	movx	a,@dptr
+      002D80 30 E7 06         [24]  570 	jnb	acc.7,00106$
                                     571 ;	assignBit
-      002B6C D2 97            [12]  572 	setb	_P1_7
-      002B6E A2 97            [12]  573 	mov	c,_P1_7
-      002B70 80 04            [24]  574 	sjmp	00107$
-      002B72                        575 00106$:
+      002D83 D2 97            [12]  572 	setb	_P1_7
+      002D85 A2 97            [12]  573 	mov	c,_P1_7
+      002D87 80 04            [24]  574 	sjmp	00107$
+      002D89                        575 00106$:
                                     576 ;	assignBit
-      002B72 C2 97            [12]  577 	clr	_P1_7
-      002B74 A2 97            [12]  578 	mov	c,_P1_7
-      002B76                        579 00107$:
+      002D89 C2 97            [12]  577 	clr	_P1_7
+      002D8B A2 97            [12]  578 	mov	c,_P1_7
+      002D8D                        579 00107$:
                                     580 ;	src/eeprom.c:57: SCL_HIGH();
                                     581 ;	assignBit
-      002B76 D2 96            [12]  582 	setb	_P1_6
+      002D8D D2 96            [12]  582 	setb	_P1_6
                                     583 ;	src/eeprom.c:59: SCL_LOW();
                                     584 ;	assignBit
-      002B78 C2 96            [12]  585 	clr	_P1_6
+      002D8F C2 96            [12]  585 	clr	_P1_6
                                     586 ;	src/eeprom.c:60: b <<= 1;
-      002B7A 90 20 4F         [24]  587 	mov	dptr,#_i2c_byte_out_b_65536_5
-      002B7D E0               [24]  588 	movx	a,@dptr
-      002B7E 25 E0            [12]  589 	add	a,acc
-      002B80 F0               [24]  590 	movx	@dptr,a
+      002D91 90 20 55         [24]  587 	mov	dptr,#_i2c_byte_out_b_65536_5
+      002D94 E0               [24]  588 	movx	a,@dptr
+      002D95 25 E0            [12]  589 	add	a,acc
+      002D97 F0               [24]  590 	movx	@dptr,a
                                     591 ;	src/eeprom.c:55: for (i = 0; i < 8; i++) {
-      002B81 0F               [12]  592 	inc	r7
-      002B82 BF 08 00         [24]  593 	cjne	r7,#0x08,00128$
-      002B85                        594 00128$:
-      002B85 40 DE            [24]  595 	jc	00102$
+      002D98 0F               [12]  592 	inc	r7
+      002D99 BF 08 00         [24]  593 	cjne	r7,#0x08,00128$
+      002D9C                        594 00128$:
+      002D9C 40 DE            [24]  595 	jc	00102$
                                     596 ;	src/eeprom.c:65: SDA_HIGH(); /* pull up SDA for read */
                                     597 ;	assignBit
-      002B87 D2 97            [12]  598 	setb	_P1_7
+      002D9E D2 97            [12]  598 	setb	_P1_7
                                     599 ;	src/eeprom.c:66: SCL_HIGH();
                                     600 ;	assignBit
-      002B89 D2 96            [12]  601 	setb	_P1_6
+      002DA0 D2 96            [12]  601 	setb	_P1_6
                                     602 ;	src/eeprom.c:68: i = SDA_READ(); /* read ack/nack */
-      002B8B A2 97            [12]  603 	mov	c,_P1_7
-      002B8D E4               [12]  604 	clr	a
-      002B8E 33               [12]  605 	rlc	a
-      002B8F FF               [12]  606 	mov	r7,a
+      002DA2 A2 97            [12]  603 	mov	c,_P1_7
+      002DA4 E4               [12]  604 	clr	a
+      002DA5 33               [12]  605 	rlc	a
+      002DA6 FF               [12]  606 	mov	r7,a
                                     607 ;	src/eeprom.c:71: SCL_LOW();
                                     608 ;	assignBit
-      002B90 C2 96            [12]  609 	clr	_P1_6
+      002DA7 C2 96            [12]  609 	clr	_P1_6
                                     610 ;	src/eeprom.c:72: SDA_LOW();
                                     611 ;	assignBit
-      002B92 C2 97            [12]  612 	clr	_P1_7
+      002DA9 C2 97            [12]  612 	clr	_P1_7
                                     613 ;	src/eeprom.c:75: return i? 0: 1; /* 1:ack, 0:nack */
-      002B94 EF               [12]  614 	mov	a,r7
-      002B95 60 06            [24]  615 	jz	00108$
-      002B97 7E 00            [12]  616 	mov	r6,#0x00
-      002B99 7F 00            [12]  617 	mov	r7,#0x00
-      002B9B 80 04            [24]  618 	sjmp	00109$
-      002B9D                        619 00108$:
-      002B9D 7E 01            [12]  620 	mov	r6,#0x01
-      002B9F 7F 00            [12]  621 	mov	r7,#0x00
-      002BA1                        622 00109$:
-      002BA1 8E 82            [24]  623 	mov	dpl,r6
+      002DAB EF               [12]  614 	mov	a,r7
+      002DAC 60 06            [24]  615 	jz	00108$
+      002DAE 7E 00            [12]  616 	mov	r6,#0x00
+      002DB0 7F 00            [12]  617 	mov	r7,#0x00
+      002DB2 80 04            [24]  618 	sjmp	00109$
+      002DB4                        619 00108$:
+      002DB4 7E 01            [12]  620 	mov	r6,#0x01
+      002DB6 7F 00            [12]  621 	mov	r7,#0x00
+      002DB8                        622 00109$:
+      002DB8 8E 82            [24]  623 	mov	dpl,r6
                                     624 ;	src/eeprom.c:76: }
-      002BA3 22               [24]  625 	ret
+      002DBA 22               [24]  625 	ret
                                     626 ;------------------------------------------------------------
                                     627 ;Allocation info for local variables in function 'i2c_byte_in'
                                     628 ;------------------------------------------------------------
@@ -634,71 +634,71 @@
                                     634 ;	-----------------------------------------
                                     635 ;	 function i2c_byte_in
                                     636 ;	-----------------------------------------
-      002BA4                        637 _i2c_byte_in:
-      002BA4 E5 82            [12]  638 	mov	a,dpl
-      002BA6 90 20 50         [24]  639 	mov	dptr,#_i2c_byte_in_last_65536_9
-      002BA9 F0               [24]  640 	movx	@dptr,a
+      002DBB                        637 _i2c_byte_in:
+      002DBB E5 82            [12]  638 	mov	a,dpl
+      002DBD 90 20 56         [24]  639 	mov	dptr,#_i2c_byte_in_last_65536_9
+      002DC0 F0               [24]  640 	movx	@dptr,a
                                     641 ;	src/eeprom.c:80: uint8_t b = 0;
-      002BAA 90 20 51         [24]  642 	mov	dptr,#_i2c_byte_in_b_65536_10
-      002BAD E4               [12]  643 	clr	a
-      002BAE F0               [24]  644 	movx	@dptr,a
+      002DC1 90 20 57         [24]  642 	mov	dptr,#_i2c_byte_in_b_65536_10
+      002DC4 E4               [12]  643 	clr	a
+      002DC5 F0               [24]  644 	movx	@dptr,a
                                     645 ;	src/eeprom.c:82: SDA_HIGH(); /* pull up for input */
                                     646 ;	assignBit
-      002BAF D2 97            [12]  647 	setb	_P1_7
+      002DC6 D2 97            [12]  647 	setb	_P1_7
                                     648 ;	src/eeprom.c:83: for (i = 0; i < 8; i++) {
-      002BB1 7F 00            [12]  649 	mov	r7,#0x00
-      002BB3                        650 00104$:
+      002DC8 7F 00            [12]  649 	mov	r7,#0x00
+      002DCA                        650 00104$:
                                     651 ;	src/eeprom.c:85: SCL_HIGH();
                                     652 ;	assignBit
-      002BB3 D2 96            [12]  653 	setb	_P1_6
+      002DCA D2 96            [12]  653 	setb	_P1_6
                                     654 ;	src/eeprom.c:86: b <<= 1;
-      002BB5 90 20 51         [24]  655 	mov	dptr,#_i2c_byte_in_b_65536_10
-      002BB8 E0               [24]  656 	movx	a,@dptr
-      002BB9 25 E0            [12]  657 	add	a,acc
-      002BBB F0               [24]  658 	movx	@dptr,a
+      002DCC 90 20 57         [24]  655 	mov	dptr,#_i2c_byte_in_b_65536_10
+      002DCF E0               [24]  656 	movx	a,@dptr
+      002DD0 25 E0            [12]  657 	add	a,acc
+      002DD2 F0               [24]  658 	movx	@dptr,a
                                     659 ;	src/eeprom.c:87: if (SDA_READ()) b |= 1;
-      002BBC 30 97 08         [24]  660 	jnb	_P1_7,00102$
-      002BBF 90 20 51         [24]  661 	mov	dptr,#_i2c_byte_in_b_65536_10
-      002BC2 E0               [24]  662 	movx	a,@dptr
-      002BC3 43 E0 01         [24]  663 	orl	acc,#0x01
-      002BC6 F0               [24]  664 	movx	@dptr,a
-      002BC7                        665 00102$:
+      002DD3 30 97 08         [24]  660 	jnb	_P1_7,00102$
+      002DD6 90 20 57         [24]  661 	mov	dptr,#_i2c_byte_in_b_65536_10
+      002DD9 E0               [24]  662 	movx	a,@dptr
+      002DDA 43 E0 01         [24]  663 	orl	acc,#0x01
+      002DDD F0               [24]  664 	movx	@dptr,a
+      002DDE                        665 00102$:
                                     666 ;	src/eeprom.c:89: SCL_LOW();
                                     667 ;	assignBit
-      002BC7 C2 96            [12]  668 	clr	_P1_6
+      002DDE C2 96            [12]  668 	clr	_P1_6
                                     669 ;	src/eeprom.c:83: for (i = 0; i < 8; i++) {
-      002BC9 0F               [12]  670 	inc	r7
-      002BCA BF 08 00         [24]  671 	cjne	r7,#0x08,00128$
-      002BCD                        672 00128$:
-      002BCD 40 E4            [24]  673 	jc	00104$
+      002DE0 0F               [12]  670 	inc	r7
+      002DE1 BF 08 00         [24]  671 	cjne	r7,#0x08,00128$
+      002DE4                        672 00128$:
+      002DE4 40 E4            [24]  673 	jc	00104$
                                     674 ;	src/eeprom.c:91: SCL_HIGH();
                                     675 ;	assignBit
-      002BCF D2 96            [12]  676 	setb	_P1_6
+      002DE6 D2 96            [12]  676 	setb	_P1_6
                                     677 ;	src/eeprom.c:93: last? SDA_HIGH(): SDA_LOW(); /* send nack or ack */
-      002BD1 90 20 50         [24]  678 	mov	dptr,#_i2c_byte_in_last_65536_9
-      002BD4 E0               [24]  679 	movx	a,@dptr
-      002BD5 60 06            [24]  680 	jz	00108$
+      002DE8 90 20 56         [24]  678 	mov	dptr,#_i2c_byte_in_last_65536_9
+      002DEB E0               [24]  679 	movx	a,@dptr
+      002DEC 60 06            [24]  680 	jz	00108$
                                     681 ;	assignBit
-      002BD7 D2 97            [12]  682 	setb	_P1_7
-      002BD9 A2 97            [12]  683 	mov	c,_P1_7
-      002BDB 80 04            [24]  684 	sjmp	00109$
-      002BDD                        685 00108$:
+      002DEE D2 97            [12]  682 	setb	_P1_7
+      002DF0 A2 97            [12]  683 	mov	c,_P1_7
+      002DF2 80 04            [24]  684 	sjmp	00109$
+      002DF4                        685 00108$:
                                     686 ;	assignBit
-      002BDD C2 97            [12]  687 	clr	_P1_7
-      002BDF A2 97            [12]  688 	mov	c,_P1_7
-      002BE1                        689 00109$:
+      002DF4 C2 97            [12]  687 	clr	_P1_7
+      002DF6 A2 97            [12]  688 	mov	c,_P1_7
+      002DF8                        689 00109$:
                                     690 ;	src/eeprom.c:95: SCL_LOW(); 
                                     691 ;	assignBit
-      002BE1 C2 96            [12]  692 	clr	_P1_6
+      002DF8 C2 96            [12]  692 	clr	_P1_6
                                     693 ;	src/eeprom.c:96: SDA_LOW();
                                     694 ;	assignBit
-      002BE3 C2 97            [12]  695 	clr	_P1_7
+      002DFA C2 97            [12]  695 	clr	_P1_7
                                     696 ;	src/eeprom.c:99: return b;
-      002BE5 90 20 51         [24]  697 	mov	dptr,#_i2c_byte_in_b_65536_10
-      002BE8 E0               [24]  698 	movx	a,@dptr
+      002DFC 90 20 57         [24]  697 	mov	dptr,#_i2c_byte_in_b_65536_10
+      002DFF E0               [24]  698 	movx	a,@dptr
                                     699 ;	src/eeprom.c:100: }
-      002BE9 F5 82            [12]  700 	mov	dpl,a
-      002BEB 22               [24]  701 	ret
+      002E00 F5 82            [12]  700 	mov	dpl,a
+      002E02 22               [24]  701 	ret
                                     702 ;------------------------------------------------------------
                                     703 ;Allocation info for local variables in function 'i2c_end'
                                     704 ;------------------------------------------------------------
@@ -706,15 +706,15 @@
                                     706 ;	-----------------------------------------
                                     707 ;	 function i2c_end
                                     708 ;	-----------------------------------------
-      002BEC                        709 _i2c_end:
+      002E03                        709 _i2c_end:
                                     710 ;	src/eeprom.c:106: SCL_HIGH();
                                     711 ;	assignBit
-      002BEC D2 96            [12]  712 	setb	_P1_6
+      002E03 D2 96            [12]  712 	setb	_P1_6
                                     713 ;	src/eeprom.c:108: SDA_HIGH();
                                     714 ;	assignBit
-      002BEE D2 97            [12]  715 	setb	_P1_7
+      002E05 D2 97            [12]  715 	setb	_P1_7
                                     716 ;	src/eeprom.c:110: }
-      002BF0 22               [24]  717 	ret
+      002E07 22               [24]  717 	ret
                                     718 ;------------------------------------------------------------
                                     719 ;Allocation info for local variables in function 'i2c_begin'
                                     720 ;------------------------------------------------------------
@@ -725,38 +725,38 @@
                                     725 ;	-----------------------------------------
                                     726 ;	 function i2c_begin
                                     727 ;	-----------------------------------------
-      002BF1                        728 _i2c_begin:
-      002BF1 E5 82            [12]  729 	mov	a,dpl
-      002BF3 90 20 53         [24]  730 	mov	dptr,#_i2c_begin_addr_65536_14
-      002BF6 F0               [24]  731 	movx	@dptr,a
+      002E08                        728 _i2c_begin:
+      002E08 E5 82            [12]  729 	mov	a,dpl
+      002E0A 90 20 59         [24]  730 	mov	dptr,#_i2c_begin_addr_65536_14
+      002E0D F0               [24]  731 	movx	@dptr,a
                                     732 ;	src/eeprom.c:115: i2c_init();
-      002BF7 12 2B 58         [24]  733 	lcall	_i2c_init
+      002E0E 12 2D 6F         [24]  733 	lcall	_i2c_init
                                     734 ;	src/eeprom.c:116: SDA_LOW();
                                     735 ;	assignBit
-      002BFA C2 97            [12]  736 	clr	_P1_7
+      002E11 C2 97            [12]  736 	clr	_P1_7
                                     737 ;	src/eeprom.c:118: SCL_LOW();
                                     738 ;	assignBit
-      002BFC C2 96            [12]  739 	clr	_P1_6
+      002E13 C2 96            [12]  739 	clr	_P1_6
                                     740 ;	src/eeprom.c:122: addr <<= 1; /* shift addess */
-      002BFE 90 20 53         [24]  741 	mov	dptr,#_i2c_begin_addr_65536_14
-      002C01 E0               [24]  742 	movx	a,@dptr
-      002C02 25 E0            [12]  743 	add	a,acc
-      002C04 F0               [24]  744 	movx	@dptr,a
+      002E15 90 20 59         [24]  741 	mov	dptr,#_i2c_begin_addr_65536_14
+      002E18 E0               [24]  742 	movx	a,@dptr
+      002E19 25 E0            [12]  743 	add	a,acc
+      002E1B F0               [24]  744 	movx	@dptr,a
                                     745 ;	src/eeprom.c:123: if (rw) addr++; /* read/write */
-      002C05 90 20 52         [24]  746 	mov	dptr,#_i2c_begin_PARM_2
-      002C08 E0               [24]  747 	movx	a,@dptr
-      002C09 60 07            [24]  748 	jz	00102$
-      002C0B 90 20 53         [24]  749 	mov	dptr,#_i2c_begin_addr_65536_14
-      002C0E E0               [24]  750 	movx	a,@dptr
-      002C0F 24 01            [12]  751 	add	a,#0x01
-      002C11 F0               [24]  752 	movx	@dptr,a
-      002C12                        753 00102$:
+      002E1C 90 20 58         [24]  746 	mov	dptr,#_i2c_begin_PARM_2
+      002E1F E0               [24]  747 	movx	a,@dptr
+      002E20 60 07            [24]  748 	jz	00102$
+      002E22 90 20 59         [24]  749 	mov	dptr,#_i2c_begin_addr_65536_14
+      002E25 E0               [24]  750 	movx	a,@dptr
+      002E26 24 01            [12]  751 	add	a,#0x01
+      002E28 F0               [24]  752 	movx	@dptr,a
+      002E29                        753 00102$:
                                     754 ;	src/eeprom.c:126: return i2c_byte_out(addr);
-      002C12 90 20 53         [24]  755 	mov	dptr,#_i2c_begin_addr_65536_14
-      002C15 E0               [24]  756 	movx	a,@dptr
-      002C16 F5 82            [12]  757 	mov	dpl,a
+      002E29 90 20 59         [24]  755 	mov	dptr,#_i2c_begin_addr_65536_14
+      002E2C E0               [24]  756 	movx	a,@dptr
+      002E2D F5 82            [12]  757 	mov	dpl,a
                                     758 ;	src/eeprom.c:127: }
-      002C18 02 2B 5D         [24]  759 	ljmp	_i2c_byte_out
+      002E2F 02 2D 74         [24]  759 	ljmp	_i2c_byte_out
                                     760 ;------------------------------------------------------------
                                     761 ;Allocation info for local variables in function 'i2c_write'
                                     762 ;------------------------------------------------------------
@@ -771,121 +771,121 @@
                                     771 ;	-----------------------------------------
                                     772 ;	 function i2c_write
                                     773 ;	-----------------------------------------
-      002C1B                        774 _i2c_write:
-      002C1B E5 82            [12]  775 	mov	a,dpl
-      002C1D 90 20 58         [24]  776 	mov	dptr,#_i2c_write_addr_65536_16
-      002C20 F0               [24]  777 	movx	@dptr,a
+      002E32                        774 _i2c_write:
+      002E32 E5 82            [12]  775 	mov	a,dpl
+      002E34 90 20 5E         [24]  776 	mov	dptr,#_i2c_write_addr_65536_16
+      002E37 F0               [24]  777 	movx	@dptr,a
                                     778 ;	src/eeprom.c:131: uint8_t n = len;
-      002C21 90 20 57         [24]  779 	mov	dptr,#_i2c_write_PARM_3
-      002C24 E0               [24]  780 	movx	a,@dptr
-      002C25 FF               [12]  781 	mov	r7,a
+      002E38 90 20 5D         [24]  779 	mov	dptr,#_i2c_write_PARM_3
+      002E3B E0               [24]  780 	movx	a,@dptr
+      002E3C FF               [12]  781 	mov	r7,a
                                     782 ;	src/eeprom.c:132: uint8_t rc = i2c_begin(addr, 0); /* start, set addr with WRITE bit */
-      002C26 90 20 58         [24]  783 	mov	dptr,#_i2c_write_addr_65536_16
-      002C29 E0               [24]  784 	movx	a,@dptr
-      002C2A FE               [12]  785 	mov	r6,a
-      002C2B 90 20 52         [24]  786 	mov	dptr,#_i2c_begin_PARM_2
-      002C2E E4               [12]  787 	clr	a
-      002C2F F0               [24]  788 	movx	@dptr,a
-      002C30 8E 82            [24]  789 	mov	dpl,r6
-      002C32 C0 07            [24]  790 	push	ar7
-      002C34 12 2B F1         [24]  791 	lcall	_i2c_begin
-      002C37 AE 82            [24]  792 	mov	r6,dpl
-      002C39 D0 07            [24]  793 	pop	ar7
-      002C3B 90 20 59         [24]  794 	mov	dptr,#_i2c_write_rc_65536_17
-      002C3E EE               [12]  795 	mov	a,r6
-      002C3F F0               [24]  796 	movx	@dptr,a
+      002E3D 90 20 5E         [24]  783 	mov	dptr,#_i2c_write_addr_65536_16
+      002E40 E0               [24]  784 	movx	a,@dptr
+      002E41 FE               [12]  785 	mov	r6,a
+      002E42 90 20 58         [24]  786 	mov	dptr,#_i2c_begin_PARM_2
+      002E45 E4               [12]  787 	clr	a
+      002E46 F0               [24]  788 	movx	@dptr,a
+      002E47 8E 82            [24]  789 	mov	dpl,r6
+      002E49 C0 07            [24]  790 	push	ar7
+      002E4B 12 2E 08         [24]  791 	lcall	_i2c_begin
+      002E4E AE 82            [24]  792 	mov	r6,dpl
+      002E50 D0 07            [24]  793 	pop	ar7
+      002E52 90 20 5F         [24]  794 	mov	dptr,#_i2c_write_rc_65536_17
+      002E55 EE               [12]  795 	mov	a,r6
+      002E56 F0               [24]  796 	movx	@dptr,a
                                     797 ;	src/eeprom.c:133: if (rc) {
-      002C40 EE               [12]  798 	mov	a,r6
-      002C41 60 72            [24]  799 	jz	00108$
+      002E57 EE               [12]  798 	mov	a,r6
+      002E58 60 72            [24]  799 	jz	00108$
                                     800 ;	src/eeprom.c:134: while (n && rc) {
-      002C43 8F 06            [24]  801 	mov	ar6,r7
-      002C45 90 20 54         [24]  802 	mov	dptr,#_i2c_write_PARM_2
-      002C48 E0               [24]  803 	movx	a,@dptr
-      002C49 FB               [12]  804 	mov	r3,a
-      002C4A A3               [24]  805 	inc	dptr
-      002C4B E0               [24]  806 	movx	a,@dptr
-      002C4C FC               [12]  807 	mov	r4,a
-      002C4D A3               [24]  808 	inc	dptr
-      002C4E E0               [24]  809 	movx	a,@dptr
-      002C4F FD               [12]  810 	mov	r5,a
-      002C50                        811 00104$:
-      002C50 EE               [12]  812 	mov	a,r6
-      002C51 60 3A            [24]  813 	jz	00106$
-      002C53 90 20 59         [24]  814 	mov	dptr,#_i2c_write_rc_65536_17
-      002C56 E0               [24]  815 	movx	a,@dptr
-      002C57 60 34            [24]  816 	jz	00106$
+      002E5A 8F 06            [24]  801 	mov	ar6,r7
+      002E5C 90 20 5A         [24]  802 	mov	dptr,#_i2c_write_PARM_2
+      002E5F E0               [24]  803 	movx	a,@dptr
+      002E60 FB               [12]  804 	mov	r3,a
+      002E61 A3               [24]  805 	inc	dptr
+      002E62 E0               [24]  806 	movx	a,@dptr
+      002E63 FC               [12]  807 	mov	r4,a
+      002E64 A3               [24]  808 	inc	dptr
+      002E65 E0               [24]  809 	movx	a,@dptr
+      002E66 FD               [12]  810 	mov	r5,a
+      002E67                        811 00104$:
+      002E67 EE               [12]  812 	mov	a,r6
+      002E68 60 3A            [24]  813 	jz	00106$
+      002E6A 90 20 5F         [24]  814 	mov	dptr,#_i2c_write_rc_65536_17
+      002E6D E0               [24]  815 	movx	a,@dptr
+      002E6E 60 34            [24]  816 	jz	00106$
                                     817 ;	src/eeprom.c:135: b = *p;
-      002C59 8B 82            [24]  818 	mov	dpl,r3
-      002C5B 8C 83            [24]  819 	mov	dph,r4
-      002C5D 8D F0            [24]  820 	mov	b,r5
-      002C5F 12 3C 35         [24]  821 	lcall	__gptrget
+      002E70 8B 82            [24]  818 	mov	dpl,r3
+      002E72 8C 83            [24]  819 	mov	dph,r4
+      002E74 8D F0            [24]  820 	mov	b,r5
+      002E76 12 3E 4C         [24]  821 	lcall	__gptrget
                                     822 ;	src/eeprom.c:136: rc = i2c_byte_out(b); // 0:ack, 1:nack
-      002C62 F5 82            [12]  823 	mov	dpl,a
-      002C64 C0 07            [24]  824 	push	ar7
-      002C66 C0 06            [24]  825 	push	ar6
-      002C68 C0 05            [24]  826 	push	ar5
-      002C6A C0 04            [24]  827 	push	ar4
-      002C6C C0 03            [24]  828 	push	ar3
-      002C6E 12 2B 5D         [24]  829 	lcall	_i2c_byte_out
-      002C71 AA 82            [24]  830 	mov	r2,dpl
-      002C73 D0 03            [24]  831 	pop	ar3
-      002C75 D0 04            [24]  832 	pop	ar4
-      002C77 D0 05            [24]  833 	pop	ar5
-      002C79 D0 06            [24]  834 	pop	ar6
-      002C7B D0 07            [24]  835 	pop	ar7
-      002C7D 90 20 59         [24]  836 	mov	dptr,#_i2c_write_rc_65536_17
-      002C80 EA               [12]  837 	mov	a,r2
-      002C81 F0               [24]  838 	movx	@dptr,a
+      002E79 F5 82            [12]  823 	mov	dpl,a
+      002E7B C0 07            [24]  824 	push	ar7
+      002E7D C0 06            [24]  825 	push	ar6
+      002E7F C0 05            [24]  826 	push	ar5
+      002E81 C0 04            [24]  827 	push	ar4
+      002E83 C0 03            [24]  828 	push	ar3
+      002E85 12 2D 74         [24]  829 	lcall	_i2c_byte_out
+      002E88 AA 82            [24]  830 	mov	r2,dpl
+      002E8A D0 03            [24]  831 	pop	ar3
+      002E8C D0 04            [24]  832 	pop	ar4
+      002E8E D0 05            [24]  833 	pop	ar5
+      002E90 D0 06            [24]  834 	pop	ar6
+      002E92 D0 07            [24]  835 	pop	ar7
+      002E94 90 20 5F         [24]  836 	mov	dptr,#_i2c_write_rc_65536_17
+      002E97 EA               [12]  837 	mov	a,r2
+      002E98 F0               [24]  838 	movx	@dptr,a
                                     839 ;	src/eeprom.c:137: if (rc) { // 
-      002C82 EA               [12]  840 	mov	a,r2
-      002C83 60 CB            [24]  841 	jz	00104$
+      002E99 EA               [12]  840 	mov	a,r2
+      002E9A 60 CB            [24]  841 	jz	00104$
                                     842 ;	src/eeprom.c:138: n--;
-      002C85 1E               [12]  843 	dec	r6
+      002E9C 1E               [12]  843 	dec	r6
                                     844 ;	src/eeprom.c:139: p++;
-      002C86 0B               [12]  845 	inc	r3
-      002C87 BB 00 C6         [24]  846 	cjne	r3,#0x00,00104$
-      002C8A 0C               [12]  847 	inc	r4
-      002C8B 80 C3            [24]  848 	sjmp	00104$
-      002C8D                        849 00106$:
+      002E9D 0B               [12]  845 	inc	r3
+      002E9E BB 00 C6         [24]  846 	cjne	r3,#0x00,00104$
+      002EA1 0C               [12]  847 	inc	r4
+      002EA2 80 C3            [24]  848 	sjmp	00104$
+      002EA4                        849 00106$:
                                     850 ;	src/eeprom.c:142: rc = rc? ((len - n)? 1: 0): 0;
-      002C8D 90 20 59         [24]  851 	mov	dptr,#_i2c_write_rc_65536_17
-      002C90 E0               [24]  852 	movx	a,@dptr
-      002C91 60 19            [24]  853 	jz	00111$
-      002C93 E4               [12]  854 	clr	a
-      002C94 FD               [12]  855 	mov	r5,a
-      002C95 FC               [12]  856 	mov	r4,a
-      002C96 EF               [12]  857 	mov	a,r7
-      002C97 C3               [12]  858 	clr	c
-      002C98 9E               [12]  859 	subb	a,r6
-      002C99 FF               [12]  860 	mov	r7,a
-      002C9A ED               [12]  861 	mov	a,r5
-      002C9B 9C               [12]  862 	subb	a,r4
-      002C9C FD               [12]  863 	mov	r5,a
-      002C9D 4F               [12]  864 	orl	a,r7
-      002C9E 60 06            [24]  865 	jz	00113$
-      002CA0 7E 01            [12]  866 	mov	r6,#0x01
-      002CA2 7F 00            [12]  867 	mov	r7,#0x00
-      002CA4 80 0A            [24]  868 	sjmp	00112$
-      002CA6                        869 00113$:
-      002CA6 7E 00            [12]  870 	mov	r6,#0x00
-      002CA8 7F 00            [12]  871 	mov	r7,#0x00
-      002CAA 80 04            [24]  872 	sjmp	00112$
-      002CAC                        873 00111$:
-      002CAC 7E 00            [12]  874 	mov	r6,#0x00
-      002CAE 7F 00            [12]  875 	mov	r7,#0x00
-      002CB0                        876 00112$:
-      002CB0 90 20 59         [24]  877 	mov	dptr,#_i2c_write_rc_65536_17
-      002CB3 EE               [12]  878 	mov	a,r6
-      002CB4 F0               [24]  879 	movx	@dptr,a
-      002CB5                        880 00108$:
+      002EA4 90 20 5F         [24]  851 	mov	dptr,#_i2c_write_rc_65536_17
+      002EA7 E0               [24]  852 	movx	a,@dptr
+      002EA8 60 19            [24]  853 	jz	00111$
+      002EAA E4               [12]  854 	clr	a
+      002EAB FD               [12]  855 	mov	r5,a
+      002EAC FC               [12]  856 	mov	r4,a
+      002EAD EF               [12]  857 	mov	a,r7
+      002EAE C3               [12]  858 	clr	c
+      002EAF 9E               [12]  859 	subb	a,r6
+      002EB0 FF               [12]  860 	mov	r7,a
+      002EB1 ED               [12]  861 	mov	a,r5
+      002EB2 9C               [12]  862 	subb	a,r4
+      002EB3 FD               [12]  863 	mov	r5,a
+      002EB4 4F               [12]  864 	orl	a,r7
+      002EB5 60 06            [24]  865 	jz	00113$
+      002EB7 7E 01            [12]  866 	mov	r6,#0x01
+      002EB9 7F 00            [12]  867 	mov	r7,#0x00
+      002EBB 80 0A            [24]  868 	sjmp	00112$
+      002EBD                        869 00113$:
+      002EBD 7E 00            [12]  870 	mov	r6,#0x00
+      002EBF 7F 00            [12]  871 	mov	r7,#0x00
+      002EC1 80 04            [24]  872 	sjmp	00112$
+      002EC3                        873 00111$:
+      002EC3 7E 00            [12]  874 	mov	r6,#0x00
+      002EC5 7F 00            [12]  875 	mov	r7,#0x00
+      002EC7                        876 00112$:
+      002EC7 90 20 5F         [24]  877 	mov	dptr,#_i2c_write_rc_65536_17
+      002ECA EE               [12]  878 	mov	a,r6
+      002ECB F0               [24]  879 	movx	@dptr,a
+      002ECC                        880 00108$:
                                     881 ;	src/eeprom.c:144: i2c_end();
-      002CB5 12 2B EC         [24]  882 	lcall	_i2c_end
+      002ECC 12 2E 03         [24]  882 	lcall	_i2c_end
                                     883 ;	src/eeprom.c:146: return rc;
-      002CB8 90 20 59         [24]  884 	mov	dptr,#_i2c_write_rc_65536_17
-      002CBB E0               [24]  885 	movx	a,@dptr
+      002ECF 90 20 5F         [24]  884 	mov	dptr,#_i2c_write_rc_65536_17
+      002ED2 E0               [24]  885 	movx	a,@dptr
                                     886 ;	src/eeprom.c:147: }
-      002CBC F5 82            [12]  887 	mov	dpl,a
-      002CBE 22               [24]  888 	ret
+      002ED3 F5 82            [12]  887 	mov	dpl,a
+      002ED5 22               [24]  888 	ret
                                     889 ;------------------------------------------------------------
                                     890 ;Allocation info for local variables in function 'i2c_read'
                                     891 ;------------------------------------------------------------
@@ -898,78 +898,78 @@
                                     898 ;	-----------------------------------------
                                     899 ;	 function i2c_read
                                     900 ;	-----------------------------------------
-      002CBF                        901 _i2c_read:
-      002CBF E5 82            [12]  902 	mov	a,dpl
-      002CC1 90 20 5E         [24]  903 	mov	dptr,#_i2c_read_addr_65536_21
-      002CC4 F0               [24]  904 	movx	@dptr,a
+      002ED6                        901 _i2c_read:
+      002ED6 E5 82            [12]  902 	mov	a,dpl
+      002ED8 90 20 64         [24]  903 	mov	dptr,#_i2c_read_addr_65536_21
+      002EDB F0               [24]  904 	movx	@dptr,a
                                     905 ;	src/eeprom.c:150: uint8_t rc = i2c_begin(addr, 1); /* start, set addr with READ bit */
-      002CC5 E0               [24]  906 	movx	a,@dptr
-      002CC6 FF               [12]  907 	mov	r7,a
-      002CC7 90 20 52         [24]  908 	mov	dptr,#_i2c_begin_PARM_2
-      002CCA 74 01            [12]  909 	mov	a,#0x01
-      002CCC F0               [24]  910 	movx	@dptr,a
-      002CCD 8F 82            [24]  911 	mov	dpl,r7
-      002CCF 12 2B F1         [24]  912 	lcall	_i2c_begin
+      002EDC E0               [24]  906 	movx	a,@dptr
+      002EDD FF               [12]  907 	mov	r7,a
+      002EDE 90 20 58         [24]  908 	mov	dptr,#_i2c_begin_PARM_2
+      002EE1 74 01            [12]  909 	mov	a,#0x01
+      002EE3 F0               [24]  910 	movx	@dptr,a
+      002EE4 8F 82            [24]  911 	mov	dpl,r7
+      002EE6 12 2E 08         [24]  912 	lcall	_i2c_begin
                                     913 ;	src/eeprom.c:151: if (rc) {
-      002CD2 E5 82            [12]  914 	mov	a,dpl
-      002CD4 FF               [12]  915 	mov	r7,a
-      002CD5 60 4A            [24]  916 	jz	00105$
+      002EE9 E5 82            [12]  914 	mov	a,dpl
+      002EEB FF               [12]  915 	mov	r7,a
+      002EEC 60 4A            [24]  916 	jz	00105$
                                     917 ;	src/eeprom.c:152: while (len--) {
-      002CD7 90 20 5A         [24]  918 	mov	dptr,#_i2c_read_PARM_2
-      002CDA E0               [24]  919 	movx	a,@dptr
-      002CDB FC               [12]  920 	mov	r4,a
-      002CDC A3               [24]  921 	inc	dptr
-      002CDD E0               [24]  922 	movx	a,@dptr
-      002CDE FD               [12]  923 	mov	r5,a
-      002CDF A3               [24]  924 	inc	dptr
-      002CE0 E0               [24]  925 	movx	a,@dptr
-      002CE1 FE               [12]  926 	mov	r6,a
-      002CE2 90 20 5D         [24]  927 	mov	dptr,#_i2c_read_PARM_3
-      002CE5 E0               [24]  928 	movx	a,@dptr
-      002CE6 FB               [12]  929 	mov	r3,a
-      002CE7                        930 00101$:
-      002CE7 8B 02            [24]  931 	mov	ar2,r3
-      002CE9 1B               [12]  932 	dec	r3
-      002CEA EA               [12]  933 	mov	a,r2
-      002CEB 60 34            [24]  934 	jz	00105$
+      002EEE 90 20 60         [24]  918 	mov	dptr,#_i2c_read_PARM_2
+      002EF1 E0               [24]  919 	movx	a,@dptr
+      002EF2 FC               [12]  920 	mov	r4,a
+      002EF3 A3               [24]  921 	inc	dptr
+      002EF4 E0               [24]  922 	movx	a,@dptr
+      002EF5 FD               [12]  923 	mov	r5,a
+      002EF6 A3               [24]  924 	inc	dptr
+      002EF7 E0               [24]  925 	movx	a,@dptr
+      002EF8 FE               [12]  926 	mov	r6,a
+      002EF9 90 20 63         [24]  927 	mov	dptr,#_i2c_read_PARM_3
+      002EFC E0               [24]  928 	movx	a,@dptr
+      002EFD FB               [12]  929 	mov	r3,a
+      002EFE                        930 00101$:
+      002EFE 8B 02            [24]  931 	mov	ar2,r3
+      002F00 1B               [12]  932 	dec	r3
+      002F01 EA               [12]  933 	mov	a,r2
+      002F02 60 34            [24]  934 	jz	00105$
                                     935 ;	src/eeprom.c:153: *p++ = i2c_byte_in(len == 0);
-      002CED EB               [12]  936 	mov	a,r3
-      002CEE B4 01 00         [24]  937 	cjne	a,#0x01,00122$
-      002CF1                        938 00122$:
-      002CF1 92 01            [24]  939 	mov  _i2c_read_sloc0_1_0,c
-      002CF3 E4               [12]  940 	clr	a
-      002CF4 33               [12]  941 	rlc	a
-      002CF5 F5 82            [12]  942 	mov	dpl,a
-      002CF7 C0 07            [24]  943 	push	ar7
-      002CF9 C0 06            [24]  944 	push	ar6
-      002CFB C0 05            [24]  945 	push	ar5
-      002CFD C0 04            [24]  946 	push	ar4
-      002CFF C0 03            [24]  947 	push	ar3
-      002D01 12 2B A4         [24]  948 	lcall	_i2c_byte_in
-      002D04 AA 82            [24]  949 	mov	r2,dpl
-      002D06 D0 03            [24]  950 	pop	ar3
-      002D08 D0 04            [24]  951 	pop	ar4
-      002D0A D0 05            [24]  952 	pop	ar5
-      002D0C D0 06            [24]  953 	pop	ar6
-      002D0E D0 07            [24]  954 	pop	ar7
-      002D10 8C 82            [24]  955 	mov	dpl,r4
-      002D12 8D 83            [24]  956 	mov	dph,r5
-      002D14 8E F0            [24]  957 	mov	b,r6
-      002D16 EA               [12]  958 	mov	a,r2
-      002D17 12 2F DB         [24]  959 	lcall	__gptrput
-      002D1A A3               [24]  960 	inc	dptr
-      002D1B AC 82            [24]  961 	mov	r4,dpl
-      002D1D AD 83            [24]  962 	mov	r5,dph
-      002D1F 80 C6            [24]  963 	sjmp	00101$
-      002D21                        964 00105$:
+      002F04 EB               [12]  936 	mov	a,r3
+      002F05 B4 01 00         [24]  937 	cjne	a,#0x01,00122$
+      002F08                        938 00122$:
+      002F08 92 01            [24]  939 	mov  _i2c_read_sloc0_1_0,c
+      002F0A E4               [12]  940 	clr	a
+      002F0B 33               [12]  941 	rlc	a
+      002F0C F5 82            [12]  942 	mov	dpl,a
+      002F0E C0 07            [24]  943 	push	ar7
+      002F10 C0 06            [24]  944 	push	ar6
+      002F12 C0 05            [24]  945 	push	ar5
+      002F14 C0 04            [24]  946 	push	ar4
+      002F16 C0 03            [24]  947 	push	ar3
+      002F18 12 2D BB         [24]  948 	lcall	_i2c_byte_in
+      002F1B AA 82            [24]  949 	mov	r2,dpl
+      002F1D D0 03            [24]  950 	pop	ar3
+      002F1F D0 04            [24]  951 	pop	ar4
+      002F21 D0 05            [24]  952 	pop	ar5
+      002F23 D0 06            [24]  953 	pop	ar6
+      002F25 D0 07            [24]  954 	pop	ar7
+      002F27 8C 82            [24]  955 	mov	dpl,r4
+      002F29 8D 83            [24]  956 	mov	dph,r5
+      002F2B 8E F0            [24]  957 	mov	b,r6
+      002F2D EA               [12]  958 	mov	a,r2
+      002F2E 12 31 F2         [24]  959 	lcall	__gptrput
+      002F31 A3               [24]  960 	inc	dptr
+      002F32 AC 82            [24]  961 	mov	r4,dpl
+      002F34 AD 83            [24]  962 	mov	r5,dph
+      002F36 80 C6            [24]  963 	sjmp	00101$
+      002F38                        964 00105$:
                                     965 ;	src/eeprom.c:156: i2c_end();
-      002D21 C0 07            [24]  966 	push	ar7
-      002D23 12 2B EC         [24]  967 	lcall	_i2c_end
-      002D26 D0 07            [24]  968 	pop	ar7
+      002F38 C0 07            [24]  966 	push	ar7
+      002F3A 12 2E 03         [24]  967 	lcall	_i2c_end
+      002F3D D0 07            [24]  968 	pop	ar7
                                     969 ;	src/eeprom.c:157: return rc;
-      002D28 8F 82            [24]  970 	mov	dpl,r7
+      002F3F 8F 82            [24]  970 	mov	dpl,r7
                                     971 ;	src/eeprom.c:158: }
-      002D2A 22               [24]  972 	ret
+      002F41 22               [24]  972 	ret
                                     973 ;------------------------------------------------------------
                                     974 ;Allocation info for local variables in function 'eeprom_init'
                                     975 ;------------------------------------------------------------
@@ -977,10 +977,10 @@
                                     977 ;	-----------------------------------------
                                     978 ;	 function eeprom_init
                                     979 ;	-----------------------------------------
-      002D2B                        980 _eeprom_init:
+      002F42                        980 _eeprom_init:
                                     981 ;	src/eeprom.c:165: i2c_init(); 
                                     982 ;	src/eeprom.c:166: }
-      002D2B 02 2B 58         [24]  983 	ljmp	_i2c_init
+      002F42 02 2D 6F         [24]  983 	ljmp	_i2c_init
                                     984 ;------------------------------------------------------------
                                     985 ;Allocation info for local variables in function 'eepromwritebyte'
                                     986 ;------------------------------------------------------------
@@ -994,95 +994,95 @@
                                     994 ;	-----------------------------------------
                                     995 ;	 function eepromwritebyte
                                     996 ;	-----------------------------------------
-      002D2E                        997 _eepromwritebyte:
-      002D2E AF 83            [24]  998 	mov	r7,dph
-      002D30 E5 82            [12]  999 	mov	a,dpl
-      002D32 90 20 60         [24] 1000 	mov	dptr,#_eepromwritebyte_addr_65536_26
-      002D35 F0               [24] 1001 	movx	@dptr,a
-      002D36 EF               [12] 1002 	mov	a,r7
-      002D37 A3               [24] 1003 	inc	dptr
-      002D38 F0               [24] 1004 	movx	@dptr,a
+      002F45                        997 _eepromwritebyte:
+      002F45 AF 83            [24]  998 	mov	r7,dph
+      002F47 E5 82            [12]  999 	mov	a,dpl
+      002F49 90 20 66         [24] 1000 	mov	dptr,#_eepromwritebyte_addr_65536_26
+      002F4C F0               [24] 1001 	movx	@dptr,a
+      002F4D EF               [12] 1002 	mov	a,r7
+      002F4E A3               [24] 1003 	inc	dptr
+      002F4F F0               [24] 1004 	movx	@dptr,a
                                    1005 ;	src/eeprom.c:171: if (addr > 0x7FF) return FAILURE;
-      002D39 90 20 60         [24] 1006 	mov	dptr,#_eepromwritebyte_addr_65536_26
-      002D3C E0               [24] 1007 	movx	a,@dptr
-      002D3D FE               [12] 1008 	mov	r6,a
-      002D3E A3               [24] 1009 	inc	dptr
-      002D3F E0               [24] 1010 	movx	a,@dptr
-      002D40 FF               [12] 1011 	mov	r7,a
-      002D41 C3               [12] 1012 	clr	c
-      002D42 74 FF            [12] 1013 	mov	a,#0xff
-      002D44 9E               [12] 1014 	subb	a,r6
-      002D45 74 07            [12] 1015 	mov	a,#0x07
-      002D47 9F               [12] 1016 	subb	a,r7
-      002D48 50 04            [24] 1017 	jnc	00102$
-      002D4A 90 00 01         [24] 1018 	mov	dptr,#0x0001
-      002D4D 22               [24] 1019 	ret
-      002D4E                       1020 00102$:
+      002F50 90 20 66         [24] 1006 	mov	dptr,#_eepromwritebyte_addr_65536_26
+      002F53 E0               [24] 1007 	movx	a,@dptr
+      002F54 FE               [12] 1008 	mov	r6,a
+      002F55 A3               [24] 1009 	inc	dptr
+      002F56 E0               [24] 1010 	movx	a,@dptr
+      002F57 FF               [12] 1011 	mov	r7,a
+      002F58 C3               [12] 1012 	clr	c
+      002F59 74 FF            [12] 1013 	mov	a,#0xff
+      002F5B 9E               [12] 1014 	subb	a,r6
+      002F5C 74 07            [12] 1015 	mov	a,#0x07
+      002F5E 9F               [12] 1016 	subb	a,r7
+      002F5F 50 04            [24] 1017 	jnc	00102$
+      002F61 90 00 01         [24] 1018 	mov	dptr,#0x0001
+      002F64 22               [24] 1019 	ret
+      002F65                       1020 00102$:
                                    1021 ;	src/eeprom.c:173: i2c_address |= addr >> 8;
-      002D4E 8F 04            [24] 1022 	mov	ar4,r7
-      002D50 43 04 50         [24] 1023 	orl	ar4,#0x50
+      002F65 8F 04            [24] 1022 	mov	ar4,r7
+      002F67 43 04 50         [24] 1023 	orl	ar4,#0x50
                                    1024 ;	src/eeprom.c:174: uint8_t word_address = ((uint8_t) (addr & 0xFF));
                                    1025 ;	src/eeprom.c:175: int ack = i2c_begin(i2c_address, 0);
-      002D53 90 20 52         [24] 1026 	mov	dptr,#_i2c_begin_PARM_2
-      002D56 E4               [12] 1027 	clr	a
-      002D57 F0               [24] 1028 	movx	@dptr,a
-      002D58 8C 82            [24] 1029 	mov	dpl,r4
-      002D5A C0 06            [24] 1030 	push	ar6
-      002D5C 12 2B F1         [24] 1031 	lcall	_i2c_begin
-      002D5F AF 82            [24] 1032 	mov	r7,dpl
-      002D61 D0 06            [24] 1033 	pop	ar6
-      002D63 7D 00            [12] 1034 	mov	r5,#0x00
+      002F6A 90 20 58         [24] 1026 	mov	dptr,#_i2c_begin_PARM_2
+      002F6D E4               [12] 1027 	clr	a
+      002F6E F0               [24] 1028 	movx	@dptr,a
+      002F6F 8C 82            [24] 1029 	mov	dpl,r4
+      002F71 C0 06            [24] 1030 	push	ar6
+      002F73 12 2E 08         [24] 1031 	lcall	_i2c_begin
+      002F76 AF 82            [24] 1032 	mov	r7,dpl
+      002F78 D0 06            [24] 1033 	pop	ar6
+      002F7A 7D 00            [12] 1034 	mov	r5,#0x00
                                    1035 ;	src/eeprom.c:176: if (ack != 1)
-      002D65 BF 01 05         [24] 1036 	cjne	r7,#0x01,00128$
-      002D68 BD 00 02         [24] 1037 	cjne	r5,#0x00,00128$
-      002D6B 80 07            [24] 1038 	sjmp	00104$
-      002D6D                       1039 00128$:
+      002F7C BF 01 05         [24] 1036 	cjne	r7,#0x01,00128$
+      002F7F BD 00 02         [24] 1037 	cjne	r5,#0x00,00128$
+      002F82 80 07            [24] 1038 	sjmp	00104$
+      002F84                       1039 00128$:
                                    1040 ;	src/eeprom.c:178: i2c_end();
-      002D6D 12 2B EC         [24] 1041 	lcall	_i2c_end
+      002F84 12 2E 03         [24] 1041 	lcall	_i2c_end
                                    1042 ;	src/eeprom.c:179: return FAILURE;
-      002D70 90 00 01         [24] 1043 	mov	dptr,#0x0001
-      002D73 22               [24] 1044 	ret
-      002D74                       1045 00104$:
+      002F87 90 00 01         [24] 1043 	mov	dptr,#0x0001
+      002F8A 22               [24] 1044 	ret
+      002F8B                       1045 00104$:
                                    1046 ;	src/eeprom.c:181: ack = i2c_byte_out(word_address);
-      002D74 8E 82            [24] 1047 	mov	dpl,r6
-      002D76 12 2B 5D         [24] 1048 	lcall	_i2c_byte_out
-      002D79 AF 82            [24] 1049 	mov	r7,dpl
-      002D7B 7E 00            [12] 1050 	mov	r6,#0x00
+      002F8B 8E 82            [24] 1047 	mov	dpl,r6
+      002F8D 12 2D 74         [24] 1048 	lcall	_i2c_byte_out
+      002F90 AF 82            [24] 1049 	mov	r7,dpl
+      002F92 7E 00            [12] 1050 	mov	r6,#0x00
                                    1051 ;	src/eeprom.c:182: if (ack != 1)
-      002D7D BF 01 05         [24] 1052 	cjne	r7,#0x01,00129$
-      002D80 BE 00 02         [24] 1053 	cjne	r6,#0x00,00129$
-      002D83 80 07            [24] 1054 	sjmp	00106$
-      002D85                       1055 00129$:
+      002F94 BF 01 05         [24] 1052 	cjne	r7,#0x01,00129$
+      002F97 BE 00 02         [24] 1053 	cjne	r6,#0x00,00129$
+      002F9A 80 07            [24] 1054 	sjmp	00106$
+      002F9C                       1055 00129$:
                                    1056 ;	src/eeprom.c:184: i2c_end();
-      002D85 12 2B EC         [24] 1057 	lcall	_i2c_end
+      002F9C 12 2E 03         [24] 1057 	lcall	_i2c_end
                                    1058 ;	src/eeprom.c:185: return FAILURE;
-      002D88 90 00 01         [24] 1059 	mov	dptr,#0x0001
-      002D8B 22               [24] 1060 	ret
-      002D8C                       1061 00106$:
+      002F9F 90 00 01         [24] 1059 	mov	dptr,#0x0001
+      002FA2 22               [24] 1060 	ret
+      002FA3                       1061 00106$:
                                    1062 ;	src/eeprom.c:188: ack = i2c_byte_out(byte);
-      002D8C 90 20 5F         [24] 1063 	mov	dptr,#_eepromwritebyte_PARM_2
-      002D8F E0               [24] 1064 	movx	a,@dptr
-      002D90 F5 82            [12] 1065 	mov	dpl,a
-      002D92 12 2B 5D         [24] 1066 	lcall	_i2c_byte_out
-      002D95 AF 82            [24] 1067 	mov	r7,dpl
-      002D97 7E 00            [12] 1068 	mov	r6,#0x00
+      002FA3 90 20 65         [24] 1063 	mov	dptr,#_eepromwritebyte_PARM_2
+      002FA6 E0               [24] 1064 	movx	a,@dptr
+      002FA7 F5 82            [12] 1065 	mov	dpl,a
+      002FA9 12 2D 74         [24] 1066 	lcall	_i2c_byte_out
+      002FAC AF 82            [24] 1067 	mov	r7,dpl
+      002FAE 7E 00            [12] 1068 	mov	r6,#0x00
                                    1069 ;	src/eeprom.c:189: if (ack != 1)
-      002D99 BF 01 05         [24] 1070 	cjne	r7,#0x01,00130$
-      002D9C BE 00 02         [24] 1071 	cjne	r6,#0x00,00130$
-      002D9F 80 07            [24] 1072 	sjmp	00108$
-      002DA1                       1073 00130$:
+      002FB0 BF 01 05         [24] 1070 	cjne	r7,#0x01,00130$
+      002FB3 BE 00 02         [24] 1071 	cjne	r6,#0x00,00130$
+      002FB6 80 07            [24] 1072 	sjmp	00108$
+      002FB8                       1073 00130$:
                                    1074 ;	src/eeprom.c:191: i2c_end();
-      002DA1 12 2B EC         [24] 1075 	lcall	_i2c_end
+      002FB8 12 2E 03         [24] 1075 	lcall	_i2c_end
                                    1076 ;	src/eeprom.c:192: return FAILURE;
-      002DA4 90 00 01         [24] 1077 	mov	dptr,#0x0001
-      002DA7 22               [24] 1078 	ret
-      002DA8                       1079 00108$:
+      002FBB 90 00 01         [24] 1077 	mov	dptr,#0x0001
+      002FBE 22               [24] 1078 	ret
+      002FBF                       1079 00108$:
                                    1080 ;	src/eeprom.c:195: i2c_end();
-      002DA8 12 2B EC         [24] 1081 	lcall	_i2c_end
+      002FBF 12 2E 03         [24] 1081 	lcall	_i2c_end
                                    1082 ;	src/eeprom.c:196: return SUCCESS;
-      002DAB 90 00 00         [24] 1083 	mov	dptr,#0x0000
+      002FC2 90 00 00         [24] 1083 	mov	dptr,#0x0000
                                    1084 ;	src/eeprom.c:198: }
-      002DAE 22               [24] 1085 	ret
+      002FC5 22               [24] 1085 	ret
                                    1086 ;------------------------------------------------------------
                                    1087 ;Allocation info for local variables in function 'eepromreadbyte'
                                    1088 ;------------------------------------------------------------
@@ -1096,117 +1096,117 @@
                                    1096 ;	-----------------------------------------
                                    1097 ;	 function eepromreadbyte
                                    1098 ;	-----------------------------------------
-      002DAF                       1099 _eepromreadbyte:
-      002DAF AF 83            [24] 1100 	mov	r7,dph
-      002DB1 E5 82            [12] 1101 	mov	a,dpl
-      002DB3 90 20 65         [24] 1102 	mov	dptr,#_eepromreadbyte_addr_65536_33
-      002DB6 F0               [24] 1103 	movx	@dptr,a
-      002DB7 EF               [12] 1104 	mov	a,r7
-      002DB8 A3               [24] 1105 	inc	dptr
-      002DB9 F0               [24] 1106 	movx	@dptr,a
+      002FC6                       1099 _eepromreadbyte:
+      002FC6 AF 83            [24] 1100 	mov	r7,dph
+      002FC8 E5 82            [12] 1101 	mov	a,dpl
+      002FCA 90 20 6B         [24] 1102 	mov	dptr,#_eepromreadbyte_addr_65536_33
+      002FCD F0               [24] 1103 	movx	@dptr,a
+      002FCE EF               [12] 1104 	mov	a,r7
+      002FCF A3               [24] 1105 	inc	dptr
+      002FD0 F0               [24] 1106 	movx	@dptr,a
                                    1107 ;	src/eeprom.c:202: if (addr > 0x7FF) return FAILURE;
-      002DBA 90 20 65         [24] 1108 	mov	dptr,#_eepromreadbyte_addr_65536_33
-      002DBD E0               [24] 1109 	movx	a,@dptr
-      002DBE FE               [12] 1110 	mov	r6,a
-      002DBF A3               [24] 1111 	inc	dptr
-      002DC0 E0               [24] 1112 	movx	a,@dptr
-      002DC1 FF               [12] 1113 	mov	r7,a
-      002DC2 C3               [12] 1114 	clr	c
-      002DC3 74 FF            [12] 1115 	mov	a,#0xff
-      002DC5 9E               [12] 1116 	subb	a,r6
-      002DC6 74 07            [12] 1117 	mov	a,#0x07
-      002DC8 9F               [12] 1118 	subb	a,r7
-      002DC9 50 04            [24] 1119 	jnc	00102$
-      002DCB 90 00 01         [24] 1120 	mov	dptr,#0x0001
-      002DCE 22               [24] 1121 	ret
-      002DCF                       1122 00102$:
+      002FD1 90 20 6B         [24] 1108 	mov	dptr,#_eepromreadbyte_addr_65536_33
+      002FD4 E0               [24] 1109 	movx	a,@dptr
+      002FD5 FE               [12] 1110 	mov	r6,a
+      002FD6 A3               [24] 1111 	inc	dptr
+      002FD7 E0               [24] 1112 	movx	a,@dptr
+      002FD8 FF               [12] 1113 	mov	r7,a
+      002FD9 C3               [12] 1114 	clr	c
+      002FDA 74 FF            [12] 1115 	mov	a,#0xff
+      002FDC 9E               [12] 1116 	subb	a,r6
+      002FDD 74 07            [12] 1117 	mov	a,#0x07
+      002FDF 9F               [12] 1118 	subb	a,r7
+      002FE0 50 04            [24] 1119 	jnc	00102$
+      002FE2 90 00 01         [24] 1120 	mov	dptr,#0x0001
+      002FE5 22               [24] 1121 	ret
+      002FE6                       1122 00102$:
                                    1123 ;	src/eeprom.c:204: i2c_address |= addr >> 8;
-      002DCF 8F 04            [24] 1124 	mov	ar4,r7
-      002DD1 7D 00            [12] 1125 	mov	r5,#0x00
-      002DD3 43 04 50         [24] 1126 	orl	ar4,#0x50
+      002FE6 8F 04            [24] 1124 	mov	ar4,r7
+      002FE8 7D 00            [12] 1125 	mov	r5,#0x00
+      002FEA 43 04 50         [24] 1126 	orl	ar4,#0x50
                                    1127 ;	src/eeprom.c:205: uint8_t word_address = ((uint8_t) (addr & 0xFF));
                                    1128 ;	src/eeprom.c:207: int ack = i2c_begin(i2c_address, 0);
-      002DD6 8C 03            [24] 1129 	mov	ar3,r4
-      002DD8 90 20 52         [24] 1130 	mov	dptr,#_i2c_begin_PARM_2
-      002DDB E4               [12] 1131 	clr	a
-      002DDC F0               [24] 1132 	movx	@dptr,a
-      002DDD 8B 82            [24] 1133 	mov	dpl,r3
-      002DDF C0 06            [24] 1134 	push	ar6
-      002DE1 C0 05            [24] 1135 	push	ar5
-      002DE3 C0 04            [24] 1136 	push	ar4
-      002DE5 12 2B F1         [24] 1137 	lcall	_i2c_begin
-      002DE8 AF 82            [24] 1138 	mov	r7,dpl
-      002DEA D0 04            [24] 1139 	pop	ar4
-      002DEC D0 05            [24] 1140 	pop	ar5
-      002DEE D0 06            [24] 1141 	pop	ar6
-      002DF0 7B 00            [12] 1142 	mov	r3,#0x00
+      002FED 8C 03            [24] 1129 	mov	ar3,r4
+      002FEF 90 20 58         [24] 1130 	mov	dptr,#_i2c_begin_PARM_2
+      002FF2 E4               [12] 1131 	clr	a
+      002FF3 F0               [24] 1132 	movx	@dptr,a
+      002FF4 8B 82            [24] 1133 	mov	dpl,r3
+      002FF6 C0 06            [24] 1134 	push	ar6
+      002FF8 C0 05            [24] 1135 	push	ar5
+      002FFA C0 04            [24] 1136 	push	ar4
+      002FFC 12 2E 08         [24] 1137 	lcall	_i2c_begin
+      002FFF AF 82            [24] 1138 	mov	r7,dpl
+      003001 D0 04            [24] 1139 	pop	ar4
+      003003 D0 05            [24] 1140 	pop	ar5
+      003005 D0 06            [24] 1141 	pop	ar6
+      003007 7B 00            [12] 1142 	mov	r3,#0x00
                                    1143 ;	src/eeprom.c:208: if (ack != 1)
-      002DF2 BF 01 05         [24] 1144 	cjne	r7,#0x01,00122$
-      002DF5 BB 00 02         [24] 1145 	cjne	r3,#0x00,00122$
-      002DF8 80 07            [24] 1146 	sjmp	00104$
-      002DFA                       1147 00122$:
+      003009 BF 01 05         [24] 1144 	cjne	r7,#0x01,00122$
+      00300C BB 00 02         [24] 1145 	cjne	r3,#0x00,00122$
+      00300F 80 07            [24] 1146 	sjmp	00104$
+      003011                       1147 00122$:
                                    1148 ;	src/eeprom.c:210: i2c_end();
-      002DFA 12 2B EC         [24] 1149 	lcall	_i2c_end
+      003011 12 2E 03         [24] 1149 	lcall	_i2c_end
                                    1150 ;	src/eeprom.c:211: return FAILURE;
-      002DFD 90 00 01         [24] 1151 	mov	dptr,#0x0001
-      002E00 22               [24] 1152 	ret
-      002E01                       1153 00104$:
+      003014 90 00 01         [24] 1151 	mov	dptr,#0x0001
+      003017 22               [24] 1152 	ret
+      003018                       1153 00104$:
                                    1154 ;	src/eeprom.c:214: ack = i2c_byte_out(word_address);
-      002E01 8E 82            [24] 1155 	mov	dpl,r6
-      002E03 C0 05            [24] 1156 	push	ar5
-      002E05 C0 04            [24] 1157 	push	ar4
-      002E07 12 2B 5D         [24] 1158 	lcall	_i2c_byte_out
-      002E0A AF 82            [24] 1159 	mov	r7,dpl
-      002E0C D0 04            [24] 1160 	pop	ar4
-      002E0E D0 05            [24] 1161 	pop	ar5
-      002E10 7E 00            [12] 1162 	mov	r6,#0x00
+      003018 8E 82            [24] 1155 	mov	dpl,r6
+      00301A C0 05            [24] 1156 	push	ar5
+      00301C C0 04            [24] 1157 	push	ar4
+      00301E 12 2D 74         [24] 1158 	lcall	_i2c_byte_out
+      003021 AF 82            [24] 1159 	mov	r7,dpl
+      003023 D0 04            [24] 1160 	pop	ar4
+      003025 D0 05            [24] 1161 	pop	ar5
+      003027 7E 00            [12] 1162 	mov	r6,#0x00
                                    1163 ;	src/eeprom.c:216: if (ack != 1)
-      002E12 BF 01 05         [24] 1164 	cjne	r7,#0x01,00123$
-      002E15 BE 00 02         [24] 1165 	cjne	r6,#0x00,00123$
-      002E18 80 07            [24] 1166 	sjmp	00106$
-      002E1A                       1167 00123$:
+      003029 BF 01 05         [24] 1164 	cjne	r7,#0x01,00123$
+      00302C BE 00 02         [24] 1165 	cjne	r6,#0x00,00123$
+      00302F 80 07            [24] 1166 	sjmp	00106$
+      003031                       1167 00123$:
                                    1168 ;	src/eeprom.c:218: i2c_end();
-      002E1A 12 2B EC         [24] 1169 	lcall	_i2c_end
+      003031 12 2E 03         [24] 1169 	lcall	_i2c_end
                                    1170 ;	src/eeprom.c:219: return FAILURE;
-      002E1D 90 00 01         [24] 1171 	mov	dptr,#0x0001
-      002E20 22               [24] 1172 	ret
-      002E21                       1173 00106$:
+      003034 90 00 01         [24] 1171 	mov	dptr,#0x0001
+      003037 22               [24] 1172 	ret
+      003038                       1173 00106$:
                                    1174 ;	src/eeprom.c:222: i2c_begin(i2c_address, 1);
-      002E21 90 20 52         [24] 1175 	mov	dptr,#_i2c_begin_PARM_2
-      002E24 74 01            [12] 1176 	mov	a,#0x01
-      002E26 F0               [24] 1177 	movx	@dptr,a
-      002E27 8C 82            [24] 1178 	mov	dpl,r4
-      002E29 12 2B F1         [24] 1179 	lcall	_i2c_begin
+      003038 90 20 58         [24] 1175 	mov	dptr,#_i2c_begin_PARM_2
+      00303B 74 01            [12] 1176 	mov	a,#0x01
+      00303D F0               [24] 1177 	movx	@dptr,a
+      00303E 8C 82            [24] 1178 	mov	dpl,r4
+      003040 12 2E 08         [24] 1179 	lcall	_i2c_begin
                                    1180 ;	src/eeprom.c:223: *byte = i2c_byte_in(true);
-      002E2C 90 20 62         [24] 1181 	mov	dptr,#_eepromreadbyte_PARM_2
-      002E2F E0               [24] 1182 	movx	a,@dptr
-      002E30 FD               [12] 1183 	mov	r5,a
-      002E31 A3               [24] 1184 	inc	dptr
-      002E32 E0               [24] 1185 	movx	a,@dptr
-      002E33 FE               [12] 1186 	mov	r6,a
-      002E34 A3               [24] 1187 	inc	dptr
-      002E35 E0               [24] 1188 	movx	a,@dptr
-      002E36 FF               [12] 1189 	mov	r7,a
-      002E37 75 82 01         [24] 1190 	mov	dpl,#0x01
-      002E3A C0 07            [24] 1191 	push	ar7
-      002E3C C0 06            [24] 1192 	push	ar6
-      002E3E C0 05            [24] 1193 	push	ar5
-      002E40 12 2B A4         [24] 1194 	lcall	_i2c_byte_in
-      002E43 AC 82            [24] 1195 	mov	r4,dpl
-      002E45 D0 05            [24] 1196 	pop	ar5
-      002E47 D0 06            [24] 1197 	pop	ar6
-      002E49 D0 07            [24] 1198 	pop	ar7
-      002E4B 8D 82            [24] 1199 	mov	dpl,r5
-      002E4D 8E 83            [24] 1200 	mov	dph,r6
-      002E4F 8F F0            [24] 1201 	mov	b,r7
-      002E51 EC               [12] 1202 	mov	a,r4
-      002E52 12 2F DB         [24] 1203 	lcall	__gptrput
+      003043 90 20 68         [24] 1181 	mov	dptr,#_eepromreadbyte_PARM_2
+      003046 E0               [24] 1182 	movx	a,@dptr
+      003047 FD               [12] 1183 	mov	r5,a
+      003048 A3               [24] 1184 	inc	dptr
+      003049 E0               [24] 1185 	movx	a,@dptr
+      00304A FE               [12] 1186 	mov	r6,a
+      00304B A3               [24] 1187 	inc	dptr
+      00304C E0               [24] 1188 	movx	a,@dptr
+      00304D FF               [12] 1189 	mov	r7,a
+      00304E 75 82 01         [24] 1190 	mov	dpl,#0x01
+      003051 C0 07            [24] 1191 	push	ar7
+      003053 C0 06            [24] 1192 	push	ar6
+      003055 C0 05            [24] 1193 	push	ar5
+      003057 12 2D BB         [24] 1194 	lcall	_i2c_byte_in
+      00305A AC 82            [24] 1195 	mov	r4,dpl
+      00305C D0 05            [24] 1196 	pop	ar5
+      00305E D0 06            [24] 1197 	pop	ar6
+      003060 D0 07            [24] 1198 	pop	ar7
+      003062 8D 82            [24] 1199 	mov	dpl,r5
+      003064 8E 83            [24] 1200 	mov	dph,r6
+      003066 8F F0            [24] 1201 	mov	b,r7
+      003068 EC               [12] 1202 	mov	a,r4
+      003069 12 31 F2         [24] 1203 	lcall	__gptrput
                                    1204 ;	src/eeprom.c:225: i2c_end();
-      002E55 12 2B EC         [24] 1205 	lcall	_i2c_end
+      00306C 12 2E 03         [24] 1205 	lcall	_i2c_end
                                    1206 ;	src/eeprom.c:226: return SUCCESS;
-      002E58 90 00 00         [24] 1207 	mov	dptr,#0x0000
+      00306F 90 00 00         [24] 1207 	mov	dptr,#0x0000
                                    1208 ;	src/eeprom.c:228: } 
-      002E5B 22               [24] 1209 	ret
+      003072 22               [24] 1209 	ret
                                    1210 	.area CSEG    (CODE)
                                    1211 	.area CONST   (CODE)
                                    1212 	.area XINIT   (CODE)
