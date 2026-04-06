@@ -21,6 +21,12 @@
 
 setting all 1024 of internal xram
 */
+//external interrupt handler
+void do_nothing_isr() __interrupt(0)
+{
+    CKRL = 0xFF;
+    return;
+}
 
 int _sdcc_external_startup()
 {
@@ -44,7 +50,7 @@ void run_pwm_command_handler()
 
 void stop_pwm_command_handler()
 {
-    printf("\r\nStop PWM");
+    printf("\r\nStop P1.5 Output");
     CCAPM2 = 0x00; //turn of the pwm signal
     CKRL = 0xFF;
 }
@@ -55,12 +61,15 @@ void max_clock_speed_command_handler()
     CKRL = 0xFF; //we are already at the max clock speed
 }
 
+void min_clock_speed_command_handler()
+{
+    printf("\r\nMin Speed clk");
+    CKRL = 0x00;
+}
+
 void kick_the_dog()
 {
-    unsigned int watchdog_compare_val = (CH << 8) | CL; //get the current value PCA is being compared to
-    watchdog_compare_val += 0x00FF; //go a distance into the future
-    CCAP4L = watchdog_compare_val & 0xFF;
-    CCAP4H = watchdog_compare_val >> 8; 
+    return;
 }
 
 /**
@@ -68,32 +77,51 @@ void kick_the_dog()
  */
 void init_watchdog()
 {
+    CMOD |= 0x40;
+    CCAP4L = 0x00;
+    CCAP4H = 0x00;
     kick_the_dog();
     CCAPM4 = 0x48;
-    CMOD |= 0x40;
 }
 
 void freeze_command_handler()
 {
     printf("\r\nFreezing (triggers watchdog)");
+    init_watchdog();
     for(;;);
 }
-
 
 void enter_idle_mode()
 {
     printf("\r\nEnter Idle Mode");
+    // start_timer();
     PCON |= 0x01;
-    while((PCON & 0x01) == 0);
     printf("\r\nExiting Idle Mode");
 }
 
+void enter_power_down_mode()
+{
+    printf("\r\nEnter Power Down Mode");
+    PCON |= 0x02;
+    printf("\r\nExiting Power Down Mode");
+}
 
+void high_speed_output_handler()
+{
+    printf("\r\n Doing high speed output");
+    CCAPM2 = 0x4C;
+
+}
 
 void main()
 {
     unsigned char c = 0;
     CR = 1; //turns on PCA
+    // init_watchdog();
+    //turn on external interrupt 0
+    IT0 = 1;
+    EX0 = 1; 
+    EA = 1;
     for(;;)
     {
         printf("\r\nEnter a char: ");
@@ -104,10 +132,13 @@ void main()
             case 'm':
                 printf("\r\n Menu");
                 printf("\r\nr: run pwm");
-                printf("\r\ns: stop PWM");
+                printf("\r\ns: stop p1.5 output");
                 printf("\r\nw: max clock speed");
+                printf("\r\nl: min clock speed");
                 printf("\r\nf: freeze (triggers watchdog)");
-                printf("\r\n");
+                printf("\r\nh: high speed output");
+                printf("\r\np: power down mode");
+                printf("\r\ni: enter idle mode for a bit");
                 break;
             case 'r':
                 run_pwm_command_handler();
@@ -118,8 +149,20 @@ void main()
             case 'w':
                 max_clock_speed_command_handler();
                 break;
+            case 'l':
+                min_clock_speed_command_handler();
+                break;
             case 'f':
                 freeze_command_handler();
+                break;
+            case 'i':
+                enter_idle_mode();
+                break;
+            case 'h':
+                high_speed_output_handler();
+                break;
+            case 'p':
+                enter_power_down_mode();
                 break;
             default:
                 continue; //no command, don't print the end command line

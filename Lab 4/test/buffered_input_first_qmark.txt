@@ -1,0 +1,16 @@
+------------------------------------------------
+Heap Report
+------------------------------------------------
+buffer_0 starts @ X:0x003d, ends @X:0x007d, size 64, contains 64 alphabet chars, has 0 chars remaining
+buffer_1 starts @ X:0x007f, ends @X:0x00bf, size 64, contains 0 alphabet chars, has 0 chars remaining
+buffer_2 starts @ X:0x00ce, ends @X:0x010e, size 64, contains 0 alphabet chars, has 64 chars remaining
+buffer_3 starts @ X:0x011d, ends @X:0x015d, size 64, contains 0 alphabet chars, has 64 chars remaining
+buffer_4 starts @ X:0x016c, ends @X:0x0374, size 520, contains 0 alphabet chars, has 520 chars remaining
+buffer_5 starts @ X:0x0383, ends @X:0x0403, size 128, contains 0 alphabet chars, has 128 chars remaining
+Heap starts @ X:0x003b, ends @ X:0x203b, size: 904
+
+ Received 258 chars since last invocation of ?
+abCDabCDabCDabCDabCDabCDabCDabCD
+abCDabCDabCDabCDabCDabCDabCDabCD
+=1234123412341234123412341234123
+41234123412341234123412341234123

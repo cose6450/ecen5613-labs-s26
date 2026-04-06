@@ -9,13 +9,18 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
+	.globl _high_speed_output_handler
+	.globl _enter_power_down_mode
+	.globl _enter_idle_mode
 	.globl _freeze_command_handler
 	.globl _init_watchdog
 	.globl _kick_the_dog
+	.globl _min_clock_speed_command_handler
 	.globl _max_clock_speed_command_handler
 	.globl _stop_pwm_command_handler
 	.globl _run_pwm_command_handler
 	.globl __sdcc_external_startup
+	.globl _do_nothing_isr
 	.globl _get_next_input_char
 	.globl _printf
 	.globl _CY
@@ -484,6 +489,7 @@ __start__stack:
 	.area HOME    (CODE)
 __interrupt_vect:
 	ljmp	__sdcc_gsinit_startup
+	ljmp	_do_nothing_isr
 ;--------------------------------------------------------
 ; global & static initialisations
 ;--------------------------------------------------------
@@ -512,13 +518,13 @@ __sdcc_program_startup:
 ;--------------------------------------------------------
 	.area CSEG    (CODE)
 ;------------------------------------------------------------
-;Allocation info for local variables in function '_sdcc_external_startup'
+;Allocation info for local variables in function 'do_nothing_isr'
 ;------------------------------------------------------------
-;	src/main.c:25: int _sdcc_external_startup()
+;	src/main.c:25: void do_nothing_isr() __interrupt(0)
 ;	-----------------------------------------
-;	 function _sdcc_external_startup
+;	 function do_nothing_isr
 ;	-----------------------------------------
-__sdcc_external_startup:
+_do_nothing_isr:
 	ar7 = 0x07
 	ar6 = 0x06
 	ar5 = 0x05
@@ -527,23 +533,42 @@ __sdcc_external_startup:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	src/main.c:29: CKCON0 |= 0x01;
+;	src/main.c:27: CKRL = 0xFF;
+	mov	_CKRL,#0xff
+;	src/main.c:28: return;
+;	src/main.c:29: }
+	reti
+;	eliminated unneeded mov psw,# (no regs used in bank)
+;	eliminated unneeded push/pop not_psw
+;	eliminated unneeded push/pop dpl
+;	eliminated unneeded push/pop dph
+;	eliminated unneeded push/pop b
+;	eliminated unneeded push/pop acc
+;------------------------------------------------------------
+;Allocation info for local variables in function '_sdcc_external_startup'
+;------------------------------------------------------------
+;	src/main.c:31: int _sdcc_external_startup()
+;	-----------------------------------------
+;	 function _sdcc_external_startup
+;	-----------------------------------------
+__sdcc_external_startup:
+;	src/main.c:35: CKCON0 |= 0x01;
 	orl	_CKCON0,#0x01
-;	src/main.c:33: PCON &= ~0x80;
+;	src/main.c:39: PCON &= ~0x80;
 	anl	_PCON,#0x7f
-;	src/main.c:34: return 0;
+;	src/main.c:40: return 0;
 	mov	dptr,#0x0000
-;	src/main.c:35: }
+;	src/main.c:41: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'run_pwm_command_handler'
 ;------------------------------------------------------------
-;	src/main.c:37: void run_pwm_command_handler()
+;	src/main.c:43: void run_pwm_command_handler()
 ;	-----------------------------------------
 ;	 function run_pwm_command_handler
 ;	-----------------------------------------
 _run_pwm_command_handler:
-;	src/main.c:39: printf("\r\nRun PWM");
+;	src/main.c:45: printf("\r\nRun PWM");
 	mov	a,#___str_0
 	push	acc
 	mov	a,#(___str_0 >> 8)
@@ -554,21 +579,21 @@ _run_pwm_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:40: CCAP2H = 0xAA;// 0xFF(max) / 3 (so 33percent) * 2 (so inverted)
+;	src/main.c:46: CCAP2H = 0xAA;// 0xFF(max) / 3 (so 33percent) * 2 (so inverted)
 	mov	_CCAP2H,#0xaa
-;	src/main.c:41: CCAPM2 = 0x42; // sets ecom and pwm
+;	src/main.c:47: CCAPM2 = 0x42; // sets ecom and pwm
 	mov	_CCAPM2,#0x42
-;	src/main.c:43: }
+;	src/main.c:49: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'stop_pwm_command_handler'
 ;------------------------------------------------------------
-;	src/main.c:45: void stop_pwm_command_handler()
+;	src/main.c:51: void stop_pwm_command_handler()
 ;	-----------------------------------------
 ;	 function stop_pwm_command_handler
 ;	-----------------------------------------
 _stop_pwm_command_handler:
-;	src/main.c:47: printf("\r\nStop PWM");
+;	src/main.c:53: printf("\r\nStop P1.5 Output");
 	mov	a,#___str_1
 	push	acc
 	mov	a,#(___str_1 >> 8)
@@ -579,21 +604,21 @@ _stop_pwm_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:48: CCAPM2 = 0x00; //turn of the pwm signal
+;	src/main.c:54: CCAPM2 = 0x00; //turn of the pwm signal
 	mov	_CCAPM2,#0x00
-;	src/main.c:49: CKRL = 0xFF;
+;	src/main.c:55: CKRL = 0xFF;
 	mov	_CKRL,#0xff
-;	src/main.c:50: }
+;	src/main.c:56: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'max_clock_speed_command_handler'
 ;------------------------------------------------------------
-;	src/main.c:52: void max_clock_speed_command_handler()
+;	src/main.c:58: void max_clock_speed_command_handler()
 ;	-----------------------------------------
 ;	 function max_clock_speed_command_handler
 ;	-----------------------------------------
 _max_clock_speed_command_handler:
-;	src/main.c:54: printf("\r\nMax Speed clk");
+;	src/main.c:60: printf("\r\nMax Speed clk");
 	mov	a,#___str_2
 	push	acc
 	mov	a,#(___str_2 >> 8)
@@ -604,67 +629,19 @@ _max_clock_speed_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:55: CKRL = 0xFF; //we are already at the max clock speed
+;	src/main.c:61: CKRL = 0xFF; //we are already at the max clock speed
 	mov	_CKRL,#0xff
-;	src/main.c:56: }
+;	src/main.c:62: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'kick_the_dog'
+;Allocation info for local variables in function 'min_clock_speed_command_handler'
 ;------------------------------------------------------------
-;watchdog_compare_val      Allocated with name '_kick_the_dog_watchdog_compare_val_65536_79'
-;------------------------------------------------------------
-;	src/main.c:58: void kick_the_dog()
+;	src/main.c:64: void min_clock_speed_command_handler()
 ;	-----------------------------------------
-;	 function kick_the_dog
+;	 function min_clock_speed_command_handler
 ;	-----------------------------------------
-_kick_the_dog:
-;	src/main.c:60: unsigned int watchdog_compare_val = (CH << 8) | CL; //get the current value PCA is being compared to
-	mov	r7,_CH
-	mov	r6,#0x00
-	mov	r4,_CL
-	mov	r5,#0x00
-	mov	a,r4
-	orl	ar6,a
-	mov	a,r5
-	orl	ar7,a
-;	src/main.c:61: watchdog_compare_val += 0x00FF; //go a distance into the future
-	mov	a,#0xff
-	add	a,r6
-	mov	r6,a
-	clr	a
-	addc	a,r7
-	mov	r7,a
-;	src/main.c:62: CCAP4L = watchdog_compare_val & 0xFF;
-	mov	_CCAP4L,r6
-;	src/main.c:63: CCAP4H = watchdog_compare_val >> 8; 
-	mov	_CCAP4H,r7
-;	src/main.c:64: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'init_watchdog'
-;------------------------------------------------------------
-;	src/main.c:69: void init_watchdog()
-;	-----------------------------------------
-;	 function init_watchdog
-;	-----------------------------------------
-_init_watchdog:
-;	src/main.c:71: kick_the_dog();
-	lcall	_kick_the_dog
-;	src/main.c:72: CCAPM4 = 0x48;
-	mov	_CCAPM4,#0x48
-;	src/main.c:73: CMOD |= 0x40;
-	orl	_CMOD,#0x40
-;	src/main.c:74: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'freeze_command_handler'
-;------------------------------------------------------------
-;	src/main.c:76: void freeze_command_handler()
-;	-----------------------------------------
-;	 function freeze_command_handler
-;	-----------------------------------------
-_freeze_command_handler:
-;	src/main.c:78: printf("\r\nFreezing (triggers watchdog)");
+_min_clock_speed_command_handler:
+;	src/main.c:66: printf("\r\nMin Speed clk");
 	mov	a,#___str_3
 	push	acc
 	mov	a,#(___str_3 >> 8)
@@ -675,25 +652,50 @@ _freeze_command_handler:
 	dec	sp
 	dec	sp
 	dec	sp
-00103$:
-;	src/main.c:80: }
-	sjmp	00103$
+;	src/main.c:67: CKRL = 0x00;
+	mov	_CKRL,#0x00
+;	src/main.c:68: }
+	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'main'
+;Allocation info for local variables in function 'kick_the_dog'
 ;------------------------------------------------------------
-;c                         Allocated with name '_main_c_65536_83'
-;received_char             Allocated with name '_main_received_char_196609_86'
-;------------------------------------------------------------
-;	src/main.c:84: void main()
+;	src/main.c:70: void kick_the_dog()
 ;	-----------------------------------------
-;	 function main
+;	 function kick_the_dog
 ;	-----------------------------------------
-_main:
-;	src/main.c:87: CR = 1; //turns on PCA
-;	assignBit
-	setb	_CR
-00110$:
-;	src/main.c:90: printf("\r\nEnter a char: ");
+_kick_the_dog:
+;	src/main.c:72: return;
+;	src/main.c:73: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'init_watchdog'
+;------------------------------------------------------------
+;	src/main.c:78: void init_watchdog()
+;	-----------------------------------------
+;	 function init_watchdog
+;	-----------------------------------------
+_init_watchdog:
+;	src/main.c:80: CMOD |= 0x40;
+	orl	_CMOD,#0x40
+;	src/main.c:81: CCAP4L = 0x00;
+	mov	_CCAP4L,#0x00
+;	src/main.c:82: CCAP4H = 0x00;
+	mov	_CCAP4H,#0x00
+;	src/main.c:83: kick_the_dog();
+	lcall	_kick_the_dog
+;	src/main.c:84: CCAPM4 = 0x48;
+	mov	_CCAPM4,#0x48
+;	src/main.c:85: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'freeze_command_handler'
+;------------------------------------------------------------
+;	src/main.c:87: void freeze_command_handler()
+;	-----------------------------------------
+;	 function freeze_command_handler
+;	-----------------------------------------
+_freeze_command_handler:
+;	src/main.c:89: printf("\r\nFreezing (triggers watchdog)");
 	mov	a,#___str_4
 	push	acc
 	mov	a,#(___str_4 >> 8)
@@ -704,29 +706,20 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:92: char received_char = get_next_input_char();
-	lcall	_get_next_input_char
-	mov	r7,dpl
-;	src/main.c:93: switch(received_char)
-	cjne	r7,#0x66,00137$
-	ljmp	00105$
-00137$:
-	cjne	r7,#0x6d,00138$
-	sjmp	00101$
-00138$:
-	cjne	r7,#0x72,00139$
-	ljmp	00102$
-00139$:
-	cjne	r7,#0x73,00140$
-	ljmp	00103$
-00140$:
-	cjne	r7,#0x77,00141$
-	ljmp	00104$
-00141$:
-;	src/main.c:95: case 'm':
-	sjmp	00110$
-00101$:
-;	src/main.c:96: printf("\r\n Menu");
+;	src/main.c:90: init_watchdog();
+	lcall	_init_watchdog
+00103$:
+;	src/main.c:92: }
+	sjmp	00103$
+;------------------------------------------------------------
+;Allocation info for local variables in function 'enter_idle_mode'
+;------------------------------------------------------------
+;	src/main.c:94: void enter_idle_mode()
+;	-----------------------------------------
+;	 function enter_idle_mode
+;	-----------------------------------------
+_enter_idle_mode:
+;	src/main.c:96: printf("\r\nEnter Idle Mode");
 	mov	a,#___str_5
 	push	acc
 	mov	a,#(___str_5 >> 8)
@@ -737,7 +730,9 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:97: printf("\r\nr: run pwm");
+;	src/main.c:98: PCON |= 0x01;
+	orl	_PCON,#0x01
+;	src/main.c:99: printf("\r\nExiting Idle Mode");
 	mov	a,#___str_6
 	push	acc
 	mov	a,#(___str_6 >> 8)
@@ -748,7 +743,17 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:98: printf("\r\ns: stop PWM");
+;	src/main.c:100: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'enter_power_down_mode'
+;------------------------------------------------------------
+;	src/main.c:102: void enter_power_down_mode()
+;	-----------------------------------------
+;	 function enter_power_down_mode
+;	-----------------------------------------
+_enter_power_down_mode:
+;	src/main.c:104: printf("\r\nEnter Power Down Mode");
 	mov	a,#___str_7
 	push	acc
 	mov	a,#(___str_7 >> 8)
@@ -759,7 +764,9 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:99: printf("\r\nw: max clock speed");
+;	src/main.c:105: PCON |= 0x02;
+	orl	_PCON,#0x02
+;	src/main.c:106: printf("\r\nExiting Power Down Mode");
 	mov	a,#___str_8
 	push	acc
 	mov	a,#(___str_8 >> 8)
@@ -770,7 +777,17 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:100: printf("\r\nf: freeze (triggers watchdog)");
+;	src/main.c:107: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'high_speed_output_handler'
+;------------------------------------------------------------
+;	src/main.c:109: void high_speed_output_handler()
+;	-----------------------------------------
+;	 function high_speed_output_handler
+;	-----------------------------------------
+_high_speed_output_handler:
+;	src/main.c:111: printf("\r\n Doing high speed output");
 	mov	a,#___str_9
 	push	acc
 	mov	a,#(___str_9 >> 8)
@@ -781,7 +798,35 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:101: printf("\r\n");
+;	src/main.c:112: CCAPM2 = 0x4C;
+	mov	_CCAPM2,#0x4c
+;	src/main.c:114: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'main'
+;------------------------------------------------------------
+;c                         Allocated with name '_main_c_65536_88'
+;received_char             Allocated with name '_main_received_char_196609_91'
+;------------------------------------------------------------
+;	src/main.c:116: void main()
+;	-----------------------------------------
+;	 function main
+;	-----------------------------------------
+_main:
+;	src/main.c:119: CR = 1; //turns on PCA
+;	assignBit
+	setb	_CR
+;	src/main.c:122: IT0 = 1;
+;	assignBit
+	setb	_IT0
+;	src/main.c:123: EX0 = 1; 
+;	assignBit
+	setb	_EX0
+;	src/main.c:124: EA = 1;
+;	assignBit
+	setb	_EA
+00114$:
+;	src/main.c:127: printf("\r\nEnter a char: ");
 	mov	a,#___str_10
 	push	acc
 	mov	a,#(___str_10 >> 8)
@@ -792,33 +837,41 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:102: break;
-;	src/main.c:103: case 'r':
-	sjmp	00107$
-00102$:
-;	src/main.c:104: run_pwm_command_handler();
-	lcall	_run_pwm_command_handler
-;	src/main.c:105: break;
-;	src/main.c:106: case 's':
-	sjmp	00107$
-00103$:
-;	src/main.c:107: stop_pwm_command_handler();
-	lcall	_stop_pwm_command_handler
-;	src/main.c:108: break;
-;	src/main.c:109: case 'w':
-	sjmp	00107$
-00104$:
-;	src/main.c:110: max_clock_speed_command_handler();
-	lcall	_max_clock_speed_command_handler
-;	src/main.c:111: break;
-;	src/main.c:112: case 'f':
-	sjmp	00107$
-00105$:
-;	src/main.c:113: freeze_command_handler();
-	lcall	_freeze_command_handler
-;	src/main.c:117: }
-00107$:
-;	src/main.c:118: printf("\r\nEND COMMAND");
+;	src/main.c:129: char received_char = get_next_input_char();
+	lcall	_get_next_input_char
+	mov	r7,dpl
+;	src/main.c:130: switch(received_char)
+	cjne	r7,#0x66,00157$
+	ljmp	00106$
+00157$:
+	cjne	r7,#0x68,00158$
+	ljmp	00108$
+00158$:
+	cjne	r7,#0x69,00159$
+	ljmp	00107$
+00159$:
+	cjne	r7,#0x6c,00160$
+	ljmp	00105$
+00160$:
+	cjne	r7,#0x6d,00161$
+	sjmp	00101$
+00161$:
+	cjne	r7,#0x70,00162$
+	ljmp	00109$
+00162$:
+	cjne	r7,#0x72,00163$
+	ljmp	00102$
+00163$:
+	cjne	r7,#0x73,00164$
+	ljmp	00103$
+00164$:
+	cjne	r7,#0x77,00165$
+	ljmp	00104$
+00165$:
+;	src/main.c:132: case 'm':
+	sjmp	00114$
+00101$:
+;	src/main.c:133: printf("\r\n Menu");
 	mov	a,#___str_11
 	push	acc
 	mov	a,#(___str_11 >> 8)
@@ -829,8 +882,157 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	src/main.c:121: }
-	ljmp	00110$
+;	src/main.c:134: printf("\r\nr: run pwm");
+	mov	a,#___str_12
+	push	acc
+	mov	a,#(___str_12 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:135: printf("\r\ns: stop p1.5 output");
+	mov	a,#___str_13
+	push	acc
+	mov	a,#(___str_13 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:136: printf("\r\nw: max clock speed");
+	mov	a,#___str_14
+	push	acc
+	mov	a,#(___str_14 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:137: printf("\r\nl: min clock speed");
+	mov	a,#___str_15
+	push	acc
+	mov	a,#(___str_15 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:138: printf("\r\nf: freeze (triggers watchdog)");
+	mov	a,#___str_16
+	push	acc
+	mov	a,#(___str_16 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:139: printf("\r\nh: high speed output");
+	mov	a,#___str_17
+	push	acc
+	mov	a,#(___str_17 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:140: printf("\r\np: power down mode");
+	mov	a,#___str_18
+	push	acc
+	mov	a,#(___str_18 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:141: printf("\r\ni: enter idle mode for a bit");
+	mov	a,#___str_19
+	push	acc
+	mov	a,#(___str_19 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:142: break;
+;	src/main.c:143: case 'r':
+	sjmp	00111$
+00102$:
+;	src/main.c:144: run_pwm_command_handler();
+	lcall	_run_pwm_command_handler
+;	src/main.c:145: break;
+;	src/main.c:146: case 's':
+	sjmp	00111$
+00103$:
+;	src/main.c:147: stop_pwm_command_handler();
+	lcall	_stop_pwm_command_handler
+;	src/main.c:148: break;
+;	src/main.c:149: case 'w':
+	sjmp	00111$
+00104$:
+;	src/main.c:150: max_clock_speed_command_handler();
+	lcall	_max_clock_speed_command_handler
+;	src/main.c:151: break;
+;	src/main.c:152: case 'l':
+	sjmp	00111$
+00105$:
+;	src/main.c:153: min_clock_speed_command_handler();
+	lcall	_min_clock_speed_command_handler
+;	src/main.c:154: break;
+;	src/main.c:155: case 'f':
+	sjmp	00111$
+00106$:
+;	src/main.c:156: freeze_command_handler();
+	lcall	_freeze_command_handler
+;	src/main.c:157: break;
+;	src/main.c:158: case 'i':
+	sjmp	00111$
+00107$:
+;	src/main.c:159: enter_idle_mode();
+	lcall	_enter_idle_mode
+;	src/main.c:160: break;
+;	src/main.c:161: case 'h':
+	sjmp	00111$
+00108$:
+;	src/main.c:162: high_speed_output_handler();
+	lcall	_high_speed_output_handler
+;	src/main.c:163: break;
+;	src/main.c:164: case 'p':
+	sjmp	00111$
+00109$:
+;	src/main.c:165: enter_power_down_mode();
+	lcall	_enter_power_down_mode
+;	src/main.c:169: }
+00111$:
+;	src/main.c:170: printf("\r\nEND COMMAND");
+	mov	a,#___str_20
+	push	acc
+	mov	a,#(___str_20 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	src/main.c:173: }
+	ljmp	00114$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)
@@ -844,7 +1046,7 @@ ___str_0:
 ___str_1:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Stop PWM"
+	.ascii "Stop P1.5 Output"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
@@ -858,59 +1060,123 @@ ___str_2:
 ___str_3:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Freezing (triggers watchdog)"
+	.ascii "Min Speed clk"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_4:
 	.db 0x0d
 	.db 0x0a
-	.ascii "Enter a char: "
+	.ascii "Freezing (triggers watchdog)"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_5:
 	.db 0x0d
 	.db 0x0a
-	.ascii " Menu"
+	.ascii "Enter Idle Mode"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_6:
 	.db 0x0d
 	.db 0x0a
-	.ascii "r: run pwm"
+	.ascii "Exiting Idle Mode"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_7:
 	.db 0x0d
 	.db 0x0a
-	.ascii "s: stop PWM"
+	.ascii "Enter Power Down Mode"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_8:
 	.db 0x0d
 	.db 0x0a
-	.ascii "w: max clock speed"
+	.ascii "Exiting Power Down Mode"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_9:
 	.db 0x0d
 	.db 0x0a
-	.ascii "f: freeze (triggers watchdog)"
+	.ascii " Doing high speed output"
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_10:
 	.db 0x0d
 	.db 0x0a
+	.ascii "Enter a char: "
 	.db 0x00
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 ___str_11:
+	.db 0x0d
+	.db 0x0a
+	.ascii " Menu"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_12:
+	.db 0x0d
+	.db 0x0a
+	.ascii "r: run pwm"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_13:
+	.db 0x0d
+	.db 0x0a
+	.ascii "s: stop p1.5 output"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_14:
+	.db 0x0d
+	.db 0x0a
+	.ascii "w: max clock speed"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_15:
+	.db 0x0d
+	.db 0x0a
+	.ascii "l: min clock speed"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_16:
+	.db 0x0d
+	.db 0x0a
+	.ascii "f: freeze (triggers watchdog)"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_17:
+	.db 0x0d
+	.db 0x0a
+	.ascii "h: high speed output"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_18:
+	.db 0x0d
+	.db 0x0a
+	.ascii "p: power down mode"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_19:
+	.db 0x0d
+	.db 0x0a
+	.ascii "i: enter idle mode for a bit"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_20:
 	.db 0x0d
 	.db 0x0a
 	.ascii "END COMMAND"

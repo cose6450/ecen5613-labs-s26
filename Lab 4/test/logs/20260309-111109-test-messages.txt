@@ -1,0 +1,3 @@
+Terminal Buffer Program Regression Tests
+****************************************
+test_buffered_data_movement: passed

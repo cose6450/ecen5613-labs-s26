@@ -16,9 +16,7 @@
 -l libfloat
 bin/main.rel
 bin/my_serial.rel
-bin/_heap.rel
 bin/input.rel
-bin/linked_list.rel
 bin/debug.rel
 
 -e

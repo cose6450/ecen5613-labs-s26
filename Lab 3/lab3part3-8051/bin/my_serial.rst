@@ -491,7 +491,7 @@
                                     491 ;	-----------------------------------------
                                     492 ;	 function putchar
                                     493 ;	-----------------------------------------
-      00220B                        494 _putchar:
+      002301                        494 _putchar:
                            000007   495 	ar7 = 0x07
                            000006   496 	ar6 = 0x06
                            000005   497 	ar5 = 0x05
@@ -500,33 +500,33 @@
                            000002   500 	ar2 = 0x02
                            000001   501 	ar1 = 0x01
                            000000   502 	ar0 = 0x00
-      00220B AF 83            [24]  503 	mov	r7,dph
-      00220D E5 82            [12]  504 	mov	a,dpl
-      00220F 90 00 01         [24]  505 	mov	dptr,#_putchar_c_65536_3
-      002212 F0               [24]  506 	movx	@dptr,a
-      002213 EF               [12]  507 	mov	a,r7
-      002214 A3               [24]  508 	inc	dptr
-      002215 F0               [24]  509 	movx	@dptr,a
+      002301 AF 83            [24]  503 	mov	r7,dph
+      002303 E5 82            [12]  504 	mov	a,dpl
+      002305 90 00 01         [24]  505 	mov	dptr,#_putchar_c_65536_3
+      002308 F0               [24]  506 	movx	@dptr,a
+      002309 EF               [12]  507 	mov	a,r7
+      00230A A3               [24]  508 	inc	dptr
+      00230B F0               [24]  509 	movx	@dptr,a
                                     510 ;	src/my_serial.c:16: while (!TI);     // wait for TI to get set previous transmission completed
-      002216                        511 00101$:
+      00230C                        511 00101$:
                                     512 ;	src/my_serial.c:17: TI = 0;   // clear TI flag
                                     513 ;	assignBit
-      002216 10 99 02         [24]  514 	jbc	_TI,00114$
-      002219 80 FB            [24]  515 	sjmp	00101$
-      00221B                        516 00114$:
+      00230C 10 99 02         [24]  514 	jbc	_TI,00114$
+      00230F 80 FB            [24]  515 	sjmp	00101$
+      002311                        516 00114$:
                                     517 ;	src/my_serial.c:18: SBUF = c; // load serial port with transmit value
-      00221B 90 00 01         [24]  518 	mov	dptr,#_putchar_c_65536_3
-      00221E E0               [24]  519 	movx	a,@dptr
-      00221F FE               [12]  520 	mov	r6,a
-      002220 A3               [24]  521 	inc	dptr
-      002221 E0               [24]  522 	movx	a,@dptr
-      002222 FF               [12]  523 	mov	r7,a
-      002223 8E 99            [24]  524 	mov	_SBUF,r6
+      002311 90 00 01         [24]  518 	mov	dptr,#_putchar_c_65536_3
+      002314 E0               [24]  519 	movx	a,@dptr
+      002315 FE               [12]  520 	mov	r6,a
+      002316 A3               [24]  521 	inc	dptr
+      002317 E0               [24]  522 	movx	a,@dptr
+      002318 FF               [12]  523 	mov	r7,a
+      002319 8E 99            [24]  524 	mov	_SBUF,r6
                                     525 ;	src/my_serial.c:19: return c;
-      002225 8E 82            [24]  526 	mov	dpl,r6
-      002227 8F 83            [24]  527 	mov	dph,r7
+      00231B 8E 82            [24]  526 	mov	dpl,r6
+      00231D 8F 83            [24]  527 	mov	dph,r7
                                     528 ;	src/my_serial.c:20: }
-      002229 22               [24]  529 	ret
+      00231F 22               [24]  529 	ret
                                     530 ;------------------------------------------------------------
                                     531 ;Allocation info for local variables in function 'getchar'
                                     532 ;------------------------------------------------------------
@@ -534,22 +534,22 @@
                                     534 ;	-----------------------------------------
                                     535 ;	 function getchar
                                     536 ;	-----------------------------------------
-      00222A                        537 _getchar:
+      002320                        537 _getchar:
                                     538 ;	src/my_serial.c:25: while (!RI);        // wait for RI to get set data is received
-      00222A                        539 00101$:
-      00222A 30 98 FD         [24]  540 	jnb	_RI,00101$
+      002320                        539 00101$:
+      002320 30 98 FD         [24]  540 	jnb	_RI,00101$
                                     541 ;	src/my_serial.c:26: kick_the_dog();
-      00222D 12 20 EB         [24]  542 	lcall	_kick_the_dog
+      002323 12 21 0B         [24]  542 	lcall	_kick_the_dog
                                     543 ;	src/my_serial.c:27: RI = 0;      // clear RI flag
                                     544 ;	assignBit
-      002230 C2 98            [12]  545 	clr	_RI
+      002326 C2 98            [12]  545 	clr	_RI
                                     546 ;	src/my_serial.c:28: return SBUF; // return character from SBUF
-      002232 AE 99            [24]  547 	mov	r6,_SBUF
-      002234 7F 00            [12]  548 	mov	r7,#0x00
-      002236 8E 82            [24]  549 	mov	dpl,r6
-      002238 8F 83            [24]  550 	mov	dph,r7
+      002328 AE 99            [24]  547 	mov	r6,_SBUF
+      00232A 7F 00            [12]  548 	mov	r7,#0x00
+      00232C 8E 82            [24]  549 	mov	dpl,r6
+      00232E 8F 83            [24]  550 	mov	dph,r7
                                     551 ;	src/my_serial.c:29: }
-      00223A 22               [24]  552 	ret
+      002330 22               [24]  552 	ret
                                     553 	.area CSEG    (CODE)
                                     554 	.area CONST   (CODE)
                                     555 	.area XINIT   (CODE)

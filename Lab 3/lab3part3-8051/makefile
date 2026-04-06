@@ -48,8 +48,8 @@ user_program_debug: bin/debug_output.hex
 # --model-large : Generate code for Large model programs
 # --out-fmt-ihx : Generate Intel HEX output format
 
-bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel bin/linked_list.rel bin/debug.rel
-	$(CC) bin/main.rel bin/my_serial.rel bin/_heap.rel bin/input.rel bin/linked_list.rel bin/debug.rel\
+bin/output.hex: bin/main.rel  bin/my_serial.rel bin/input.rel  bin/debug.rel
+	$(CC) bin/main.rel bin/my_serial.rel bin/input.rel bin/debug.rel\
 	--code-loc 0x2000 --code-size 0x6000 \
 	--xram-loc 0x0001 --xram-size 0x7FFF \
 	--model-large --out-fmt-ihx -o bin/output.hex
