@@ -1,0 +1,503 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.2.0 #13081 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module lcd
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _lcdclear
+                                     12 	.globl _lcdputstr
+                                     13 	.globl _lcdputch
+                                     14 	.globl _lcdgotoxy
+                                     15 	.globl _lcdgotoaddr
+                                     16 	.globl _lcdinit
+                                     17 	.globl _lcdbusywait
+                                     18 	.globl _lcdgotoxy_PARM_2
+                                     19 ;--------------------------------------------------------
+                                     20 ; special function registers
+                                     21 ;--------------------------------------------------------
+                                     22 	.area RSEG    (ABS,DATA)
+      000000                         23 	.org 0x0000
+                                     24 ;--------------------------------------------------------
+                                     25 ; special function bits
+                                     26 ;--------------------------------------------------------
+                                     27 	.area RSEG    (ABS,DATA)
+      000000                         28 	.org 0x0000
+                                     29 ;--------------------------------------------------------
+                                     30 ; overlayable register banks
+                                     31 ;--------------------------------------------------------
+                                     32 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                         33 	.ds 8
+                                     34 ;--------------------------------------------------------
+                                     35 ; internal ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area DSEG    (DATA)
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable items in internal ram
+                                     40 ;--------------------------------------------------------
+                                     41 ;--------------------------------------------------------
+                                     42 ; indirectly addressable internal ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area ISEG    (DATA)
+                                     45 ;--------------------------------------------------------
+                                     46 ; absolute internal ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area IABS    (ABS,DATA)
+                                     49 	.area IABS    (ABS,DATA)
+                                     50 ;--------------------------------------------------------
+                                     51 ; bit data
+                                     52 ;--------------------------------------------------------
+                                     53 	.area BSEG    (BIT)
+                                     54 ;--------------------------------------------------------
+                                     55 ; paged external ram data
+                                     56 ;--------------------------------------------------------
+                                     57 	.area PSEG    (PAG,XDATA)
+                                     58 ;--------------------------------------------------------
+                                     59 ; external ram data
+                                     60 ;--------------------------------------------------------
+                                     61 	.area XSEG    (XDATA)
+      000000                         62 _delay_i_131072_2:
+      000000                         63 	.ds 2
+      000002                         64 _lcdinit_i_327680_9:
+      000002                         65 	.ds 2
+      000004                         66 _lcdinit_i_327680_14:
+      000004                         67 	.ds 2
+      000006                         68 _lcdinit_i_327680_19:
+      000006                         69 	.ds 2
+      000008                         70 _lcdgotoaddr_addr_65536_21:
+      000008                         71 	.ds 1
+      000009                         72 _lcdgotoxy_PARM_2:
+      000009                         73 	.ds 1
+      00000A                         74 _lcdgotoxy_row_65536_23:
+      00000A                         75 	.ds 1
+      00000B                         76 _lcdputch_cc_65536_25:
+      00000B                         77 	.ds 1
+      00000C                         78 _lcdputstr_ss_65536_27:
+      00000C                         79 	.ds 3
+                                     80 ;--------------------------------------------------------
+                                     81 ; absolute external ram data
+                                     82 ;--------------------------------------------------------
+                                     83 	.area XABS    (ABS,XDATA)
+                                     84 ;--------------------------------------------------------
+                                     85 ; external initialized ram data
+                                     86 ;--------------------------------------------------------
+                                     87 	.area XISEG   (XDATA)
+                                     88 	.area HOME    (CODE)
+                                     89 	.area GSINIT0 (CODE)
+                                     90 	.area GSINIT1 (CODE)
+                                     91 	.area GSINIT2 (CODE)
+                                     92 	.area GSINIT3 (CODE)
+                                     93 	.area GSINIT4 (CODE)
+                                     94 	.area GSINIT5 (CODE)
+                                     95 	.area GSINIT  (CODE)
+                                     96 	.area GSFINAL (CODE)
+                                     97 	.area CSEG    (CODE)
+                                     98 ;--------------------------------------------------------
+                                     99 ; global & static initialisations
+                                    100 ;--------------------------------------------------------
+                                    101 	.area HOME    (CODE)
+                                    102 	.area GSINIT  (CODE)
+                                    103 	.area GSFINAL (CODE)
+                                    104 	.area GSINIT  (CODE)
+                                    105 ;--------------------------------------------------------
+                                    106 ; Home
+                                    107 ;--------------------------------------------------------
+                                    108 	.area HOME    (CODE)
+                                    109 	.area HOME    (CODE)
+                                    110 ;--------------------------------------------------------
+                                    111 ; code
+                                    112 ;--------------------------------------------------------
+                                    113 	.area CSEG    (CODE)
+                                    114 ;------------------------------------------------------------
+                                    115 ;Allocation info for local variables in function 'lcdbusywait'
+                                    116 ;------------------------------------------------------------
+                                    117 ;	src/lcd.c:26: void lcdbusywait()
+                                    118 ;	-----------------------------------------
+                                    119 ;	 function lcdbusywait
+                                    120 ;	-----------------------------------------
+      000000                        121 _lcdbusywait:
+                           000007   122 	ar7 = 0x07
+                           000006   123 	ar6 = 0x06
+                           000005   124 	ar5 = 0x05
+                           000004   125 	ar4 = 0x04
+                           000003   126 	ar3 = 0x03
+                           000002   127 	ar2 = 0x02
+                           000001   128 	ar1 = 0x01
+                           000000   129 	ar0 = 0x00
+                                    130 ;	src/lcd.c:28: while(0x80 == ((*(volatile unsigned char *) (LCD_ADDRESS_BASE | LCD_RW_FLAG)) & 0x80)); 
+      000000                        131 00101$:
+      000000 90 F2 00         [24]  132 	mov	dptr,#0xf200
+      000003 75 F0 00         [24]  133 	mov	b,#0x00
+      000006 12r00r00         [24]  134 	lcall	__gptrget
+      000009 FF               [12]  135 	mov	r7,a
+      00000A 53 07 80         [24]  136 	anl	ar7,#0x80
+      00000D 7E 00            [12]  137 	mov	r6,#0x00
+      00000F BF 80 05         [24]  138 	cjne	r7,#0x80,00110$
+      000012 BE 00 02         [24]  139 	cjne	r6,#0x00,00110$
+      000015 80 E9            [24]  140 	sjmp	00101$
+      000017                        141 00110$:
+                                    142 ;	src/lcd.c:29: }
+      000017 22               [24]  143 	ret
+                                    144 ;------------------------------------------------------------
+                                    145 ;Allocation info for local variables in function 'lcdinit'
+                                    146 ;------------------------------------------------------------
+                                    147 ;i                         Allocated with name '_lcdinit_i_327680_9'
+                                    148 ;i                         Allocated with name '_lcdinit_i_327680_14'
+                                    149 ;i                         Allocated with name '_lcdinit_i_327680_19'
+                                    150 ;------------------------------------------------------------
+                                    151 ;	src/lcd.c:32: void lcdinit()
+                                    152 ;	-----------------------------------------
+                                    153 ;	 function lcdinit
+                                    154 ;	-----------------------------------------
+      000018                        155 _lcdinit:
+                                    156 ;	src/lcd.c:17: for(volatile int i = 0; i < 600; i++)
+      000018 90r00r02         [24]  157 	mov	dptr,#_lcdinit_i_327680_9
+      00001B E4               [12]  158 	clr	a
+      00001C F0               [24]  159 	movx	@dptr,a
+      00001D A3               [24]  160 	inc	dptr
+      00001E F0               [24]  161 	movx	@dptr,a
+      00001F                        162 00108$:
+      00001F 90r00r02         [24]  163 	mov	dptr,#_lcdinit_i_327680_9
+      000022 E0               [24]  164 	movx	a,@dptr
+      000023 FE               [12]  165 	mov	r6,a
+      000024 A3               [24]  166 	inc	dptr
+      000025 E0               [24]  167 	movx	a,@dptr
+      000026 FF               [12]  168 	mov	r7,a
+      000027 C3               [12]  169 	clr	c
+      000028 EE               [12]  170 	mov	a,r6
+      000029 94 58            [12]  171 	subb	a,#0x58
+      00002B EF               [12]  172 	mov	a,r7
+      00002C 64 80            [12]  173 	xrl	a,#0x80
+      00002E 94 82            [12]  174 	subb	a,#0x82
+      000030 50 16            [24]  175 	jnc	00102$
+                                    176 ;	src/lcd.c:21: __endasm;  
+      000032 00               [12]  177 	nop
+                                    178 ;	src/lcd.c:17: for(volatile int i = 0; i < 600; i++)
+      000033 90r00r02         [24]  179 	mov	dptr,#_lcdinit_i_327680_9
+      000036 E0               [24]  180 	movx	a,@dptr
+      000037 FE               [12]  181 	mov	r6,a
+      000038 A3               [24]  182 	inc	dptr
+      000039 E0               [24]  183 	movx	a,@dptr
+      00003A FF               [12]  184 	mov	r7,a
+      00003B 90r00r02         [24]  185 	mov	dptr,#_lcdinit_i_327680_9
+      00003E 74 01            [12]  186 	mov	a,#0x01
+      000040 2E               [12]  187 	add	a,r6
+      000041 F0               [24]  188 	movx	@dptr,a
+      000042 E4               [12]  189 	clr	a
+      000043 3F               [12]  190 	addc	a,r7
+      000044 A3               [24]  191 	inc	dptr
+      000045 F0               [24]  192 	movx	@dptr,a
+                                    193 ;	src/lcd.c:34: delay();
+      000046 80 D7            [24]  194 	sjmp	00108$
+      000048                        195 00102$:
+                                    196 ;	src/lcd.c:35: INIT_CMD_ONE();
+      000048 90 F0 00         [24]  197 	mov	dptr,#0xf000
+      00004B 75 F0 00         [24]  198 	mov	b,#0x00
+      00004E 74 30            [12]  199 	mov	a,#0x30
+      000050 12r00r00         [24]  200 	lcall	__gptrput
+                                    201 ;	src/lcd.c:17: for(volatile int i = 0; i < 600; i++)
+      000053 90r00r04         [24]  202 	mov	dptr,#_lcdinit_i_327680_14
+      000056 E4               [12]  203 	clr	a
+      000057 F0               [24]  204 	movx	@dptr,a
+      000058 A3               [24]  205 	inc	dptr
+      000059 F0               [24]  206 	movx	@dptr,a
+      00005A                        207 00111$:
+      00005A 90r00r04         [24]  208 	mov	dptr,#_lcdinit_i_327680_14
+      00005D E0               [24]  209 	movx	a,@dptr
+      00005E FE               [12]  210 	mov	r6,a
+      00005F A3               [24]  211 	inc	dptr
+      000060 E0               [24]  212 	movx	a,@dptr
+      000061 FF               [12]  213 	mov	r7,a
+      000062 C3               [12]  214 	clr	c
+      000063 EE               [12]  215 	mov	a,r6
+      000064 94 58            [12]  216 	subb	a,#0x58
+      000066 EF               [12]  217 	mov	a,r7
+      000067 64 80            [12]  218 	xrl	a,#0x80
+      000069 94 82            [12]  219 	subb	a,#0x82
+      00006B 50 16            [24]  220 	jnc	00104$
+                                    221 ;	src/lcd.c:21: __endasm;  
+      00006D 00               [12]  222 	nop
+                                    223 ;	src/lcd.c:17: for(volatile int i = 0; i < 600; i++)
+      00006E 90r00r04         [24]  224 	mov	dptr,#_lcdinit_i_327680_14
+      000071 E0               [24]  225 	movx	a,@dptr
+      000072 FE               [12]  226 	mov	r6,a
+      000073 A3               [24]  227 	inc	dptr
+      000074 E0               [24]  228 	movx	a,@dptr
+      000075 FF               [12]  229 	mov	r7,a
+      000076 90r00r04         [24]  230 	mov	dptr,#_lcdinit_i_327680_14
+      000079 74 01            [12]  231 	mov	a,#0x01
+      00007B 2E               [12]  232 	add	a,r6
+      00007C F0               [24]  233 	movx	@dptr,a
+      00007D E4               [12]  234 	clr	a
+      00007E 3F               [12]  235 	addc	a,r7
+      00007F A3               [24]  236 	inc	dptr
+      000080 F0               [24]  237 	movx	@dptr,a
+                                    238 ;	src/lcd.c:36: delay();
+      000081 80 D7            [24]  239 	sjmp	00111$
+      000083                        240 00104$:
+                                    241 ;	src/lcd.c:37: INIT_CMD_ONE();
+      000083 90 F0 00         [24]  242 	mov	dptr,#0xf000
+      000086 75 F0 00         [24]  243 	mov	b,#0x00
+      000089 74 30            [12]  244 	mov	a,#0x30
+      00008B 12r00r00         [24]  245 	lcall	__gptrput
+                                    246 ;	src/lcd.c:17: for(volatile int i = 0; i < 600; i++)
+      00008E 90r00r06         [24]  247 	mov	dptr,#_lcdinit_i_327680_19
+      000091 E4               [12]  248 	clr	a
+      000092 F0               [24]  249 	movx	@dptr,a
+      000093 A3               [24]  250 	inc	dptr
+      000094 F0               [24]  251 	movx	@dptr,a
+      000095                        252 00114$:
+      000095 90r00r06         [24]  253 	mov	dptr,#_lcdinit_i_327680_19
+      000098 E0               [24]  254 	movx	a,@dptr
+      000099 FE               [12]  255 	mov	r6,a
+      00009A A3               [24]  256 	inc	dptr
+      00009B E0               [24]  257 	movx	a,@dptr
+      00009C FF               [12]  258 	mov	r7,a
+      00009D C3               [12]  259 	clr	c
+      00009E EE               [12]  260 	mov	a,r6
+      00009F 94 58            [12]  261 	subb	a,#0x58
+      0000A1 EF               [12]  262 	mov	a,r7
+      0000A2 64 80            [12]  263 	xrl	a,#0x80
+      0000A4 94 82            [12]  264 	subb	a,#0x82
+      0000A6 50 16            [24]  265 	jnc	00106$
+                                    266 ;	src/lcd.c:21: __endasm;  
+      0000A8 00               [12]  267 	nop
+                                    268 ;	src/lcd.c:17: for(volatile int i = 0; i < 600; i++)
+      0000A9 90r00r06         [24]  269 	mov	dptr,#_lcdinit_i_327680_19
+      0000AC E0               [24]  270 	movx	a,@dptr
+      0000AD FE               [12]  271 	mov	r6,a
+      0000AE A3               [24]  272 	inc	dptr
+      0000AF E0               [24]  273 	movx	a,@dptr
+      0000B0 FF               [12]  274 	mov	r7,a
+      0000B1 90r00r06         [24]  275 	mov	dptr,#_lcdinit_i_327680_19
+      0000B4 74 01            [12]  276 	mov	a,#0x01
+      0000B6 2E               [12]  277 	add	a,r6
+      0000B7 F0               [24]  278 	movx	@dptr,a
+      0000B8 E4               [12]  279 	clr	a
+      0000B9 3F               [12]  280 	addc	a,r7
+      0000BA A3               [24]  281 	inc	dptr
+      0000BB F0               [24]  282 	movx	@dptr,a
+                                    283 ;	src/lcd.c:38: delay();
+      0000BC 80 D7            [24]  284 	sjmp	00114$
+      0000BE                        285 00106$:
+                                    286 ;	src/lcd.c:39: INIT_CMD_ONE();
+      0000BE 90 F0 00         [24]  287 	mov	dptr,#0xf000
+      0000C1 75 F0 00         [24]  288 	mov	b,#0x00
+      0000C4 74 30            [12]  289 	mov	a,#0x30
+      0000C6 12r00r00         [24]  290 	lcall	__gptrput
+                                    291 ;	src/lcd.c:40: lcdbusywait();
+      0000C9 12r00r00         [24]  292 	lcall	_lcdbusywait
+                                    293 ;	src/lcd.c:41: FUNCTION_SET_TWO_LINES_FONT_0();
+      0000CC 90 F0 00         [24]  294 	mov	dptr,#0xf000
+      0000CF 75 F0 00         [24]  295 	mov	b,#0x00
+      0000D2 74 38            [12]  296 	mov	a,#0x38
+      0000D4 12r00r00         [24]  297 	lcall	__gptrput
+                                    298 ;	src/lcd.c:42: lcdbusywait();
+      0000D7 12r00r00         [24]  299 	lcall	_lcdbusywait
+                                    300 ;	src/lcd.c:43: DISPLAY_OFF();
+      0000DA 90 F0 00         [24]  301 	mov	dptr,#0xf000
+      0000DD 75 F0 00         [24]  302 	mov	b,#0x00
+      0000E0 74 08            [12]  303 	mov	a,#0x08
+      0000E2 12r00r00         [24]  304 	lcall	__gptrput
+                                    305 ;	src/lcd.c:44: lcdbusywait();
+      0000E5 12r00r00         [24]  306 	lcall	_lcdbusywait
+                                    307 ;	src/lcd.c:45: DISPLAY_ON();
+      0000E8 90 F0 00         [24]  308 	mov	dptr,#0xf000
+      0000EB 75 F0 00         [24]  309 	mov	b,#0x00
+      0000EE 74 0C            [12]  310 	mov	a,#0x0c
+      0000F0 12r00r00         [24]  311 	lcall	__gptrput
+                                    312 ;	src/lcd.c:46: lcdbusywait();
+      0000F3 12r00r00         [24]  313 	lcall	_lcdbusywait
+                                    314 ;	src/lcd.c:47: ENTRY_MODE_SET_ID_1_S_0();
+      0000F6 90 F0 00         [24]  315 	mov	dptr,#0xf000
+      0000F9 75 F0 00         [24]  316 	mov	b,#0x00
+      0000FC 74 06            [12]  317 	mov	a,#0x06
+      0000FE 12r00r00         [24]  318 	lcall	__gptrput
+                                    319 ;	src/lcd.c:48: lcdbusywait();
+      000101 12r00r00         [24]  320 	lcall	_lcdbusywait
+                                    321 ;	src/lcd.c:49: DISPLAY_CLEAR();
+      000104 90 F0 00         [24]  322 	mov	dptr,#0xf000
+      000107 75 F0 00         [24]  323 	mov	b,#0x00
+      00010A 74 01            [12]  324 	mov	a,#0x01
+      00010C 12r00r00         [24]  325 	lcall	__gptrput
+                                    326 ;	src/lcd.c:50: lcdbusywait();
+                                    327 ;	src/lcd.c:51: }
+      00010F 02r00r00         [24]  328 	ljmp	_lcdbusywait
+                                    329 ;------------------------------------------------------------
+                                    330 ;Allocation info for local variables in function 'lcdgotoaddr'
+                                    331 ;------------------------------------------------------------
+                                    332 ;addr                      Allocated with name '_lcdgotoaddr_addr_65536_21'
+                                    333 ;------------------------------------------------------------
+                                    334 ;	src/lcd.c:55: void lcdgotoaddr(unsigned char addr)
+                                    335 ;	-----------------------------------------
+                                    336 ;	 function lcdgotoaddr
+                                    337 ;	-----------------------------------------
+      000112                        338 _lcdgotoaddr:
+      000112 E5 82            [12]  339 	mov	a,dpl
+      000114 90r00r08         [24]  340 	mov	dptr,#_lcdgotoaddr_addr_65536_21
+      000117 F0               [24]  341 	movx	@dptr,a
+                                    342 ;	src/lcd.c:57: lcdbusywait();
+      000118 12r00r00         [24]  343 	lcall	_lcdbusywait
+                                    344 ;	src/lcd.c:58: GOTOADDR(addr);
+      00011B 90r00r08         [24]  345 	mov	dptr,#_lcdgotoaddr_addr_65536_21
+      00011E E0               [24]  346 	movx	a,@dptr
+      00011F 44 80            [12]  347 	orl	a,#0x80
+      000121 FF               [12]  348 	mov	r7,a
+      000122 90 F0 00         [24]  349 	mov	dptr,#0xf000
+      000125 75 F0 00         [24]  350 	mov	b,#0x00
+      000128 EF               [12]  351 	mov	a,r7
+      000129 12r00r00         [24]  352 	lcall	__gptrput
+                                    353 ;	src/lcd.c:59: lcdbusywait();
+                                    354 ;	src/lcd.c:60: }
+      00012C 02r00r00         [24]  355 	ljmp	_lcdbusywait
+                                    356 ;------------------------------------------------------------
+                                    357 ;Allocation info for local variables in function 'lcdgotoxy'
+                                    358 ;------------------------------------------------------------
+                                    359 ;column                    Allocated with name '_lcdgotoxy_PARM_2'
+                                    360 ;row                       Allocated with name '_lcdgotoxy_row_65536_23'
+                                    361 ;------------------------------------------------------------
+                                    362 ;	src/lcd.c:62: void lcdgotoxy(unsigned char row, unsigned char column)
+                                    363 ;	-----------------------------------------
+                                    364 ;	 function lcdgotoxy
+                                    365 ;	-----------------------------------------
+      00012F                        366 _lcdgotoxy:
+      00012F E5 82            [12]  367 	mov	a,dpl
+      000131 90r00r0A         [24]  368 	mov	dptr,#_lcdgotoxy_row_65536_23
+      000134 F0               [24]  369 	movx	@dptr,a
+                                    370 ;	src/lcd.c:64: lcdgotoaddr(row << 6 | column); 
+      000135 E0               [24]  371 	movx	a,@dptr
+      000136 03               [12]  372 	rr	a
+      000137 03               [12]  373 	rr	a
+      000138 54 C0            [12]  374 	anl	a,#0xc0
+      00013A FF               [12]  375 	mov	r7,a
+      00013B 90r00r09         [24]  376 	mov	dptr,#_lcdgotoxy_PARM_2
+      00013E E0               [24]  377 	movx	a,@dptr
+      00013F 42 07            [12]  378 	orl	ar7,a
+      000141 8F 82            [24]  379 	mov	dpl,r7
+                                    380 ;	src/lcd.c:65: }
+      000143 02r01r12         [24]  381 	ljmp	_lcdgotoaddr
+                                    382 ;------------------------------------------------------------
+                                    383 ;Allocation info for local variables in function 'lcdputch'
+                                    384 ;------------------------------------------------------------
+                                    385 ;cc                        Allocated with name '_lcdputch_cc_65536_25'
+                                    386 ;------------------------------------------------------------
+                                    387 ;	src/lcd.c:67: void lcdputch(char cc)
+                                    388 ;	-----------------------------------------
+                                    389 ;	 function lcdputch
+                                    390 ;	-----------------------------------------
+      000146                        391 _lcdputch:
+      000146 E5 82            [12]  392 	mov	a,dpl
+      000148 90r00r0B         [24]  393 	mov	dptr,#_lcdputch_cc_65536_25
+      00014B F0               [24]  394 	movx	@dptr,a
+                                    395 ;	src/lcd.c:69: lcdbusywait();
+      00014C 12r00r00         [24]  396 	lcall	_lcdbusywait
+                                    397 ;	src/lcd.c:70: WRITECHAR(cc);
+      00014F 90r00r0B         [24]  398 	mov	dptr,#_lcdputch_cc_65536_25
+      000152 E0               [24]  399 	movx	a,@dptr
+      000153 FF               [12]  400 	mov	r7,a
+      000154 90 F1 00         [24]  401 	mov	dptr,#0xf100
+      000157 75 F0 00         [24]  402 	mov	b,#0x00
+      00015A EF               [12]  403 	mov	a,r7
+      00015B 12r00r00         [24]  404 	lcall	__gptrput
+                                    405 ;	src/lcd.c:71: lcdbusywait();
+                                    406 ;	src/lcd.c:72: }
+      00015E 02r00r00         [24]  407 	ljmp	_lcdbusywait
+                                    408 ;------------------------------------------------------------
+                                    409 ;Allocation info for local variables in function 'lcdputstr'
+                                    410 ;------------------------------------------------------------
+                                    411 ;ss                        Allocated with name '_lcdputstr_ss_65536_27'
+                                    412 ;------------------------------------------------------------
+                                    413 ;	src/lcd.c:74: void lcdputstr
+                                    414 ;	-----------------------------------------
+                                    415 ;	 function lcdputstr
+                                    416 ;	-----------------------------------------
+      000161                        417 _lcdputstr:
+      000161 AF F0            [24]  418 	mov	r7,b
+      000163 AE 83            [24]  419 	mov	r6,dph
+      000165 E5 82            [12]  420 	mov	a,dpl
+      000167 90r00r0C         [24]  421 	mov	dptr,#_lcdputstr_ss_65536_27
+      00016A F0               [24]  422 	movx	@dptr,a
+      00016B EE               [12]  423 	mov	a,r6
+      00016C A3               [24]  424 	inc	dptr
+      00016D F0               [24]  425 	movx	@dptr,a
+      00016E EF               [12]  426 	mov	a,r7
+      00016F A3               [24]  427 	inc	dptr
+      000170 F0               [24]  428 	movx	@dptr,a
+                                    429 ;	src/lcd.c:77: while (*ss != '\0')
+      000171 90r00r0C         [24]  430 	mov	dptr,#_lcdputstr_ss_65536_27
+      000174 E0               [24]  431 	movx	a,@dptr
+      000175 FD               [12]  432 	mov	r5,a
+      000176 A3               [24]  433 	inc	dptr
+      000177 E0               [24]  434 	movx	a,@dptr
+      000178 FE               [12]  435 	mov	r6,a
+      000179 A3               [24]  436 	inc	dptr
+      00017A E0               [24]  437 	movx	a,@dptr
+      00017B FF               [12]  438 	mov	r7,a
+      00017C                        439 00101$:
+      00017C 8D 82            [24]  440 	mov	dpl,r5
+      00017E 8E 83            [24]  441 	mov	dph,r6
+      000180 8F F0            [24]  442 	mov	b,r7
+      000182 12r00r00         [24]  443 	lcall	__gptrget
+      000185 FC               [12]  444 	mov	r4,a
+      000186 60 23            [24]  445 	jz	00108$
+                                    446 ;	src/lcd.c:79: lcdputch(*ss);
+      000188 8C 82            [24]  447 	mov	dpl,r4
+      00018A C0 07            [24]  448 	push	ar7
+      00018C C0 06            [24]  449 	push	ar6
+      00018E C0 05            [24]  450 	push	ar5
+      000190 12r01r46         [24]  451 	lcall	_lcdputch
+      000193 D0 05            [24]  452 	pop	ar5
+      000195 D0 06            [24]  453 	pop	ar6
+      000197 D0 07            [24]  454 	pop	ar7
+                                    455 ;	src/lcd.c:80: ss++;
+      000199 0D               [12]  456 	inc	r5
+      00019A BD 00 01         [24]  457 	cjne	r5,#0x00,00116$
+      00019D 0E               [12]  458 	inc	r6
+      00019E                        459 00116$:
+      00019E 90r00r0C         [24]  460 	mov	dptr,#_lcdputstr_ss_65536_27
+      0001A1 ED               [12]  461 	mov	a,r5
+      0001A2 F0               [24]  462 	movx	@dptr,a
+      0001A3 EE               [12]  463 	mov	a,r6
+      0001A4 A3               [24]  464 	inc	dptr
+      0001A5 F0               [24]  465 	movx	@dptr,a
+      0001A6 EF               [12]  466 	mov	a,r7
+      0001A7 A3               [24]  467 	inc	dptr
+      0001A8 F0               [24]  468 	movx	@dptr,a
+      0001A9 80 D1            [24]  469 	sjmp	00101$
+      0001AB                        470 00108$:
+      0001AB 90r00r0C         [24]  471 	mov	dptr,#_lcdputstr_ss_65536_27
+      0001AE ED               [12]  472 	mov	a,r5
+      0001AF F0               [24]  473 	movx	@dptr,a
+      0001B0 EE               [12]  474 	mov	a,r6
+      0001B1 A3               [24]  475 	inc	dptr
+      0001B2 F0               [24]  476 	movx	@dptr,a
+      0001B3 EF               [12]  477 	mov	a,r7
+      0001B4 A3               [24]  478 	inc	dptr
+      0001B5 F0               [24]  479 	movx	@dptr,a
+                                    480 ;	src/lcd.c:82: }
+      0001B6 22               [24]  481 	ret
+                                    482 ;------------------------------------------------------------
+                                    483 ;Allocation info for local variables in function 'lcdclear'
+                                    484 ;------------------------------------------------------------
+                                    485 ;	src/lcd.c:85: void lcdclear()
+                                    486 ;	-----------------------------------------
+                                    487 ;	 function lcdclear
+                                    488 ;	-----------------------------------------
+      0001B7                        489 _lcdclear:
+                                    490 ;	src/lcd.c:87: lcdbusywait();
+      0001B7 12r00r00         [24]  491 	lcall	_lcdbusywait
+                                    492 ;	src/lcd.c:88: DISPLAY_CLEAR();
+      0001BA 90 F0 00         [24]  493 	mov	dptr,#0xf000
+      0001BD 75 F0 00         [24]  494 	mov	b,#0x00
+      0001C0 74 01            [12]  495 	mov	a,#0x01
+      0001C2 12r00r00         [24]  496 	lcall	__gptrput
+                                    497 ;	src/lcd.c:89: lcdbusywait();
+                                    498 ;	src/lcd.c:90: }
+      0001C5 02r00r00         [24]  499 	ljmp	_lcdbusywait
+                                    500 	.area CSEG    (CODE)
+                                    501 	.area CONST   (CODE)
+                                    502 	.area XINIT   (CODE)
+                                    503 	.area CABS    (ABS,CODE)

@@ -1,0 +1,1276 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.2.0 #13081 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module eeprom
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _i2c_read
+                                     12 	.globl _i2c_write
+                                     13 	.globl _P5_7
+                                     14 	.globl _P5_6
+                                     15 	.globl _P5_5
+                                     16 	.globl _P5_4
+                                     17 	.globl _P5_3
+                                     18 	.globl _P5_2
+                                     19 	.globl _P5_1
+                                     20 	.globl _P5_0
+                                     21 	.globl _P4_7
+                                     22 	.globl _P4_6
+                                     23 	.globl _P4_5
+                                     24 	.globl _P4_4
+                                     25 	.globl _P4_3
+                                     26 	.globl _P4_2
+                                     27 	.globl _P4_1
+                                     28 	.globl _P4_0
+                                     29 	.globl _PX0L
+                                     30 	.globl _PT0L
+                                     31 	.globl _PX1L
+                                     32 	.globl _PT1L
+                                     33 	.globl _PSL
+                                     34 	.globl _PT2L
+                                     35 	.globl _PPCL
+                                     36 	.globl _EC
+                                     37 	.globl _CCF0
+                                     38 	.globl _CCF1
+                                     39 	.globl _CCF2
+                                     40 	.globl _CCF3
+                                     41 	.globl _CCF4
+                                     42 	.globl _CR
+                                     43 	.globl _CF
+                                     44 	.globl _TF2
+                                     45 	.globl _EXF2
+                                     46 	.globl _RCLK
+                                     47 	.globl _TCLK
+                                     48 	.globl _EXEN2
+                                     49 	.globl _TR2
+                                     50 	.globl _C_T2
+                                     51 	.globl _CP_RL2
+                                     52 	.globl _T2CON_7
+                                     53 	.globl _T2CON_6
+                                     54 	.globl _T2CON_5
+                                     55 	.globl _T2CON_4
+                                     56 	.globl _T2CON_3
+                                     57 	.globl _T2CON_2
+                                     58 	.globl _T2CON_1
+                                     59 	.globl _T2CON_0
+                                     60 	.globl _PT2
+                                     61 	.globl _ET2
+                                     62 	.globl _CY
+                                     63 	.globl _AC
+                                     64 	.globl _F0
+                                     65 	.globl _RS1
+                                     66 	.globl _RS0
+                                     67 	.globl _OV
+                                     68 	.globl _F1
+                                     69 	.globl _P
+                                     70 	.globl _PS
+                                     71 	.globl _PT1
+                                     72 	.globl _PX1
+                                     73 	.globl _PT0
+                                     74 	.globl _PX0
+                                     75 	.globl _RD
+                                     76 	.globl _WR
+                                     77 	.globl _T1
+                                     78 	.globl _T0
+                                     79 	.globl _INT1
+                                     80 	.globl _INT0
+                                     81 	.globl _TXD
+                                     82 	.globl _RXD
+                                     83 	.globl _P3_7
+                                     84 	.globl _P3_6
+                                     85 	.globl _P3_5
+                                     86 	.globl _P3_4
+                                     87 	.globl _P3_3
+                                     88 	.globl _P3_2
+                                     89 	.globl _P3_1
+                                     90 	.globl _P3_0
+                                     91 	.globl _EA
+                                     92 	.globl _ES
+                                     93 	.globl _ET1
+                                     94 	.globl _EX1
+                                     95 	.globl _ET0
+                                     96 	.globl _EX0
+                                     97 	.globl _P2_7
+                                     98 	.globl _P2_6
+                                     99 	.globl _P2_5
+                                    100 	.globl _P2_4
+                                    101 	.globl _P2_3
+                                    102 	.globl _P2_2
+                                    103 	.globl _P2_1
+                                    104 	.globl _P2_0
+                                    105 	.globl _SM0
+                                    106 	.globl _SM1
+                                    107 	.globl _SM2
+                                    108 	.globl _REN
+                                    109 	.globl _TB8
+                                    110 	.globl _RB8
+                                    111 	.globl _TI
+                                    112 	.globl _RI
+                                    113 	.globl _P1_7
+                                    114 	.globl _P1_6
+                                    115 	.globl _P1_5
+                                    116 	.globl _P1_4
+                                    117 	.globl _P1_3
+                                    118 	.globl _P1_2
+                                    119 	.globl _P1_1
+                                    120 	.globl _P1_0
+                                    121 	.globl _TF1
+                                    122 	.globl _TR1
+                                    123 	.globl _TF0
+                                    124 	.globl _TR0
+                                    125 	.globl _IE1
+                                    126 	.globl _IT1
+                                    127 	.globl _IE0
+                                    128 	.globl _IT0
+                                    129 	.globl _P0_7
+                                    130 	.globl _P0_6
+                                    131 	.globl _P0_5
+                                    132 	.globl _P0_4
+                                    133 	.globl _P0_3
+                                    134 	.globl _P0_2
+                                    135 	.globl _P0_1
+                                    136 	.globl _P0_0
+                                    137 	.globl _EECON
+                                    138 	.globl _KBF
+                                    139 	.globl _KBE
+                                    140 	.globl _KBLS
+                                    141 	.globl _BRL
+                                    142 	.globl _BDRCON
+                                    143 	.globl _T2MOD
+                                    144 	.globl _SPDAT
+                                    145 	.globl _SPSTA
+                                    146 	.globl _SPCON
+                                    147 	.globl _SADEN
+                                    148 	.globl _SADDR
+                                    149 	.globl _WDTPRG
+                                    150 	.globl _WDTRST
+                                    151 	.globl _P5
+                                    152 	.globl _P4
+                                    153 	.globl _IPH1
+                                    154 	.globl _IPL1
+                                    155 	.globl _IPH0
+                                    156 	.globl _IPL0
+                                    157 	.globl _IEN1
+                                    158 	.globl _IEN0
+                                    159 	.globl _CMOD
+                                    160 	.globl _CL
+                                    161 	.globl _CH
+                                    162 	.globl _CCON
+                                    163 	.globl _CCAPM4
+                                    164 	.globl _CCAPM3
+                                    165 	.globl _CCAPM2
+                                    166 	.globl _CCAPM1
+                                    167 	.globl _CCAPM0
+                                    168 	.globl _CCAP4L
+                                    169 	.globl _CCAP3L
+                                    170 	.globl _CCAP2L
+                                    171 	.globl _CCAP1L
+                                    172 	.globl _CCAP0L
+                                    173 	.globl _CCAP4H
+                                    174 	.globl _CCAP3H
+                                    175 	.globl _CCAP2H
+                                    176 	.globl _CCAP1H
+                                    177 	.globl _CCAP0H
+                                    178 	.globl _CKCON1
+                                    179 	.globl _CKCON0
+                                    180 	.globl _CKRL
+                                    181 	.globl _AUXR1
+                                    182 	.globl _AUXR
+                                    183 	.globl _TH2
+                                    184 	.globl _TL2
+                                    185 	.globl _RCAP2H
+                                    186 	.globl _RCAP2L
+                                    187 	.globl _T2CON
+                                    188 	.globl _B
+                                    189 	.globl _ACC
+                                    190 	.globl _PSW
+                                    191 	.globl _IP
+                                    192 	.globl _P3
+                                    193 	.globl _IE
+                                    194 	.globl _P2
+                                    195 	.globl _SBUF
+                                    196 	.globl _SCON
+                                    197 	.globl _P1
+                                    198 	.globl _TH1
+                                    199 	.globl _TH0
+                                    200 	.globl _TL1
+                                    201 	.globl _TL0
+                                    202 	.globl _TMOD
+                                    203 	.globl _TCON
+                                    204 	.globl _PCON
+                                    205 	.globl _DPH
+                                    206 	.globl _DPL
+                                    207 	.globl _SP
+                                    208 	.globl _P0
+                                    209 	.globl _eepromreadbyte_PARM_2
+                                    210 	.globl _eepromwritebyte_PARM_2
+                                    211 	.globl _i2c_read_PARM_3
+                                    212 	.globl _i2c_read_PARM_2
+                                    213 	.globl _i2c_write_PARM_3
+                                    214 	.globl _i2c_write_PARM_2
+                                    215 	.globl _eeprom_init
+                                    216 	.globl _eepromwritebyte
+                                    217 	.globl _eepromreadbyte
+                                    218 	.globl _eereset
+                                    219 ;--------------------------------------------------------
+                                    220 ; special function registers
+                                    221 ;--------------------------------------------------------
+                                    222 	.area RSEG    (ABS,DATA)
+      000000                        223 	.org 0x0000
+                           000080   224 _P0	=	0x0080
+                           000081   225 _SP	=	0x0081
+                           000082   226 _DPL	=	0x0082
+                           000083   227 _DPH	=	0x0083
+                           000087   228 _PCON	=	0x0087
+                           000088   229 _TCON	=	0x0088
+                           000089   230 _TMOD	=	0x0089
+                           00008A   231 _TL0	=	0x008a
+                           00008B   232 _TL1	=	0x008b
+                           00008C   233 _TH0	=	0x008c
+                           00008D   234 _TH1	=	0x008d
+                           000090   235 _P1	=	0x0090
+                           000098   236 _SCON	=	0x0098
+                           000099   237 _SBUF	=	0x0099
+                           0000A0   238 _P2	=	0x00a0
+                           0000A8   239 _IE	=	0x00a8
+                           0000B0   240 _P3	=	0x00b0
+                           0000B8   241 _IP	=	0x00b8
+                           0000D0   242 _PSW	=	0x00d0
+                           0000E0   243 _ACC	=	0x00e0
+                           0000F0   244 _B	=	0x00f0
+                           0000C8   245 _T2CON	=	0x00c8
+                           0000CA   246 _RCAP2L	=	0x00ca
+                           0000CB   247 _RCAP2H	=	0x00cb
+                           0000CC   248 _TL2	=	0x00cc
+                           0000CD   249 _TH2	=	0x00cd
+                           00008E   250 _AUXR	=	0x008e
+                           0000A2   251 _AUXR1	=	0x00a2
+                           000097   252 _CKRL	=	0x0097
+                           00008F   253 _CKCON0	=	0x008f
+                           0000AF   254 _CKCON1	=	0x00af
+                           0000FA   255 _CCAP0H	=	0x00fa
+                           0000FB   256 _CCAP1H	=	0x00fb
+                           0000FC   257 _CCAP2H	=	0x00fc
+                           0000FD   258 _CCAP3H	=	0x00fd
+                           0000FE   259 _CCAP4H	=	0x00fe
+                           0000EA   260 _CCAP0L	=	0x00ea
+                           0000EB   261 _CCAP1L	=	0x00eb
+                           0000EC   262 _CCAP2L	=	0x00ec
+                           0000ED   263 _CCAP3L	=	0x00ed
+                           0000EE   264 _CCAP4L	=	0x00ee
+                           0000DA   265 _CCAPM0	=	0x00da
+                           0000DB   266 _CCAPM1	=	0x00db
+                           0000DC   267 _CCAPM2	=	0x00dc
+                           0000DD   268 _CCAPM3	=	0x00dd
+                           0000DE   269 _CCAPM4	=	0x00de
+                           0000D8   270 _CCON	=	0x00d8
+                           0000F9   271 _CH	=	0x00f9
+                           0000E9   272 _CL	=	0x00e9
+                           0000D9   273 _CMOD	=	0x00d9
+                           0000A8   274 _IEN0	=	0x00a8
+                           0000B1   275 _IEN1	=	0x00b1
+                           0000B8   276 _IPL0	=	0x00b8
+                           0000B7   277 _IPH0	=	0x00b7
+                           0000B2   278 _IPL1	=	0x00b2
+                           0000B3   279 _IPH1	=	0x00b3
+                           0000C0   280 _P4	=	0x00c0
+                           0000E8   281 _P5	=	0x00e8
+                           0000A6   282 _WDTRST	=	0x00a6
+                           0000A7   283 _WDTPRG	=	0x00a7
+                           0000A9   284 _SADDR	=	0x00a9
+                           0000B9   285 _SADEN	=	0x00b9
+                           0000C3   286 _SPCON	=	0x00c3
+                           0000C4   287 _SPSTA	=	0x00c4
+                           0000C5   288 _SPDAT	=	0x00c5
+                           0000C9   289 _T2MOD	=	0x00c9
+                           00009B   290 _BDRCON	=	0x009b
+                           00009A   291 _BRL	=	0x009a
+                           00009C   292 _KBLS	=	0x009c
+                           00009D   293 _KBE	=	0x009d
+                           00009E   294 _KBF	=	0x009e
+                           0000D2   295 _EECON	=	0x00d2
+                                    296 ;--------------------------------------------------------
+                                    297 ; special function bits
+                                    298 ;--------------------------------------------------------
+                                    299 	.area RSEG    (ABS,DATA)
+      000000                        300 	.org 0x0000
+                           000080   301 _P0_0	=	0x0080
+                           000081   302 _P0_1	=	0x0081
+                           000082   303 _P0_2	=	0x0082
+                           000083   304 _P0_3	=	0x0083
+                           000084   305 _P0_4	=	0x0084
+                           000085   306 _P0_5	=	0x0085
+                           000086   307 _P0_6	=	0x0086
+                           000087   308 _P0_7	=	0x0087
+                           000088   309 _IT0	=	0x0088
+                           000089   310 _IE0	=	0x0089
+                           00008A   311 _IT1	=	0x008a
+                           00008B   312 _IE1	=	0x008b
+                           00008C   313 _TR0	=	0x008c
+                           00008D   314 _TF0	=	0x008d
+                           00008E   315 _TR1	=	0x008e
+                           00008F   316 _TF1	=	0x008f
+                           000090   317 _P1_0	=	0x0090
+                           000091   318 _P1_1	=	0x0091
+                           000092   319 _P1_2	=	0x0092
+                           000093   320 _P1_3	=	0x0093
+                           000094   321 _P1_4	=	0x0094
+                           000095   322 _P1_5	=	0x0095
+                           000096   323 _P1_6	=	0x0096
+                           000097   324 _P1_7	=	0x0097
+                           000098   325 _RI	=	0x0098
+                           000099   326 _TI	=	0x0099
+                           00009A   327 _RB8	=	0x009a
+                           00009B   328 _TB8	=	0x009b
+                           00009C   329 _REN	=	0x009c
+                           00009D   330 _SM2	=	0x009d
+                           00009E   331 _SM1	=	0x009e
+                           00009F   332 _SM0	=	0x009f
+                           0000A0   333 _P2_0	=	0x00a0
+                           0000A1   334 _P2_1	=	0x00a1
+                           0000A2   335 _P2_2	=	0x00a2
+                           0000A3   336 _P2_3	=	0x00a3
+                           0000A4   337 _P2_4	=	0x00a4
+                           0000A5   338 _P2_5	=	0x00a5
+                           0000A6   339 _P2_6	=	0x00a6
+                           0000A7   340 _P2_7	=	0x00a7
+                           0000A8   341 _EX0	=	0x00a8
+                           0000A9   342 _ET0	=	0x00a9
+                           0000AA   343 _EX1	=	0x00aa
+                           0000AB   344 _ET1	=	0x00ab
+                           0000AC   345 _ES	=	0x00ac
+                           0000AF   346 _EA	=	0x00af
+                           0000B0   347 _P3_0	=	0x00b0
+                           0000B1   348 _P3_1	=	0x00b1
+                           0000B2   349 _P3_2	=	0x00b2
+                           0000B3   350 _P3_3	=	0x00b3
+                           0000B4   351 _P3_4	=	0x00b4
+                           0000B5   352 _P3_5	=	0x00b5
+                           0000B6   353 _P3_6	=	0x00b6
+                           0000B7   354 _P3_7	=	0x00b7
+                           0000B0   355 _RXD	=	0x00b0
+                           0000B1   356 _TXD	=	0x00b1
+                           0000B2   357 _INT0	=	0x00b2
+                           0000B3   358 _INT1	=	0x00b3
+                           0000B4   359 _T0	=	0x00b4
+                           0000B5   360 _T1	=	0x00b5
+                           0000B6   361 _WR	=	0x00b6
+                           0000B7   362 _RD	=	0x00b7
+                           0000B8   363 _PX0	=	0x00b8
+                           0000B9   364 _PT0	=	0x00b9
+                           0000BA   365 _PX1	=	0x00ba
+                           0000BB   366 _PT1	=	0x00bb
+                           0000BC   367 _PS	=	0x00bc
+                           0000D0   368 _P	=	0x00d0
+                           0000D1   369 _F1	=	0x00d1
+                           0000D2   370 _OV	=	0x00d2
+                           0000D3   371 _RS0	=	0x00d3
+                           0000D4   372 _RS1	=	0x00d4
+                           0000D5   373 _F0	=	0x00d5
+                           0000D6   374 _AC	=	0x00d6
+                           0000D7   375 _CY	=	0x00d7
+                           0000AD   376 _ET2	=	0x00ad
+                           0000BD   377 _PT2	=	0x00bd
+                           0000C8   378 _T2CON_0	=	0x00c8
+                           0000C9   379 _T2CON_1	=	0x00c9
+                           0000CA   380 _T2CON_2	=	0x00ca
+                           0000CB   381 _T2CON_3	=	0x00cb
+                           0000CC   382 _T2CON_4	=	0x00cc
+                           0000CD   383 _T2CON_5	=	0x00cd
+                           0000CE   384 _T2CON_6	=	0x00ce
+                           0000CF   385 _T2CON_7	=	0x00cf
+                           0000C8   386 _CP_RL2	=	0x00c8
+                           0000C9   387 _C_T2	=	0x00c9
+                           0000CA   388 _TR2	=	0x00ca
+                           0000CB   389 _EXEN2	=	0x00cb
+                           0000CC   390 _TCLK	=	0x00cc
+                           0000CD   391 _RCLK	=	0x00cd
+                           0000CE   392 _EXF2	=	0x00ce
+                           0000CF   393 _TF2	=	0x00cf
+                           0000DF   394 _CF	=	0x00df
+                           0000DE   395 _CR	=	0x00de
+                           0000DC   396 _CCF4	=	0x00dc
+                           0000DB   397 _CCF3	=	0x00db
+                           0000DA   398 _CCF2	=	0x00da
+                           0000D9   399 _CCF1	=	0x00d9
+                           0000D8   400 _CCF0	=	0x00d8
+                           0000AE   401 _EC	=	0x00ae
+                           0000BE   402 _PPCL	=	0x00be
+                           0000BD   403 _PT2L	=	0x00bd
+                           0000BC   404 _PSL	=	0x00bc
+                           0000BB   405 _PT1L	=	0x00bb
+                           0000BA   406 _PX1L	=	0x00ba
+                           0000B9   407 _PT0L	=	0x00b9
+                           0000B8   408 _PX0L	=	0x00b8
+                           0000C0   409 _P4_0	=	0x00c0
+                           0000C1   410 _P4_1	=	0x00c1
+                           0000C2   411 _P4_2	=	0x00c2
+                           0000C3   412 _P4_3	=	0x00c3
+                           0000C4   413 _P4_4	=	0x00c4
+                           0000C5   414 _P4_5	=	0x00c5
+                           0000C6   415 _P4_6	=	0x00c6
+                           0000C7   416 _P4_7	=	0x00c7
+                           0000E8   417 _P5_0	=	0x00e8
+                           0000E9   418 _P5_1	=	0x00e9
+                           0000EA   419 _P5_2	=	0x00ea
+                           0000EB   420 _P5_3	=	0x00eb
+                           0000EC   421 _P5_4	=	0x00ec
+                           0000ED   422 _P5_5	=	0x00ed
+                           0000EE   423 _P5_6	=	0x00ee
+                           0000EF   424 _P5_7	=	0x00ef
+                                    425 ;--------------------------------------------------------
+                                    426 ; overlayable register banks
+                                    427 ;--------------------------------------------------------
+                                    428 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        429 	.ds 8
+                                    430 ;--------------------------------------------------------
+                                    431 ; internal ram data
+                                    432 ;--------------------------------------------------------
+                                    433 	.area DSEG    (DATA)
+                                    434 ;--------------------------------------------------------
+                                    435 ; overlayable items in internal ram
+                                    436 ;--------------------------------------------------------
+                                    437 ;--------------------------------------------------------
+                                    438 ; indirectly addressable internal ram data
+                                    439 ;--------------------------------------------------------
+                                    440 	.area ISEG    (DATA)
+                                    441 ;--------------------------------------------------------
+                                    442 ; absolute internal ram data
+                                    443 ;--------------------------------------------------------
+                                    444 	.area IABS    (ABS,DATA)
+                                    445 	.area IABS    (ABS,DATA)
+                                    446 ;--------------------------------------------------------
+                                    447 ; bit data
+                                    448 ;--------------------------------------------------------
+                                    449 	.area BSEG    (BIT)
+      000000                        450 _i2c_read_sloc0_1_0:
+      000000                        451 	.ds 1
+                                    452 ;--------------------------------------------------------
+                                    453 ; paged external ram data
+                                    454 ;--------------------------------------------------------
+                                    455 	.area PSEG    (PAG,XDATA)
+                                    456 ;--------------------------------------------------------
+                                    457 ; external ram data
+                                    458 ;--------------------------------------------------------
+                                    459 	.area XSEG    (XDATA)
+      000000                        460 _i2c_byte_out_b_65536_5:
+      000000                        461 	.ds 1
+      000001                        462 _i2c_byte_in_last_65536_9:
+      000001                        463 	.ds 1
+      000002                        464 _i2c_byte_in_b_65536_10:
+      000002                        465 	.ds 1
+      000003                        466 _i2c_begin_PARM_2:
+      000003                        467 	.ds 1
+      000004                        468 _i2c_begin_addr_65536_14:
+      000004                        469 	.ds 1
+      000005                        470 _i2c_write_PARM_2:
+      000005                        471 	.ds 3
+      000008                        472 _i2c_write_PARM_3:
+      000008                        473 	.ds 1
+      000009                        474 _i2c_write_addr_65536_19:
+      000009                        475 	.ds 1
+      00000A                        476 _i2c_write_rc_65536_20:
+      00000A                        477 	.ds 1
+      00000B                        478 _i2c_read_PARM_2:
+      00000B                        479 	.ds 3
+      00000E                        480 _i2c_read_PARM_3:
+      00000E                        481 	.ds 1
+      00000F                        482 _i2c_read_addr_65536_24:
+      00000F                        483 	.ds 1
+      000010                        484 _eepromwritebyte_PARM_2:
+      000010                        485 	.ds 1
+      000011                        486 _eepromwritebyte_addr_65536_32:
+      000011                        487 	.ds 2
+      000013                        488 _eepromreadbyte_PARM_2:
+      000013                        489 	.ds 3
+      000016                        490 _eepromreadbyte_addr_65536_39:
+      000016                        491 	.ds 2
+                                    492 ;--------------------------------------------------------
+                                    493 ; absolute external ram data
+                                    494 ;--------------------------------------------------------
+                                    495 	.area XABS    (ABS,XDATA)
+                                    496 ;--------------------------------------------------------
+                                    497 ; external initialized ram data
+                                    498 ;--------------------------------------------------------
+                                    499 	.area XISEG   (XDATA)
+                                    500 	.area HOME    (CODE)
+                                    501 	.area GSINIT0 (CODE)
+                                    502 	.area GSINIT1 (CODE)
+                                    503 	.area GSINIT2 (CODE)
+                                    504 	.area GSINIT3 (CODE)
+                                    505 	.area GSINIT4 (CODE)
+                                    506 	.area GSINIT5 (CODE)
+                                    507 	.area GSINIT  (CODE)
+                                    508 	.area GSFINAL (CODE)
+                                    509 	.area CSEG    (CODE)
+                                    510 ;--------------------------------------------------------
+                                    511 ; global & static initialisations
+                                    512 ;--------------------------------------------------------
+                                    513 	.area HOME    (CODE)
+                                    514 	.area GSINIT  (CODE)
+                                    515 	.area GSFINAL (CODE)
+                                    516 	.area GSINIT  (CODE)
+                                    517 ;--------------------------------------------------------
+                                    518 ; Home
+                                    519 ;--------------------------------------------------------
+                                    520 	.area HOME    (CODE)
+                                    521 	.area HOME    (CODE)
+                                    522 ;--------------------------------------------------------
+                                    523 ; code
+                                    524 ;--------------------------------------------------------
+                                    525 	.area CSEG    (CODE)
+                                    526 ;------------------------------------------------------------
+                                    527 ;Allocation info for local variables in function 'i2c_byte_out'
+                                    528 ;------------------------------------------------------------
+                                    529 ;b                         Allocated with name '_i2c_byte_out_b_65536_5'
+                                    530 ;i                         Allocated with name '_i2c_byte_out_i_65536_6'
+                                    531 ;------------------------------------------------------------
+                                    532 ;	src/eeprom.c:52: static uint8_t i2c_byte_out(uint8_t b) {
+                                    533 ;	-----------------------------------------
+                                    534 ;	 function i2c_byte_out
+                                    535 ;	-----------------------------------------
+      000000                        536 _i2c_byte_out:
+                           000007   537 	ar7 = 0x07
+                           000006   538 	ar6 = 0x06
+                           000005   539 	ar5 = 0x05
+                           000004   540 	ar4 = 0x04
+                           000003   541 	ar3 = 0x03
+                           000002   542 	ar2 = 0x02
+                           000001   543 	ar1 = 0x01
+                           000000   544 	ar0 = 0x00
+      000000 E5 82            [12]  545 	mov	a,dpl
+      000002 90r00r00         [24]  546 	mov	dptr,#_i2c_byte_out_b_65536_5
+      000005 F0               [24]  547 	movx	@dptr,a
+                                    548 ;	src/eeprom.c:55: for (i = 0; i < 8; i++) {
+      000006 7F 00            [12]  549 	mov	r7,#0x00
+      000008                        550 00102$:
+                                    551 ;	src/eeprom.c:56: (b & 0x80)? SDA_HIGH(): SDA_LOW();
+      000008 90r00r00         [24]  552 	mov	dptr,#_i2c_byte_out_b_65536_5
+      00000B E0               [24]  553 	movx	a,@dptr
+      00000C 30 E7 06         [24]  554 	jnb	acc.7,00106$
+                                    555 ;	assignBit
+      00000F D2 97            [12]  556 	setb	_P1_7
+      000011 A2 97            [12]  557 	mov	c,_P1_7
+      000013 80 04            [24]  558 	sjmp	00107$
+      000015                        559 00106$:
+                                    560 ;	assignBit
+      000015 C2 97            [12]  561 	clr	_P1_7
+      000017 A2 97            [12]  562 	mov	c,_P1_7
+      000019                        563 00107$:
+                                    564 ;	src/eeprom.c:57: SCL_HIGH();
+                                    565 ;	assignBit
+      000019 D2 96            [12]  566 	setb	_P1_6
+                                    567 ;	src/eeprom.c:59: SCL_LOW();
+                                    568 ;	assignBit
+      00001B C2 96            [12]  569 	clr	_P1_6
+                                    570 ;	src/eeprom.c:60: b <<= 1;
+      00001D 90r00r00         [24]  571 	mov	dptr,#_i2c_byte_out_b_65536_5
+      000020 E0               [24]  572 	movx	a,@dptr
+      000021 25 E0            [12]  573 	add	a,acc
+      000023 F0               [24]  574 	movx	@dptr,a
+                                    575 ;	src/eeprom.c:55: for (i = 0; i < 8; i++) {
+      000024 0F               [12]  576 	inc	r7
+      000025 BF 08 00         [24]  577 	cjne	r7,#0x08,00128$
+      000028                        578 00128$:
+      000028 40 DE            [24]  579 	jc	00102$
+                                    580 ;	src/eeprom.c:65: SDA_HIGH(); /* pull up SDA for read */
+                                    581 ;	assignBit
+      00002A D2 97            [12]  582 	setb	_P1_7
+                                    583 ;	src/eeprom.c:66: SCL_HIGH();
+                                    584 ;	assignBit
+      00002C D2 96            [12]  585 	setb	_P1_6
+                                    586 ;	src/eeprom.c:68: i = SDA_READ(); /* read ack/nack */
+      00002E A2 97            [12]  587 	mov	c,_P1_7
+      000030 E4               [12]  588 	clr	a
+      000031 33               [12]  589 	rlc	a
+      000032 FF               [12]  590 	mov	r7,a
+                                    591 ;	src/eeprom.c:71: SCL_LOW();
+                                    592 ;	assignBit
+      000033 C2 96            [12]  593 	clr	_P1_6
+                                    594 ;	src/eeprom.c:72: SDA_LOW();
+                                    595 ;	assignBit
+      000035 C2 97            [12]  596 	clr	_P1_7
+                                    597 ;	src/eeprom.c:75: return i? 0: 1; /* 1:ack, 0:nack */
+      000037 EF               [12]  598 	mov	a,r7
+      000038 60 06            [24]  599 	jz	00108$
+      00003A 7E 00            [12]  600 	mov	r6,#0x00
+      00003C 7F 00            [12]  601 	mov	r7,#0x00
+      00003E 80 04            [24]  602 	sjmp	00109$
+      000040                        603 00108$:
+      000040 7E 01            [12]  604 	mov	r6,#0x01
+      000042 7F 00            [12]  605 	mov	r7,#0x00
+      000044                        606 00109$:
+      000044 8E 82            [24]  607 	mov	dpl,r6
+                                    608 ;	src/eeprom.c:76: }
+      000046 22               [24]  609 	ret
+                                    610 ;------------------------------------------------------------
+                                    611 ;Allocation info for local variables in function 'i2c_byte_in'
+                                    612 ;------------------------------------------------------------
+                                    613 ;last                      Allocated with name '_i2c_byte_in_last_65536_9'
+                                    614 ;i                         Allocated with name '_i2c_byte_in_i_65536_10'
+                                    615 ;b                         Allocated with name '_i2c_byte_in_b_65536_10'
+                                    616 ;------------------------------------------------------------
+                                    617 ;	src/eeprom.c:78: static uint8_t i2c_byte_in(bool last) {
+                                    618 ;	-----------------------------------------
+                                    619 ;	 function i2c_byte_in
+                                    620 ;	-----------------------------------------
+      000047                        621 _i2c_byte_in:
+      000047 E5 82            [12]  622 	mov	a,dpl
+      000049 90r00r01         [24]  623 	mov	dptr,#_i2c_byte_in_last_65536_9
+      00004C F0               [24]  624 	movx	@dptr,a
+                                    625 ;	src/eeprom.c:80: uint8_t b = 0;
+      00004D 90r00r02         [24]  626 	mov	dptr,#_i2c_byte_in_b_65536_10
+      000050 E4               [12]  627 	clr	a
+      000051 F0               [24]  628 	movx	@dptr,a
+                                    629 ;	src/eeprom.c:82: SDA_HIGH(); /* pull up for input */
+                                    630 ;	assignBit
+      000052 D2 97            [12]  631 	setb	_P1_7
+                                    632 ;	src/eeprom.c:83: for (i = 0; i < 8; i++) {
+      000054 7F 00            [12]  633 	mov	r7,#0x00
+      000056                        634 00104$:
+                                    635 ;	src/eeprom.c:85: SCL_HIGH();
+                                    636 ;	assignBit
+      000056 D2 96            [12]  637 	setb	_P1_6
+                                    638 ;	src/eeprom.c:86: b <<= 1;
+      000058 90r00r02         [24]  639 	mov	dptr,#_i2c_byte_in_b_65536_10
+      00005B E0               [24]  640 	movx	a,@dptr
+      00005C 25 E0            [12]  641 	add	a,acc
+      00005E F0               [24]  642 	movx	@dptr,a
+                                    643 ;	src/eeprom.c:87: if (SDA_READ()) b |= 1;
+      00005F 30 97 08         [24]  644 	jnb	_P1_7,00102$
+      000062 90r00r02         [24]  645 	mov	dptr,#_i2c_byte_in_b_65536_10
+      000065 E0               [24]  646 	movx	a,@dptr
+      000066 43 E0 01         [24]  647 	orl	acc,#0x01
+      000069 F0               [24]  648 	movx	@dptr,a
+      00006A                        649 00102$:
+                                    650 ;	src/eeprom.c:89: SCL_LOW();
+                                    651 ;	assignBit
+      00006A C2 96            [12]  652 	clr	_P1_6
+                                    653 ;	src/eeprom.c:83: for (i = 0; i < 8; i++) {
+      00006C 0F               [12]  654 	inc	r7
+      00006D BF 08 00         [24]  655 	cjne	r7,#0x08,00128$
+      000070                        656 00128$:
+      000070 40 E4            [24]  657 	jc	00104$
+                                    658 ;	src/eeprom.c:91: SCL_HIGH();
+                                    659 ;	assignBit
+      000072 D2 96            [12]  660 	setb	_P1_6
+                                    661 ;	src/eeprom.c:93: last? SDA_HIGH(): SDA_LOW(); /* send nack or ack */
+      000074 90r00r01         [24]  662 	mov	dptr,#_i2c_byte_in_last_65536_9
+      000077 E0               [24]  663 	movx	a,@dptr
+      000078 60 06            [24]  664 	jz	00108$
+                                    665 ;	assignBit
+      00007A D2 97            [12]  666 	setb	_P1_7
+      00007C A2 97            [12]  667 	mov	c,_P1_7
+      00007E 80 04            [24]  668 	sjmp	00109$
+      000080                        669 00108$:
+                                    670 ;	assignBit
+      000080 C2 97            [12]  671 	clr	_P1_7
+      000082 A2 97            [12]  672 	mov	c,_P1_7
+      000084                        673 00109$:
+                                    674 ;	src/eeprom.c:95: SCL_LOW(); 
+                                    675 ;	assignBit
+      000084 C2 96            [12]  676 	clr	_P1_6
+                                    677 ;	src/eeprom.c:96: SDA_LOW();
+                                    678 ;	assignBit
+      000086 C2 97            [12]  679 	clr	_P1_7
+                                    680 ;	src/eeprom.c:99: return b;
+      000088 90r00r02         [24]  681 	mov	dptr,#_i2c_byte_in_b_65536_10
+      00008B E0               [24]  682 	movx	a,@dptr
+                                    683 ;	src/eeprom.c:100: }
+      00008C F5 82            [12]  684 	mov	dpl,a
+      00008E 22               [24]  685 	ret
+                                    686 ;------------------------------------------------------------
+                                    687 ;Allocation info for local variables in function 'i2c_end'
+                                    688 ;------------------------------------------------------------
+                                    689 ;	src/eeprom.c:102: static void i2c_end() {
+                                    690 ;	-----------------------------------------
+                                    691 ;	 function i2c_end
+                                    692 ;	-----------------------------------------
+      00008F                        693 _i2c_end:
+                                    694 ;	src/eeprom.c:106: SCL_HIGH();
+                                    695 ;	assignBit
+      00008F D2 96            [12]  696 	setb	_P1_6
+                                    697 ;	src/eeprom.c:108: SDA_HIGH();
+                                    698 ;	assignBit
+      000091 D2 97            [12]  699 	setb	_P1_7
+                                    700 ;	src/eeprom.c:110: }
+      000093 22               [24]  701 	ret
+                                    702 ;------------------------------------------------------------
+                                    703 ;Allocation info for local variables in function 'i2c_begin'
+                                    704 ;------------------------------------------------------------
+                                    705 ;rw                        Allocated with name '_i2c_begin_PARM_2'
+                                    706 ;addr                      Allocated with name '_i2c_begin_addr_65536_14'
+                                    707 ;------------------------------------------------------------
+                                    708 ;	src/eeprom.c:113: static uint8_t i2c_begin(uint8_t addr, uint8_t rw) {
+                                    709 ;	-----------------------------------------
+                                    710 ;	 function i2c_begin
+                                    711 ;	-----------------------------------------
+      000094                        712 _i2c_begin:
+      000094 E5 82            [12]  713 	mov	a,dpl
+      000096 90r00r04         [24]  714 	mov	dptr,#_i2c_begin_addr_65536_14
+      000099 F0               [24]  715 	movx	@dptr,a
+                                    716 ;	src/eeprom.c:35: SDA_HIGH();
+                                    717 ;	assignBit
+      00009A D2 97            [12]  718 	setb	_P1_7
+                                    719 ;	src/eeprom.c:36: SCL_HIGH();
+                                    720 ;	assignBit
+      00009C D2 96            [12]  721 	setb	_P1_6
+                                    722 ;	src/eeprom.c:116: SDA_LOW();
+                                    723 ;	assignBit
+      00009E C2 97            [12]  724 	clr	_P1_7
+                                    725 ;	src/eeprom.c:118: SCL_LOW();
+                                    726 ;	assignBit
+      0000A0 C2 96            [12]  727 	clr	_P1_6
+                                    728 ;	src/eeprom.c:122: addr <<= 1; /* shift addess */
+      0000A2 90r00r04         [24]  729 	mov	dptr,#_i2c_begin_addr_65536_14
+      0000A5 E0               [24]  730 	movx	a,@dptr
+      0000A6 25 E0            [12]  731 	add	a,acc
+      0000A8 F0               [24]  732 	movx	@dptr,a
+                                    733 ;	src/eeprom.c:123: if (rw) addr++; /* read/write */
+      0000A9 90r00r03         [24]  734 	mov	dptr,#_i2c_begin_PARM_2
+      0000AC E0               [24]  735 	movx	a,@dptr
+      0000AD 60 07            [24]  736 	jz	00102$
+      0000AF 90r00r04         [24]  737 	mov	dptr,#_i2c_begin_addr_65536_14
+      0000B2 E0               [24]  738 	movx	a,@dptr
+      0000B3 24 01            [12]  739 	add	a,#0x01
+      0000B5 F0               [24]  740 	movx	@dptr,a
+      0000B6                        741 00102$:
+                                    742 ;	src/eeprom.c:126: return i2c_byte_out(addr);
+      0000B6 90r00r04         [24]  743 	mov	dptr,#_i2c_begin_addr_65536_14
+      0000B9 E0               [24]  744 	movx	a,@dptr
+      0000BA F5 82            [12]  745 	mov	dpl,a
+                                    746 ;	src/eeprom.c:127: }
+      0000BC 02r00r00         [24]  747 	ljmp	_i2c_byte_out
+                                    748 ;------------------------------------------------------------
+                                    749 ;Allocation info for local variables in function 'i2c_write'
+                                    750 ;------------------------------------------------------------
+                                    751 ;p                         Allocated with name '_i2c_write_PARM_2'
+                                    752 ;len                       Allocated with name '_i2c_write_PARM_3'
+                                    753 ;addr                      Allocated with name '_i2c_write_addr_65536_19'
+                                    754 ;b                         Allocated with name '_i2c_write_b_65536_20'
+                                    755 ;n                         Allocated with name '_i2c_write_n_65536_20'
+                                    756 ;rc                        Allocated with name '_i2c_write_rc_65536_20'
+                                    757 ;------------------------------------------------------------
+                                    758 ;	src/eeprom.c:129: uint8_t i2c_write(uint8_t addr, uint8_t *p, uint8_t len) {
+                                    759 ;	-----------------------------------------
+                                    760 ;	 function i2c_write
+                                    761 ;	-----------------------------------------
+      0000BF                        762 _i2c_write:
+      0000BF E5 82            [12]  763 	mov	a,dpl
+      0000C1 90r00r09         [24]  764 	mov	dptr,#_i2c_write_addr_65536_19
+      0000C4 F0               [24]  765 	movx	@dptr,a
+                                    766 ;	src/eeprom.c:131: uint8_t n = len;
+      0000C5 90r00r08         [24]  767 	mov	dptr,#_i2c_write_PARM_3
+      0000C8 E0               [24]  768 	movx	a,@dptr
+      0000C9 FF               [12]  769 	mov	r7,a
+                                    770 ;	src/eeprom.c:132: uint8_t rc = i2c_begin(addr, 0); /* start, set addr with WRITE bit */
+      0000CA 90r00r09         [24]  771 	mov	dptr,#_i2c_write_addr_65536_19
+      0000CD E0               [24]  772 	movx	a,@dptr
+      0000CE FE               [12]  773 	mov	r6,a
+      0000CF 90r00r03         [24]  774 	mov	dptr,#_i2c_begin_PARM_2
+      0000D2 E4               [12]  775 	clr	a
+      0000D3 F0               [24]  776 	movx	@dptr,a
+      0000D4 8E 82            [24]  777 	mov	dpl,r6
+      0000D6 C0 07            [24]  778 	push	ar7
+      0000D8 12r00r94         [24]  779 	lcall	_i2c_begin
+      0000DB AE 82            [24]  780 	mov	r6,dpl
+      0000DD D0 07            [24]  781 	pop	ar7
+      0000DF 90r00r0A         [24]  782 	mov	dptr,#_i2c_write_rc_65536_20
+      0000E2 EE               [12]  783 	mov	a,r6
+      0000E3 F0               [24]  784 	movx	@dptr,a
+                                    785 ;	src/eeprom.c:133: if (rc) {
+      0000E4 EE               [12]  786 	mov	a,r6
+      0000E5 60 72            [24]  787 	jz	00108$
+                                    788 ;	src/eeprom.c:134: while (n && rc) {
+      0000E7 8F 06            [24]  789 	mov	ar6,r7
+      0000E9 90r00r05         [24]  790 	mov	dptr,#_i2c_write_PARM_2
+      0000EC E0               [24]  791 	movx	a,@dptr
+      0000ED FB               [12]  792 	mov	r3,a
+      0000EE A3               [24]  793 	inc	dptr
+      0000EF E0               [24]  794 	movx	a,@dptr
+      0000F0 FC               [12]  795 	mov	r4,a
+      0000F1 A3               [24]  796 	inc	dptr
+      0000F2 E0               [24]  797 	movx	a,@dptr
+      0000F3 FD               [12]  798 	mov	r5,a
+      0000F4                        799 00104$:
+      0000F4 EE               [12]  800 	mov	a,r6
+      0000F5 60 3A            [24]  801 	jz	00106$
+      0000F7 90r00r0A         [24]  802 	mov	dptr,#_i2c_write_rc_65536_20
+      0000FA E0               [24]  803 	movx	a,@dptr
+      0000FB 60 34            [24]  804 	jz	00106$
+                                    805 ;	src/eeprom.c:135: b = *p;
+      0000FD 8B 82            [24]  806 	mov	dpl,r3
+      0000FF 8C 83            [24]  807 	mov	dph,r4
+      000101 8D F0            [24]  808 	mov	b,r5
+      000103 12r00r00         [24]  809 	lcall	__gptrget
+                                    810 ;	src/eeprom.c:136: rc = i2c_byte_out(b); // 0:ack, 1:nack
+      000106 F5 82            [12]  811 	mov	dpl,a
+      000108 C0 07            [24]  812 	push	ar7
+      00010A C0 06            [24]  813 	push	ar6
+      00010C C0 05            [24]  814 	push	ar5
+      00010E C0 04            [24]  815 	push	ar4
+      000110 C0 03            [24]  816 	push	ar3
+      000112 12r00r00         [24]  817 	lcall	_i2c_byte_out
+      000115 AA 82            [24]  818 	mov	r2,dpl
+      000117 D0 03            [24]  819 	pop	ar3
+      000119 D0 04            [24]  820 	pop	ar4
+      00011B D0 05            [24]  821 	pop	ar5
+      00011D D0 06            [24]  822 	pop	ar6
+      00011F D0 07            [24]  823 	pop	ar7
+      000121 90r00r0A         [24]  824 	mov	dptr,#_i2c_write_rc_65536_20
+      000124 EA               [12]  825 	mov	a,r2
+      000125 F0               [24]  826 	movx	@dptr,a
+                                    827 ;	src/eeprom.c:137: if (rc) { // 
+      000126 EA               [12]  828 	mov	a,r2
+      000127 60 CB            [24]  829 	jz	00104$
+                                    830 ;	src/eeprom.c:138: n--;
+      000129 1E               [12]  831 	dec	r6
+                                    832 ;	src/eeprom.c:139: p++;
+      00012A 0B               [12]  833 	inc	r3
+      00012B BB 00 C6         [24]  834 	cjne	r3,#0x00,00104$
+      00012E 0C               [12]  835 	inc	r4
+      00012F 80 C3            [24]  836 	sjmp	00104$
+      000131                        837 00106$:
+                                    838 ;	src/eeprom.c:142: rc = rc? ((len - n)? 1: 0): 0;
+      000131 90r00r0A         [24]  839 	mov	dptr,#_i2c_write_rc_65536_20
+      000134 E0               [24]  840 	movx	a,@dptr
+      000135 60 19            [24]  841 	jz	00111$
+      000137 E4               [12]  842 	clr	a
+      000138 FD               [12]  843 	mov	r5,a
+      000139 FC               [12]  844 	mov	r4,a
+      00013A EF               [12]  845 	mov	a,r7
+      00013B C3               [12]  846 	clr	c
+      00013C 9E               [12]  847 	subb	a,r6
+      00013D FF               [12]  848 	mov	r7,a
+      00013E ED               [12]  849 	mov	a,r5
+      00013F 9C               [12]  850 	subb	a,r4
+      000140 FD               [12]  851 	mov	r5,a
+      000141 4F               [12]  852 	orl	a,r7
+      000142 60 06            [24]  853 	jz	00113$
+      000144 7E 01            [12]  854 	mov	r6,#0x01
+      000146 7F 00            [12]  855 	mov	r7,#0x00
+      000148 80 0A            [24]  856 	sjmp	00112$
+      00014A                        857 00113$:
+      00014A 7E 00            [12]  858 	mov	r6,#0x00
+      00014C 7F 00            [12]  859 	mov	r7,#0x00
+      00014E 80 04            [24]  860 	sjmp	00112$
+      000150                        861 00111$:
+      000150 7E 00            [12]  862 	mov	r6,#0x00
+      000152 7F 00            [12]  863 	mov	r7,#0x00
+      000154                        864 00112$:
+      000154 90r00r0A         [24]  865 	mov	dptr,#_i2c_write_rc_65536_20
+      000157 EE               [12]  866 	mov	a,r6
+      000158 F0               [24]  867 	movx	@dptr,a
+      000159                        868 00108$:
+                                    869 ;	src/eeprom.c:144: i2c_end();
+      000159 12r00r8F         [24]  870 	lcall	_i2c_end
+                                    871 ;	src/eeprom.c:146: return rc;
+      00015C 90r00r0A         [24]  872 	mov	dptr,#_i2c_write_rc_65536_20
+      00015F E0               [24]  873 	movx	a,@dptr
+                                    874 ;	src/eeprom.c:147: }
+      000160 F5 82            [12]  875 	mov	dpl,a
+      000162 22               [24]  876 	ret
+                                    877 ;------------------------------------------------------------
+                                    878 ;Allocation info for local variables in function 'i2c_read'
+                                    879 ;------------------------------------------------------------
+                                    880 ;p                         Allocated with name '_i2c_read_PARM_2'
+                                    881 ;len                       Allocated with name '_i2c_read_PARM_3'
+                                    882 ;addr                      Allocated with name '_i2c_read_addr_65536_24'
+                                    883 ;rc                        Allocated with name '_i2c_read_rc_65536_25'
+                                    884 ;------------------------------------------------------------
+                                    885 ;	src/eeprom.c:149: uint8_t i2c_read(uint8_t addr, uint8_t *p, uint8_t len) {
+                                    886 ;	-----------------------------------------
+                                    887 ;	 function i2c_read
+                                    888 ;	-----------------------------------------
+      000163                        889 _i2c_read:
+      000163 E5 82            [12]  890 	mov	a,dpl
+      000165 90r00r0F         [24]  891 	mov	dptr,#_i2c_read_addr_65536_24
+      000168 F0               [24]  892 	movx	@dptr,a
+                                    893 ;	src/eeprom.c:150: uint8_t rc = i2c_begin(addr, 1); /* start, set addr with READ bit */
+      000169 E0               [24]  894 	movx	a,@dptr
+      00016A FF               [12]  895 	mov	r7,a
+      00016B 90r00r03         [24]  896 	mov	dptr,#_i2c_begin_PARM_2
+      00016E 74 01            [12]  897 	mov	a,#0x01
+      000170 F0               [24]  898 	movx	@dptr,a
+      000171 8F 82            [24]  899 	mov	dpl,r7
+      000173 12r00r94         [24]  900 	lcall	_i2c_begin
+                                    901 ;	src/eeprom.c:151: if (rc) {
+      000176 E5 82            [12]  902 	mov	a,dpl
+      000178 FF               [12]  903 	mov	r7,a
+      000179 60 4A            [24]  904 	jz	00105$
+                                    905 ;	src/eeprom.c:152: while (len--) {
+      00017B 90r00r0B         [24]  906 	mov	dptr,#_i2c_read_PARM_2
+      00017E E0               [24]  907 	movx	a,@dptr
+      00017F FC               [12]  908 	mov	r4,a
+      000180 A3               [24]  909 	inc	dptr
+      000181 E0               [24]  910 	movx	a,@dptr
+      000182 FD               [12]  911 	mov	r5,a
+      000183 A3               [24]  912 	inc	dptr
+      000184 E0               [24]  913 	movx	a,@dptr
+      000185 FE               [12]  914 	mov	r6,a
+      000186 90r00r0E         [24]  915 	mov	dptr,#_i2c_read_PARM_3
+      000189 E0               [24]  916 	movx	a,@dptr
+      00018A FB               [12]  917 	mov	r3,a
+      00018B                        918 00101$:
+      00018B 8B 02            [24]  919 	mov	ar2,r3
+      00018D 1B               [12]  920 	dec	r3
+      00018E EA               [12]  921 	mov	a,r2
+      00018F 60 34            [24]  922 	jz	00105$
+                                    923 ;	src/eeprom.c:153: *p++ = i2c_byte_in(len == 0);
+      000191 EB               [12]  924 	mov	a,r3
+      000192 B4 01 00         [24]  925 	cjne	a,#0x01,00122$
+      000195                        926 00122$:
+      000195 92*00            [24]  927 	mov  _i2c_read_sloc0_1_0,c
+      000197 E4               [12]  928 	clr	a
+      000198 33               [12]  929 	rlc	a
+      000199 F5 82            [12]  930 	mov	dpl,a
+      00019B C0 07            [24]  931 	push	ar7
+      00019D C0 06            [24]  932 	push	ar6
+      00019F C0 05            [24]  933 	push	ar5
+      0001A1 C0 04            [24]  934 	push	ar4
+      0001A3 C0 03            [24]  935 	push	ar3
+      0001A5 12r00r47         [24]  936 	lcall	_i2c_byte_in
+      0001A8 AA 82            [24]  937 	mov	r2,dpl
+      0001AA D0 03            [24]  938 	pop	ar3
+      0001AC D0 04            [24]  939 	pop	ar4
+      0001AE D0 05            [24]  940 	pop	ar5
+      0001B0 D0 06            [24]  941 	pop	ar6
+      0001B2 D0 07            [24]  942 	pop	ar7
+      0001B4 8C 82            [24]  943 	mov	dpl,r4
+      0001B6 8D 83            [24]  944 	mov	dph,r5
+      0001B8 8E F0            [24]  945 	mov	b,r6
+      0001BA EA               [12]  946 	mov	a,r2
+      0001BB 12r00r00         [24]  947 	lcall	__gptrput
+      0001BE A3               [24]  948 	inc	dptr
+      0001BF AC 82            [24]  949 	mov	r4,dpl
+      0001C1 AD 83            [24]  950 	mov	r5,dph
+      0001C3 80 C6            [24]  951 	sjmp	00101$
+      0001C5                        952 00105$:
+                                    953 ;	src/eeprom.c:156: i2c_end();
+      0001C5 C0 07            [24]  954 	push	ar7
+      0001C7 12r00r8F         [24]  955 	lcall	_i2c_end
+      0001CA D0 07            [24]  956 	pop	ar7
+                                    957 ;	src/eeprom.c:157: return rc;
+      0001CC 8F 82            [24]  958 	mov	dpl,r7
+                                    959 ;	src/eeprom.c:158: }
+      0001CE 22               [24]  960 	ret
+                                    961 ;------------------------------------------------------------
+                                    962 ;Allocation info for local variables in function 'eeprom_init'
+                                    963 ;------------------------------------------------------------
+                                    964 ;	src/eeprom.c:163: void eeprom_init()
+                                    965 ;	-----------------------------------------
+                                    966 ;	 function eeprom_init
+                                    967 ;	-----------------------------------------
+      0001CF                        968 _eeprom_init:
+                                    969 ;	src/eeprom.c:35: SDA_HIGH();
+                                    970 ;	assignBit
+      0001CF D2 97            [12]  971 	setb	_P1_7
+                                    972 ;	src/eeprom.c:36: SCL_HIGH();
+                                    973 ;	assignBit
+      0001D1 D2 96            [12]  974 	setb	_P1_6
+                                    975 ;	src/eeprom.c:165: i2c_init(); 
+                                    976 ;	src/eeprom.c:166: }
+      0001D3 22               [24]  977 	ret
+                                    978 ;------------------------------------------------------------
+                                    979 ;Allocation info for local variables in function 'eepromwritebyte'
+                                    980 ;------------------------------------------------------------
+                                    981 ;byte                      Allocated with name '_eepromwritebyte_PARM_2'
+                                    982 ;addr                      Allocated with name '_eepromwritebyte_addr_65536_32'
+                                    983 ;i2c_address               Allocated with name '_eepromwritebyte_i2c_address_65537_34'
+                                    984 ;word_address              Allocated with name '_eepromwritebyte_word_address_65538_35'
+                                    985 ;ack                       Allocated with name '_eepromwritebyte_ack_65538_35'
+                                    986 ;------------------------------------------------------------
+                                    987 ;	src/eeprom.c:169: int eepromwritebyte(unsigned int addr, uint8_t byte)
+                                    988 ;	-----------------------------------------
+                                    989 ;	 function eepromwritebyte
+                                    990 ;	-----------------------------------------
+      0001D4                        991 _eepromwritebyte:
+      0001D4 AF 83            [24]  992 	mov	r7,dph
+      0001D6 E5 82            [12]  993 	mov	a,dpl
+      0001D8 90r00r11         [24]  994 	mov	dptr,#_eepromwritebyte_addr_65536_32
+      0001DB F0               [24]  995 	movx	@dptr,a
+      0001DC EF               [12]  996 	mov	a,r7
+      0001DD A3               [24]  997 	inc	dptr
+      0001DE F0               [24]  998 	movx	@dptr,a
+                                    999 ;	src/eeprom.c:171: if (addr > 0x7FF) return FAILURE;
+      0001DF 90r00r11         [24] 1000 	mov	dptr,#_eepromwritebyte_addr_65536_32
+      0001E2 E0               [24] 1001 	movx	a,@dptr
+      0001E3 FE               [12] 1002 	mov	r6,a
+      0001E4 A3               [24] 1003 	inc	dptr
+      0001E5 E0               [24] 1004 	movx	a,@dptr
+      0001E6 FF               [12] 1005 	mov	r7,a
+      0001E7 C3               [12] 1006 	clr	c
+      0001E8 74 FF            [12] 1007 	mov	a,#0xff
+      0001EA 9E               [12] 1008 	subb	a,r6
+      0001EB 74 07            [12] 1009 	mov	a,#0x07
+      0001ED 9F               [12] 1010 	subb	a,r7
+      0001EE 50 04            [24] 1011 	jnc	00102$
+      0001F0 90 00 01         [24] 1012 	mov	dptr,#0x0001
+      0001F3 22               [24] 1013 	ret
+      0001F4                       1014 00102$:
+                                   1015 ;	src/eeprom.c:173: i2c_address |= addr >> 8;
+      0001F4 8F 04            [24] 1016 	mov	ar4,r7
+      0001F6 43 04 50         [24] 1017 	orl	ar4,#0x50
+                                   1018 ;	src/eeprom.c:174: uint8_t word_address = ((uint8_t) (addr & 0xFF));
+                                   1019 ;	src/eeprom.c:175: int ack = i2c_begin(i2c_address, 0);
+      0001F9 90r00r03         [24] 1020 	mov	dptr,#_i2c_begin_PARM_2
+      0001FC E4               [12] 1021 	clr	a
+      0001FD F0               [24] 1022 	movx	@dptr,a
+      0001FE 8C 82            [24] 1023 	mov	dpl,r4
+      000200 C0 06            [24] 1024 	push	ar6
+      000202 12r00r94         [24] 1025 	lcall	_i2c_begin
+      000205 AF 82            [24] 1026 	mov	r7,dpl
+      000207 D0 06            [24] 1027 	pop	ar6
+      000209 7D 00            [12] 1028 	mov	r5,#0x00
+                                   1029 ;	src/eeprom.c:176: if (ack != 1)
+      00020B BF 01 05         [24] 1030 	cjne	r7,#0x01,00128$
+      00020E BD 00 02         [24] 1031 	cjne	r5,#0x00,00128$
+      000211 80 07            [24] 1032 	sjmp	00104$
+      000213                       1033 00128$:
+                                   1034 ;	src/eeprom.c:178: i2c_end();
+      000213 12r00r8F         [24] 1035 	lcall	_i2c_end
+                                   1036 ;	src/eeprom.c:179: return FAILURE;
+      000216 90 00 01         [24] 1037 	mov	dptr,#0x0001
+      000219 22               [24] 1038 	ret
+      00021A                       1039 00104$:
+                                   1040 ;	src/eeprom.c:181: ack = i2c_byte_out(word_address);
+      00021A 8E 82            [24] 1041 	mov	dpl,r6
+      00021C 12r00r00         [24] 1042 	lcall	_i2c_byte_out
+      00021F AF 82            [24] 1043 	mov	r7,dpl
+      000221 7E 00            [12] 1044 	mov	r6,#0x00
+                                   1045 ;	src/eeprom.c:182: if (ack != 1)
+      000223 BF 01 05         [24] 1046 	cjne	r7,#0x01,00129$
+      000226 BE 00 02         [24] 1047 	cjne	r6,#0x00,00129$
+      000229 80 07            [24] 1048 	sjmp	00106$
+      00022B                       1049 00129$:
+                                   1050 ;	src/eeprom.c:184: i2c_end();
+      00022B 12r00r8F         [24] 1051 	lcall	_i2c_end
+                                   1052 ;	src/eeprom.c:185: return FAILURE;
+      00022E 90 00 01         [24] 1053 	mov	dptr,#0x0001
+      000231 22               [24] 1054 	ret
+      000232                       1055 00106$:
+                                   1056 ;	src/eeprom.c:188: ack = i2c_byte_out(byte);
+      000232 90r00r10         [24] 1057 	mov	dptr,#_eepromwritebyte_PARM_2
+      000235 E0               [24] 1058 	movx	a,@dptr
+      000236 F5 82            [12] 1059 	mov	dpl,a
+      000238 12r00r00         [24] 1060 	lcall	_i2c_byte_out
+      00023B AF 82            [24] 1061 	mov	r7,dpl
+      00023D 7E 00            [12] 1062 	mov	r6,#0x00
+                                   1063 ;	src/eeprom.c:189: if (ack != 1)
+      00023F BF 01 05         [24] 1064 	cjne	r7,#0x01,00130$
+      000242 BE 00 02         [24] 1065 	cjne	r6,#0x00,00130$
+      000245 80 07            [24] 1066 	sjmp	00108$
+      000247                       1067 00130$:
+                                   1068 ;	src/eeprom.c:191: i2c_end();
+      000247 12r00r8F         [24] 1069 	lcall	_i2c_end
+                                   1070 ;	src/eeprom.c:192: return FAILURE;
+      00024A 90 00 01         [24] 1071 	mov	dptr,#0x0001
+      00024D 22               [24] 1072 	ret
+      00024E                       1073 00108$:
+                                   1074 ;	src/eeprom.c:195: i2c_end();
+      00024E 12r00r8F         [24] 1075 	lcall	_i2c_end
+                                   1076 ;	src/eeprom.c:196: return SUCCESS;
+      000251 90 00 00         [24] 1077 	mov	dptr,#0x0000
+                                   1078 ;	src/eeprom.c:198: }
+      000254 22               [24] 1079 	ret
+                                   1080 ;------------------------------------------------------------
+                                   1081 ;Allocation info for local variables in function 'eepromreadbyte'
+                                   1082 ;------------------------------------------------------------
+                                   1083 ;byte                      Allocated with name '_eepromreadbyte_PARM_2'
+                                   1084 ;addr                      Allocated with name '_eepromreadbyte_addr_65536_39'
+                                   1085 ;i2c_address               Allocated with name '_eepromreadbyte_i2c_address_65537_41'
+                                   1086 ;word_address              Allocated with name '_eepromreadbyte_word_address_65538_42'
+                                   1087 ;ack                       Allocated with name '_eepromreadbyte_ack_65538_42'
+                                   1088 ;------------------------------------------------------------
+                                   1089 ;	src/eeprom.c:200: int eepromreadbyte(unsigned int addr, uint8_t *byte)
+                                   1090 ;	-----------------------------------------
+                                   1091 ;	 function eepromreadbyte
+                                   1092 ;	-----------------------------------------
+      000255                       1093 _eepromreadbyte:
+      000255 AF 83            [24] 1094 	mov	r7,dph
+      000257 E5 82            [12] 1095 	mov	a,dpl
+      000259 90r00r16         [24] 1096 	mov	dptr,#_eepromreadbyte_addr_65536_39
+      00025C F0               [24] 1097 	movx	@dptr,a
+      00025D EF               [12] 1098 	mov	a,r7
+      00025E A3               [24] 1099 	inc	dptr
+      00025F F0               [24] 1100 	movx	@dptr,a
+                                   1101 ;	src/eeprom.c:202: if (addr > 0x7FF) return FAILURE;
+      000260 90r00r16         [24] 1102 	mov	dptr,#_eepromreadbyte_addr_65536_39
+      000263 E0               [24] 1103 	movx	a,@dptr
+      000264 FE               [12] 1104 	mov	r6,a
+      000265 A3               [24] 1105 	inc	dptr
+      000266 E0               [24] 1106 	movx	a,@dptr
+      000267 FF               [12] 1107 	mov	r7,a
+      000268 C3               [12] 1108 	clr	c
+      000269 74 FF            [12] 1109 	mov	a,#0xff
+      00026B 9E               [12] 1110 	subb	a,r6
+      00026C 74 07            [12] 1111 	mov	a,#0x07
+      00026E 9F               [12] 1112 	subb	a,r7
+      00026F 50 04            [24] 1113 	jnc	00102$
+      000271 90 00 01         [24] 1114 	mov	dptr,#0x0001
+      000274 22               [24] 1115 	ret
+      000275                       1116 00102$:
+                                   1117 ;	src/eeprom.c:204: i2c_address |= addr >> 8;
+      000275 8F 04            [24] 1118 	mov	ar4,r7
+      000277 7D 00            [12] 1119 	mov	r5,#0x00
+      000279 43 04 50         [24] 1120 	orl	ar4,#0x50
+                                   1121 ;	src/eeprom.c:205: uint8_t word_address = ((uint8_t) (addr & 0xFF));
+                                   1122 ;	src/eeprom.c:207: int ack = i2c_begin(i2c_address, 0);
+      00027C 8C 03            [24] 1123 	mov	ar3,r4
+      00027E 90r00r03         [24] 1124 	mov	dptr,#_i2c_begin_PARM_2
+      000281 E4               [12] 1125 	clr	a
+      000282 F0               [24] 1126 	movx	@dptr,a
+      000283 8B 82            [24] 1127 	mov	dpl,r3
+      000285 C0 06            [24] 1128 	push	ar6
+      000287 C0 05            [24] 1129 	push	ar5
+      000289 C0 04            [24] 1130 	push	ar4
+      00028B 12r00r94         [24] 1131 	lcall	_i2c_begin
+      00028E AF 82            [24] 1132 	mov	r7,dpl
+      000290 D0 04            [24] 1133 	pop	ar4
+      000292 D0 05            [24] 1134 	pop	ar5
+      000294 D0 06            [24] 1135 	pop	ar6
+      000296 7B 00            [12] 1136 	mov	r3,#0x00
+                                   1137 ;	src/eeprom.c:208: if (ack != 1)
+      000298 BF 01 05         [24] 1138 	cjne	r7,#0x01,00122$
+      00029B BB 00 02         [24] 1139 	cjne	r3,#0x00,00122$
+      00029E 80 07            [24] 1140 	sjmp	00104$
+      0002A0                       1141 00122$:
+                                   1142 ;	src/eeprom.c:210: i2c_end();
+      0002A0 12r00r8F         [24] 1143 	lcall	_i2c_end
+                                   1144 ;	src/eeprom.c:211: return FAILURE;
+      0002A3 90 00 01         [24] 1145 	mov	dptr,#0x0001
+      0002A6 22               [24] 1146 	ret
+      0002A7                       1147 00104$:
+                                   1148 ;	src/eeprom.c:214: ack = i2c_byte_out(word_address);
+      0002A7 8E 82            [24] 1149 	mov	dpl,r6
+      0002A9 C0 05            [24] 1150 	push	ar5
+      0002AB C0 04            [24] 1151 	push	ar4
+      0002AD 12r00r00         [24] 1152 	lcall	_i2c_byte_out
+      0002B0 AF 82            [24] 1153 	mov	r7,dpl
+      0002B2 D0 04            [24] 1154 	pop	ar4
+      0002B4 D0 05            [24] 1155 	pop	ar5
+      0002B6 7E 00            [12] 1156 	mov	r6,#0x00
+                                   1157 ;	src/eeprom.c:216: if (ack != 1)
+      0002B8 BF 01 05         [24] 1158 	cjne	r7,#0x01,00123$
+      0002BB BE 00 02         [24] 1159 	cjne	r6,#0x00,00123$
+      0002BE 80 07            [24] 1160 	sjmp	00106$
+      0002C0                       1161 00123$:
+                                   1162 ;	src/eeprom.c:218: i2c_end();
+      0002C0 12r00r8F         [24] 1163 	lcall	_i2c_end
+                                   1164 ;	src/eeprom.c:219: return FAILURE;
+      0002C3 90 00 01         [24] 1165 	mov	dptr,#0x0001
+      0002C6 22               [24] 1166 	ret
+      0002C7                       1167 00106$:
+                                   1168 ;	src/eeprom.c:222: i2c_begin(i2c_address, 1);
+      0002C7 90r00r03         [24] 1169 	mov	dptr,#_i2c_begin_PARM_2
+      0002CA 74 01            [12] 1170 	mov	a,#0x01
+      0002CC F0               [24] 1171 	movx	@dptr,a
+      0002CD 8C 82            [24] 1172 	mov	dpl,r4
+      0002CF 12r00r94         [24] 1173 	lcall	_i2c_begin
+                                   1174 ;	src/eeprom.c:223: *byte = i2c_byte_in(true);
+      0002D2 90r00r13         [24] 1175 	mov	dptr,#_eepromreadbyte_PARM_2
+      0002D5 E0               [24] 1176 	movx	a,@dptr
+      0002D6 FD               [12] 1177 	mov	r5,a
+      0002D7 A3               [24] 1178 	inc	dptr
+      0002D8 E0               [24] 1179 	movx	a,@dptr
+      0002D9 FE               [12] 1180 	mov	r6,a
+      0002DA A3               [24] 1181 	inc	dptr
+      0002DB E0               [24] 1182 	movx	a,@dptr
+      0002DC FF               [12] 1183 	mov	r7,a
+      0002DD 75 82 01         [24] 1184 	mov	dpl,#0x01
+      0002E0 C0 07            [24] 1185 	push	ar7
+      0002E2 C0 06            [24] 1186 	push	ar6
+      0002E4 C0 05            [24] 1187 	push	ar5
+      0002E6 12r00r47         [24] 1188 	lcall	_i2c_byte_in
+      0002E9 AC 82            [24] 1189 	mov	r4,dpl
+      0002EB D0 05            [24] 1190 	pop	ar5
+      0002ED D0 06            [24] 1191 	pop	ar6
+      0002EF D0 07            [24] 1192 	pop	ar7
+      0002F1 8D 82            [24] 1193 	mov	dpl,r5
+      0002F3 8E 83            [24] 1194 	mov	dph,r6
+      0002F5 8F F0            [24] 1195 	mov	b,r7
+      0002F7 EC               [12] 1196 	mov	a,r4
+      0002F8 12r00r00         [24] 1197 	lcall	__gptrput
+                                   1198 ;	src/eeprom.c:225: i2c_end();
+      0002FB 12r00r8F         [24] 1199 	lcall	_i2c_end
+                                   1200 ;	src/eeprom.c:226: return SUCCESS;
+      0002FE 90 00 00         [24] 1201 	mov	dptr,#0x0000
+                                   1202 ;	src/eeprom.c:228: } 
+      000301 22               [24] 1203 	ret
+                                   1204 ;------------------------------------------------------------
+                                   1205 ;Allocation info for local variables in function 'eereset'
+                                   1206 ;------------------------------------------------------------
+                                   1207 ;i                         Allocated with name '_eereset_i_131072_50'
+                                   1208 ;------------------------------------------------------------
+                                   1209 ;	src/eeprom.c:239: void eereset()
+                                   1210 ;	-----------------------------------------
+                                   1211 ;	 function eereset
+                                   1212 ;	-----------------------------------------
+      000302                       1213 _eereset:
+                                   1214 ;	src/eeprom.c:35: SDA_HIGH();
+                                   1215 ;	assignBit
+      000302 D2 97            [12] 1216 	setb	_P1_7
+                                   1217 ;	src/eeprom.c:36: SCL_HIGH();
+                                   1218 ;	assignBit
+      000304 D2 96            [12] 1219 	setb	_P1_6
+                                   1220 ;	src/eeprom.c:35: SDA_HIGH();
+                                   1221 ;	assignBit
+      000306 D2 97            [12] 1222 	setb	_P1_7
+                                   1223 ;	src/eeprom.c:36: SCL_HIGH();
+                                   1224 ;	assignBit
+      000308 D2 96            [12] 1225 	setb	_P1_6
+                                   1226 ;	src/eeprom.c:233: SDA_LOW();
+                                   1227 ;	assignBit
+      00030A C2 97            [12] 1228 	clr	_P1_7
+                                   1229 ;	src/eeprom.c:235: SCL_LOW();
+                                   1230 ;	assignBit
+      00030C C2 96            [12] 1231 	clr	_P1_6
+                                   1232 ;	src/eeprom.c:243: for(int i = 0; i < 9; i++)
+      00030E 7E 00            [12] 1233 	mov	r6,#0x00
+      000310 7F 00            [12] 1234 	mov	r7,#0x00
+      000312                       1235 00108$:
+      000312 C3               [12] 1236 	clr	c
+      000313 EE               [12] 1237 	mov	a,r6
+      000314 94 09            [12] 1238 	subb	a,#0x09
+      000316 EF               [12] 1239 	mov	a,r7
+      000317 64 80            [12] 1240 	xrl	a,#0x80
+      000319 94 80            [12] 1241 	subb	a,#0x80
+      00031B 50 0D            [24] 1242 	jnc	00101$
+                                   1243 ;	src/eeprom.c:246: SDA_HIGH();
+                                   1244 ;	assignBit
+      00031D D2 97            [12] 1245 	setb	_P1_7
+                                   1246 ;	src/eeprom.c:248: SCL_HIGH();
+                                   1247 ;	assignBit
+      00031F D2 96            [12] 1248 	setb	_P1_6
+                                   1249 ;	src/eeprom.c:250: SCL_LOW();
+                                   1250 ;	assignBit
+      000321 C2 96            [12] 1251 	clr	_P1_6
+                                   1252 ;	src/eeprom.c:243: for(int i = 0; i < 9; i++)
+      000323 0E               [12] 1253 	inc	r6
+      000324 BE 00 EB         [24] 1254 	cjne	r6,#0x00,00108$
+      000327 0F               [12] 1255 	inc	r7
+      000328 80 E8            [24] 1256 	sjmp	00108$
+      00032A                       1257 00101$:
+                                   1258 ;	src/eeprom.c:35: SDA_HIGH();
+                                   1259 ;	assignBit
+      00032A D2 97            [12] 1260 	setb	_P1_7
+                                   1261 ;	src/eeprom.c:36: SCL_HIGH();
+                                   1262 ;	assignBit
+      00032C D2 96            [12] 1263 	setb	_P1_6
+                                   1264 ;	src/eeprom.c:233: SDA_LOW();
+                                   1265 ;	assignBit
+      00032E C2 97            [12] 1266 	clr	_P1_7
+                                   1267 ;	src/eeprom.c:235: SCL_LOW();
+                                   1268 ;	assignBit
+      000330 C2 96            [12] 1269 	clr	_P1_6
+                                   1270 ;	src/eeprom.c:253: i2c_end();
+                                   1271 ;	src/eeprom.c:254: }
+      000332 02r00r8F         [24] 1272 	ljmp	_i2c_end
+                                   1273 	.area CSEG    (CODE)
+                                   1274 	.area CONST   (CODE)
+                                   1275 	.area XINIT   (CODE)
+                                   1276 	.area CABS    (ABS,CODE)
