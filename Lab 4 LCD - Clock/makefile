@@ -48,23 +48,26 @@ user_program_debug: bin/debug_output.hex
 # --model-large : Generate code for Large model programs
 # --out-fmt-ihx : Generate Intel HEX output format
 
-bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel bin/linked_list.rel bin/debug.rel bin/lcd.rel
+bin/output.hex: bin/main.rel bin/_heap.rel bin/my_serial.rel bin/input.rel bin/linked_list.rel bin/debug.rel bin/lcd.rel 
 	$(CC) bin/main.rel bin/my_serial.rel bin/_heap.rel bin/input.rel bin/linked_list.rel bin/debug.rel bin/lcd.rel\
 	--code-loc 0x2000 --code-size 0x6000 \
 	--xram-loc 0x0001 --xram-size 0x7FFF \
 	--model-large --out-fmt-ihx -o bin/output.hex
 
-bin/debug_output.hex: bin/debug_main.rel bin/debug__heap.rel bin/debug_my_serial.rel bin/debug_input.rel bin/debug_linked_list.rel bin/debug_debug.rel bin/debug_eeprom.rel
-	$(CC) bin/debug_main.rel bin/debug_my_serial.rel bin/debug__heap.rel bin/debug_input.rel bin/debug_linked_list.rel bin/debug_debug.rel bin/debug_eeprom.rel\
-	--code-loc 0x2000 --code-size 0x6000 \
-	--xram-loc 0x0001 --xram-size 0x7FFF \
-	--model-large --out-fmt-ihx -o bin/debug_output.hex
+# bin/debug_output.hex: bin/debug_main.rel bin/debug__heap.rel bin/debug_my_serial.rel bin/debug_input.rel bin/debug_linked_list.rel bin/debug_debug.rel bin/debug_eeprom.rel
+# 	$(CC) bin/debug_main.rel bin/debug_my_serial.rel bin/debug__heap.rel bin/debug_input.rel bin/debug_linked_list.rel bin/debug_debug.rel bin/debug_eeprom.rel\
+# 	--code-loc 0x2000 --code-size 0x6000 \
+# 	--xram-loc 0x0001 --xram-size 0x7FFF \
+# 	--model-large --out-fmt-ihx -o bin/debug_output.hex
 
 # Compile main application file
 # -c        : --compile-only will compile and assemble the source, but will not call the linkage editor
 # -mmcs51   : Generate code for the Intel MCS51 family of processors. This is the default processor target
 # --model-large :  Generate code for Large model programs
 # -I headers : Add headers directory to include path
+
+# bin/vector.rel: 
+# 	sdas8051 -plosgff -o bin/vector.rel src/vectors.asm
 
 bin/%.rel: src/%.c $(HEADERS)
 	$(CC) -c -mmcs51 --model-large -I headers $< -o $@

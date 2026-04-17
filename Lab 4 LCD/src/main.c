@@ -37,12 +37,8 @@ extern __xdata char __sdcc_heap[HEAP_SIZE];
 void main()
 {
     lcdinit();
-    printf("40\r\n");
     lcdputstr("HI");
-    printf("42\r\n");
     lcdgotoxy(1,0);
-    printf("44\r\n");
     lcdputstr("ESD");
-    printf("46\r\n");
     for(;;);
 }
